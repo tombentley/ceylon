@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
@@ -84,6 +85,7 @@ public class CeylonRunTool extends RepoUsingTool {
     private List<String> args = Collections.emptyList();
 
     private boolean autoExportMavenDependencies;
+    private DistVersionPolicy distVersionPolicy = DistVersionPolicy.UPGRADE;
 
     public CeylonRunTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
@@ -136,6 +138,37 @@ public class CeylonRunTool extends RepoUsingTool {
             "Allowed flags include: `all`, `loader`, `cmr`.")
     public void setVerbose(String verbose) {
         super.setVerbose(verbose);
+    }
+    
+    static enum DistVersionPolicy {
+        UPGRADE,
+        DOWNGRADE,
+        ABORT
+    }
+    
+    public void setDistVersionPolicy(DistVersionPolicy policy) {
+        this.distVersionPolicy = policy;
+    }
+    
+    @Option
+    @OptionArgument(argumentName="policy")
+    @Description("Link modules which were compiled with a more recent "
+            + "version of the distribution to the version of that module "
+            + "present in this distribution (" + Versions.CEYLON_VERSION_NUMBER + "). "
+            + "This might fail with a linker error at runtime. For example "
+            + "if the module depended on an API present in the more "
+            + "recent version, but absent from " + Versions.CEYLON_VERSION_NUMBER +". "
+                    + "Allowed arguments are upgrade, downgrade or abort. Default: upgrade")
+    public void setForceDistVersion(String name) {
+        if (name == null || name.isEmpty()) {
+            distVersionPolicy = DistVersionPolicy.UPGRADE;
+        } else {
+            try {
+                this.distVersionPolicy = DistVersionPolicy.valueOf(name.toUpperCase(Locale.ENGLISH));
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("should be one of: upgrade,downgrade,abort");
+            }
+        }
     }
 
     @Override

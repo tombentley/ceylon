@@ -87,8 +87,12 @@ public class Overrides {
     private Overrides() {}
     
     public static Overrides getDistOverrides() {
+        return getDistOverrides(true);
+    }
+    
+    public static Overrides getDistOverrides(boolean upgrades) {
         try {
-            return parseDistOverrides(true);
+            return parseDistOverrides(upgrades);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -259,7 +263,7 @@ public class Overrides {
                     overrides.source = resource.toString();
                     return overrides;
                 } else {
-                    throw new InvalidOverrideException(String.format("Expected exactly one '%s' element in dist-overrides.xml.", elementName), document.getDocumentElement());
+                    throw new InvalidOverrideException(String.format("Expected exactly one '%s' element in dist-overrides.xml, but found %d", elementName, e.size()), document.getDocumentElement());
                 }
                 
             } finally {
