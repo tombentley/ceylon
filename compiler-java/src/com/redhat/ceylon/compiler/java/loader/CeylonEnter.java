@@ -133,7 +133,6 @@ public class CeylonEnter extends Enter {
     private AbstractModelLoader modelLoader;
     private Options options;
     private Timer timer;
-    private Paths paths;
     private CeyloncFileManager fileManager;
     private boolean verbose;
     private Check chk;
@@ -295,7 +294,6 @@ public class CeylonEnter extends Enter {
         // reset its members and completer
         classSymbol.members_field = null;
         classSymbol.completer = null;
-        classSymbol.attributes_field = List.nil();
     }
 
     @Override

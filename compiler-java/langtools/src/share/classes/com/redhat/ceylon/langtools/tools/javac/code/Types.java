@@ -1725,10 +1725,18 @@ public class Types {
         return disjointType.visit(t, s);
     }
     // where
-        private TypeRelation disjointType = new TypeRelation() {
-
+    // Ceylon: turned this from an anonymous class to a real class
+    private DisjointTypeTypeRelation disjointType = new DisjointTypeTypeRelation();
+    
+    private class DisjointTypeTypeRelation extends TypeRelation
+        {
             private Set<TypePair> cache = new HashSet<TypePair>();
 
+            // Ceylon
+            private void reset(){
+                cache.clear();
+            }
+            
             @Override
             public Boolean visitType(Type t, Type s) {
                 if (s.hasTag(WILDCARD))

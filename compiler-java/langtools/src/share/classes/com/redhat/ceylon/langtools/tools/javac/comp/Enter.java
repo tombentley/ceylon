@@ -468,7 +468,7 @@ public class Enter extends JCTree.Visitor {
      * Ceylon: return true if env.tree is a new unqualified anonymous class
      */
     private boolean isNewAnonymousClass(JCTree tree) {
-        return tree.getTag() == JCTree.NEWCLASS &&
+        return tree.getTag() == JCTree.Tag.NEWCLASS &&
                 ((JCNewClass) tree).encl == null;
     }
 
@@ -477,11 +477,11 @@ public class Enter extends JCTree.Visitor {
      * and an expression which is an unqualified instanciation of that class
      */
     private boolean isNewLetClass(JCTree tree) {
-        if(tree.getTag() != JCTree.LETEXPR)
+        if(tree.getTag() != JCTree.Tag.LETEXPR)
             return false;
         JCTree.LetExpr let = (JCTree.LetExpr)tree;
         return let.stats.size() == 1
-                && let.stats.head.getTag() == JCTree.CLASSDEF
+                && let.stats.head.getTag() == JCTree.Tag.CLASSDEF
                 && let.expr != null
                 && isNewAnonymousClass(let.expr);
     }
