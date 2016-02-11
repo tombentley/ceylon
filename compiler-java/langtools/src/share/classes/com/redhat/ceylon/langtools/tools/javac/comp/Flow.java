@@ -1885,6 +1885,16 @@ public class Flow {
             nextadr = nextadrPrev;
         }
 
+    @Override
+    public void visitLetExpr(LetExpr tree) {
+        int nextadrPrev = nextadr;
+        if(tree.stats != null)
+            scan(tree.stats);
+        if(tree.expr != null)
+            scanExpr(tree.expr);
+        nextadr = nextadrPrev;
+    }
+        
         public void visitDoLoop(JCDoWhileLoop tree) {
             ListBuffer<AssignPendingExit> prevPendingExits = pendingExits;
             FlowKind prevFlowKind = flowKind;

@@ -2455,15 +2455,25 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         public void accept(Visitor v) { v.visitLetExpr(this); }
 
         public Kind getKind() {
-            throw new AssertionError("LetExpr is not part of a public API");
+            return Kind.LET;
         }
         @Override
         public <R,D> R accept(TreeVisitor<R,D> v, D d) {
-            throw new AssertionError("LetExpr is not part of a public API");
+            return v.visitLet(this, d);
         }
         @Override
         public Tag getTag() {
             return LETEXPR;
+        }
+
+        @Override
+        public java.util.List<? extends StatementTree> getStatements() {
+            return stats;
+        }
+
+        @Override
+        public Tree getExpressio() {
+            return expr;
         }
     }
 
