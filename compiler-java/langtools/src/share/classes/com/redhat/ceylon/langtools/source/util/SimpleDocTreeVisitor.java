@@ -32,7 +32,6 @@ import com.redhat.ceylon.langtools.source.doctree.*;
  *
  * @since 1.8
  */
-@jdk.Exported
 public class SimpleDocTreeVisitor<R,P> implements DocTreeVisitor<R, P> {
     protected final R DEFAULT_VALUE;
 

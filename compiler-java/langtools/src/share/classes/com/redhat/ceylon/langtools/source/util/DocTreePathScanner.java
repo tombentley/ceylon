@@ -36,7 +36,6 @@ import com.redhat.ceylon.langtools.source.doctree.DocTree;
  *
  * @since 1.8
  */
-@jdk.Exported
 public class DocTreePathScanner<R, P> extends DocTreeScanner<R, P> {
     /**
      * Scan a tree from a position identified by a TreePath.

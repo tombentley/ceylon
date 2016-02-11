@@ -67,7 +67,6 @@ import com.redhat.ceylon.langtools.source.doctree.*;
  *
  * @since 1.8
  */
-@jdk.Exported
 public class DocTreeScanner<R,P> implements DocTreeVisitor<R,P> {
 
     /**
