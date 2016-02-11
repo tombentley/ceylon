@@ -88,14 +88,14 @@ import com.redhat.ceylon.langtools.tools.javac.comp.Check;
 import com.redhat.ceylon.langtools.tools.javac.comp.Enter;
 import com.redhat.ceylon.langtools.tools.javac.comp.Env;
 import com.redhat.ceylon.langtools.tools.javac.comp.Todo;
-import com.redhat.ceylon.langtools.tools.javac.file.Paths;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.redhat.ceylon.langtools.tools.javac.util.Abort;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.Position;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
@@ -166,8 +166,8 @@ public class CeylonEnter extends Enter {
         timer = com.redhat.ceylon.compiler.java.util.Timer.instance(context);
         paths = Paths.instance(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
-        verbose = options.get(OptionName.VERBOSE) != null;
-        isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
+        verbose = options.get(Option.VERBOSE) != null;
+        isBootstrap = options.get(Option.BOOTSTRAPCEYLON) != null;
         chk = Check.instance(context);
         types = Types.instance(context);
         symtab = Symtab.instance(context);
@@ -179,7 +179,7 @@ public class CeylonEnter extends Enter {
         // now superclass init
         init(context);
         
-        boolean isProgressPrinted = options.get(OptionName.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
+        boolean isProgressPrinted = options.get(Option.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
         if(isProgressPrinted && taskListener == null){
             sp = LanguageCompiler.getStatusPrinterInstance(context);
         }else{
@@ -345,7 +345,7 @@ public class CeylonEnter extends Enter {
         collectTreeErrors(false, false);
         timer.endTask();
         // check if we abort on errors or not
-        if (options.get(OptionName.CEYLONCONTINUE) == null) {
+        if (options.get(Option.CEYLONCONTINUE) == null) {
             // if we didn't have any errors on module descriptors, 
             // we can go on, none were logged so
             // they can't be re-logged and duplicated later on
@@ -396,12 +396,12 @@ public class CeylonEnter extends Enter {
                 }
                 nested.endTask();
                 if(isVerbose("ast")){
-                    log.errWriter.println("Model tree for "+tree.getSourceFile());
-                    log.errWriter.println(ceylonTree.ceylonTree);
+                    log.printRawLines(WriterKind.ERROR, "Model tree for "+tree.getSourceFile());
+                    log.printRawLines(WriterKind.ERROR, ceylonTree.ceylonTree.toString());
                 }
                 if(isVerbose("code")){
-                    log.errWriter.println("Java code generated for "+tree.getSourceFile());
-                    log.errWriter.println(ceylonTree);
+                    log.printRawLines(WriterKind.ERROR, "Java code generated for "+tree.getSourceFile());
+                    log.printRawLines(WriterKind.ERROR, ceylonTree.toString());
                 }
             }
         }
@@ -414,7 +414,7 @@ public class CeylonEnter extends Enter {
     }
 
     private boolean isVerbose(String key) {
-        return verbose || options.get(OptionName.VERBOSE + ":" + key) != null;
+        return verbose || options.get(Option.VERBOSE + ":" + key) != null;
     }
 
     public void addOutputModuleToClassPath(Module module){
@@ -444,7 +444,7 @@ public class CeylonEnter extends Enter {
     
     public void addModuleToClassPath(Module module, boolean errorIfMissing, ArtifactResult result) {
         if(verbose)
-            Log.printLines(log.noticeWriter, "[Adding module to classpath: "+module.getNameAsString()+"/"+module.getVersion()+"]");        
+            log.printRawLines(WriterKind.NOTICE, "[Adding module to classpath: "+module.getNameAsString()+"/"+module.getVersion()+"]");        
         
         Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
 
@@ -461,9 +461,9 @@ public class CeylonEnter extends Enter {
         
         if(verbose){
             if(artifact != null)
-                Log.printLines(log.noticeWriter, "[Found module at : "+artifact.getPath()+"]");
+                log.printRawLines(WriterKind.NOTICE, "[Found module at : "+artifact.getPath()+"]");
             else
-                Log.printLines(log.noticeWriter, "[Could not find module]");
+                log.printRawLines(WriterKind.NOTICE, "[Could not find module]");
         }
 
         if(modulesAddedToClassPath.add(module)){
@@ -474,7 +474,7 @@ public class CeylonEnter extends Enter {
                 log.error("ceylon", "Failed to find module "+module.getNameAsString()+"/"+module.getVersion()+" in repositories");
             }
         }else if(verbose){
-            Log.printLines(log.noticeWriter, "[Module already added to classpath]");
+            log.printRawLines(WriterKind.NOTICE, "[Module already added to classpath]");
         }
     }
 
@@ -701,7 +701,7 @@ public class CeylonEnter extends Enter {
         // we want multiple errors for Ceylon
         log.multipleErrors = true;
         try{
-            log.printErrLines(key, tracktrace);
+            log.printLines(WriterKind.ERROR, key, tracktrace);
         }finally{
             log.multipleErrors = prev;
         }

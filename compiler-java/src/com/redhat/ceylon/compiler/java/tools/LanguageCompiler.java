@@ -87,7 +87,7 @@ import com.redhat.ceylon.langtools.tools.javac.comp.Env;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.langtools.tools.javac.jvm.ClassWriter;
 import com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeInfo;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
@@ -98,6 +98,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Convert;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
+import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.Pair;
 import com.redhat.ceylon.langtools.tools.javac.util.Position;
@@ -226,12 +227,12 @@ public class LanguageCompiler extends JavaCompiler {
         modelLoader = CeylonModelLoader.instance(context);
         ceylonEnter = CeylonEnter.instance(context);
         options = Options.instance(context);
-        isBootstrap = options.get(OptionName.BOOTSTRAPCEYLON) != null;
+        isBootstrap = options.get(Option.BOOTSTRAPCEYLON) != null;
         timer = Timer.instance(context);
         sourceLanguage = SourceLanguage.instance(context);
-        boolean isProgressPrinted = options.get(OptionName.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
+        boolean isProgressPrinted = options.get(Option.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
         if(isProgressPrinted && taskListener == null){
-            taskListener = new StatusPrinterTaskListener(getStatusPrinterInstance(context));
+            taskListener.add(new StatusPrinterTaskListener(getStatusPrinterInstance(context)));
         }
     }
 
@@ -415,7 +416,7 @@ public class LanguageCompiler extends JavaCompiler {
             
             PhasedUnit externalPhasedUnit = compilerDelegate.getExternalSourcePhasedUnit(srcDir, file);
             
-            String suppressWarnings = options.get(OptionName.CEYLONSUPPRESSWARNINGS);
+            String suppressWarnings = options.get(Option.CEYLONSUPPRESSWARNINGS);
             final EnumSet<Warning> suppressedWarnings;
             if (suppressWarnings != null) {
                 if (suppressWarnings.trim().isEmpty()) {
@@ -462,7 +463,7 @@ public class LanguageCompiler extends JavaCompiler {
                 }
 
                 // if we continue and it's not a descriptor, we don't care about errors
-                if ((options.get(OptionName.CEYLONCONTINUE) != null
+                if ((options.get(Option.CEYLONCONTINUE) != null
                         && !ModuleManager.MODULE_FILE.equals(sourceFile.getName())
                         && !ModuleManager.PACKAGE_FILE.equals(sourceFile.getName()))
                         // otherwise we care about errors
@@ -604,12 +605,12 @@ public class LanguageCompiler extends JavaCompiler {
         String moduleClassName = pkgName + ".module";
         JavaFileObject fileObject;
         try {
-            if(options.get(OptionName.VERBOSE) != null){
-                Log.printLines(log.noticeWriter, "[Trying to load module "+moduleClassName+"]");
+            if(options.get(Option.VERBOSE) != null){
+                log.printRawLines(WriterKind.NOTICE, "[Trying to load module "+moduleClassName+"]");
             }
             fileObject = fileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH, moduleClassName, Kind.SOURCE);
-            if(options.get(OptionName.VERBOSE) != null){
-                Log.printLines(log.noticeWriter, "[Got file object: "+fileObject+"]");
+            if(options.get(Option.VERBOSE) != null){
+                log.printRawLines(WriterKind.NOTICE, "[Got file object: "+fileObject+"]");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -798,8 +799,8 @@ public class LanguageCompiler extends JavaCompiler {
                     // if there's no module source file object it means the module descriptor had parse errors
                     if(moduleFileObject == null || moduleFileObject.hasError()){
                         // we do not produce any class files for modules with errors
-                        if(options.get(OptionName.VERBOSE) != null){
-                            Log.printLines(log.noticeWriter, "[Not writing class "+cdef.sym.className()
+                        if(options.get(Option.VERBOSE) != null){
+                            log.printRawLines(WriterKind.NOTICE, "[Not writing class "+cdef.sym.className()
                                     +" because its module has errors: "+moduleName+"]");
                         }
                         return null;
