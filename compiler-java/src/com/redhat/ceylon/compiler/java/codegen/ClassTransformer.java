@@ -72,7 +72,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
-import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBinary;
@@ -399,7 +399,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (Decl.isValueConstructor(member) ) {
                     Value val = (Value)member;
                     tail = make().If(
-                            make().Binary(JCTree.EQ, naming.makeThis(), 
+                            make().Binary(JCTree.Tag.EQ, naming.makeThis(), 
                                     naming.getValueConstructorFieldName(val).makeIdent()), 
                             make().Block(0, List.<JCStatement>of(make().Exec(make().Assign(name.makeIdent(), make().Literal(Naming.getGetterName(member)))))), 
                             tail);
@@ -836,7 +836,7 @@ public class ClassTransformer extends AbstractTransformer {
                             array.makeIdent(), 
                             make().Exec(make().Assign(
                                     make().Indexed(sb.makeIdent(), 
-                                            make().Unary(JCTree.POSTINC, index.makeIdent())), 
+                                            make().Unary(JCTree.Tag.POSTINC, index.makeIdent())), 
                                     instantiateAnnotationClass(iteratedType, element.makeIdent())))));
                     stmts.append(make().Return(
                             make().NewClass(null,
@@ -1616,24 +1616,24 @@ public class ClassTransformer extends AbstractTransformer {
             JCExpression nullOrZero;
             if (field.vartype instanceof JCPrimitiveTypeTree) {
                 switch (((JCPrimitiveTypeTree)field.vartype).typetag) {
-                case TypeTags.BYTE:
-                case TypeTags.SHORT:
-                case TypeTags.INT:
+                case BYTE:
+                case SHORT:
+                case INT:
                     nullOrZero = make().Literal(0);
                     break;
-                case TypeTags.LONG:
+                case LONG:
                     nullOrZero = make().Literal(0L);
                     break;
-                case TypeTags.FLOAT:
+                case FLOAT:
                     nullOrZero = make().Literal(0.0f);
                     break;
-                case TypeTags.DOUBLE:
+                case DOUBLE:
                     nullOrZero = make().Literal(0.0);
                     break;
-                case TypeTags.BOOLEAN:
+                case BOOLEAN:
                     nullOrZero = make().Literal(false);
                     break;
-                case TypeTags.CHAR:
+                case CHAR:
                     nullOrZero = make().Literal('\0');
                     break;
                 default:
@@ -1820,9 +1820,9 @@ public class ClassTransformer extends AbstractTransformer {
                     // code can just call something common
                     JCExpression test;
                     if (CodegenUtil.needsLateInitField((Value)member, typeFact())) {
-                        test = make().Unary(JCTree.NOT, naming.makeUnquotedIdent(Naming.getInitializationFieldName(member.getName())));
+                        test = make().Unary(JCTree.Tag.NOT, naming.makeUnquotedIdent(Naming.getInitializationFieldName(member.getName())));
                     } else {
-                        test = make().Binary(JCTree.EQ, naming.makeQualifiedName(naming.makeThis(), (Value)member, Naming.NA_IDENT), makeNull());
+                        test = make().Binary(JCTree.Tag.EQ, naming.makeQualifiedName(naming.makeThis(), (Value)member, Naming.NA_IDENT), makeNull());
                     }
                     caseStmts.add(make().If(
                             test,
@@ -2000,7 +2000,7 @@ public class ClassTransformer extends AbstractTransformer {
                 swtch,
                 make().Throw(make().NewClass(null, null,
                         make().Type(syms().ceylonAssertionErrorType),
-                        List.<JCExpression>of(make().Binary(JCTree.PLUS,
+                        List.<JCExpression>of(make().Binary(JCTree.Tag.PLUS,
                                 make().Literal("unexpected reachable reference "), reference.makeIdent())),
                         null))));
     
@@ -4113,7 +4113,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (initializingParameter == null) {
                 // If the field isn't initialized by a parameter we have to 
                 // cope with the possibility that it's never initialized
-                final JCBinary cond = make().Binary(JCTree.EQ, makeUnquotedIdent(fieldName), makeNull());
+                final JCBinary cond = make().Binary(JCTree.Tag.EQ, makeUnquotedIdent(fieldName), makeNull());
                 final JCStatement throw_ = make().Throw(make().NewClass(null, null, 
                         makeIdent(syms().ceylonUninitializedMethodErrorType), 
                         List.<JCExpression>nil(), 
@@ -5328,7 +5328,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
                 
-                stmts.add(make().If(make().Binary(JCTree.EQ,
+                stmts.add(make().If(make().Binary(JCTree.Tag.EQ,
                         naming.makeUnquotedIdent(Naming.quoteFieldName(name)),
                         makeNull()), make().Exec(make().Assign(
                                 naming.makeUnquotedIdent(Naming.quoteFieldName(name)),

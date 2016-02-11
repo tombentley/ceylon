@@ -698,7 +698,7 @@ public class CallableBuilder {
             if(param.isDefaulted() || param.isSequenced()){
                 if(arity > CALLABLE_MAX_FIZED_ARITY){
                     // must check if it's defined
-                    JCExpression test = gen.make().Binary(JCTree.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
+                    JCExpression test = gen.make().Binary(JCTree.Tag.GT, gen.makeSelect(getParamName(0), "length"), gen.makeInteger(a));
                     JCExpression elseBranch = makeDefaultValueCall(param, a);
                     varInitialExpression = gen.make().Conditional(test, paramExpression, elseBranch);
                 }else if(a >= arity && Strategy.hasDefaultParameterValueMethod(param)){
@@ -1205,7 +1205,7 @@ public class CallableBuilder {
                         List.<JCExpression>of(
                                 gen.makeReifiedTypeArgument(getVariadicIteratedType()),
                                 gen.make().Literal(numParams-1),
-                                gen.make().Binary(JCTree.MINUS, gen.naming.makeQualIdent(makeParamIdent(gen,  0), "length"), gen.make().Literal(numParams-1)),
+                                gen.make().Binary(JCTree.Tag.MINUS, gen.naming.makeQualIdent(makeParamIdent(gen,  0), "length"), gen.make().Literal(numParams-1)),
                                 makeParamIdent(gen,  0),
                                 gen.makeEmpty())));
                 

@@ -481,7 +481,7 @@ public class AttributeDefinitionBuilder {
                 JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
                         owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())));
                 // rethrow the init exception if we have one
-                JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.Tag.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
                         owner.makeNull()), rethrow, null);
                 catchStmts = List.<JCTree.JCStatement>of(ifThrow, throwStmt);
             }else{
@@ -539,7 +539,7 @@ public class AttributeDefinitionBuilder {
             JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
                     owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())));
             // rethrow the init exception if we have one
-            JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+            JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.Tag.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
                     owner.makeNull()), rethrow, null);
             stmts = stmts.prepend(ifThrow);
         }
@@ -563,10 +563,10 @@ public class AttributeDefinitionBuilder {
         if(toplevel || lateWithInit){
             JCExpression ret = owner.naming.makeQualIdent(initFlagFieldOwner, Naming.getInitializationFieldName(fieldName));
             if(!positiveIfTest)
-                return owner.make().Unary(JCTree.NOT, ret);
+                return owner.make().Unary(JCTree.Tag.NOT, ret);
             return ret;
         }else
-            return owner.make().Binary(positiveIfTest ? JCTree.NE : JCTree.EQ, 
+            return owner.make().Binary(positiveIfTest ? JCTree.Tag.NE : JCTree.Tag.EQ, 
                                        owner.naming.makeQualIdent(initFlagFieldOwner, fieldName), owner.makeNull());
     }
 

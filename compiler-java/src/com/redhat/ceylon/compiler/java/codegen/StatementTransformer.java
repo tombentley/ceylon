@@ -52,8 +52,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
-import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
-import com.redhat.ceylon.langtools.tools.javac.main.OptionName;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAssign;
@@ -130,11 +130,11 @@ public class StatementTransformer extends AbstractTransformer {
     private StatementTransformer(Context context) {
         super(context);
         Options options = context.get(Options.optionsKey);
-        if (options.isSet(OptionName.CEYLONDISABLEOPT)) {
+        if (options.isSet(Option.CEYLONDISABLEOPT)) {
             disabledOptimizations = EnumSet.allOf(Optimization.class);
-        } else if (options.isSet(OptionName.CEYLONDISABLEOPT_CUSTOM)) {
+        } else if (options.isSet(Option.CEYLONDISABLEOPT_CUSTOM)) {
             disabledOptimizations = new HashSet<Optimization>();
-            for (String name : options.get(OptionName.CEYLONDISABLEOPT_CUSTOM).split(",")) {
+            for (String name : options.get(Option.CEYLONDISABLEOPT_CUSTOM).split(",")) {
                 disabledOptimizations.add(Optimization.valueOf(name));
             }
         } else {
@@ -902,7 +902,7 @@ public class StatementTransformer extends AbstractTransformer {
             JCThrow throw_ = makeThrowAssertionException(message);
             if (isMulti()) {
                 result.append(make().If(
-                        make().Binary(JCTree.NE, messageSb.makeIdent(), makeNull()), 
+                        make().Binary(JCTree.Tag.NE, messageSb.makeIdent(), makeNull()), 
                         throw_, null));
             }
             return result.toList();
@@ -1299,7 +1299,7 @@ public class StatementTransformer extends AbstractTransformer {
                     // the variable (which can be more precise)
                     cond.getType().getTypeModel(), expressionType);
             if (negate) {
-                expr = make().Unary(JCTree.NOT, expr);
+                expr = make().Unary(JCTree.Tag.NOT, expr);
             }
             return expr;
         }
@@ -1325,9 +1325,9 @@ public class StatementTransformer extends AbstractTransformer {
             // Assign the expression to test to the temporary variable
             expr = make().Assign(var.getTestVariableName().makeIdent(), expr);
             // Test on the tmpVar in the following condition
-            expr = make().Binary(JCTree.NE, expr, makeNull());
+            expr = make().Binary(JCTree.Tag.NE, expr, makeNull());
             if (negate) {
-                expr = make().Unary(JCTree.NOT, expr);
+                expr = make().Unary(JCTree.Tag.NOT, expr);
             }
             return expr;
         }
@@ -1349,7 +1349,7 @@ public class StatementTransformer extends AbstractTransformer {
             // Test on the tmpVar in the following condition
             expr = makeNonEmptyTest(expr);
             if (negate) {
-                expr = make().Unary(JCTree.NOT, expr);
+                expr = make().Unary(JCTree.Tag.NOT, expr);
             }
             return expr;
         }
@@ -1685,7 +1685,7 @@ public class StatementTransformer extends AbstractTransformer {
                 elemNameExpr = unboxType(elemNameExpr, charType);
             }
             transformedBlock = transformedBlock.prepend(make().Exec(
-                    make().Assignop(JCTree.PLUS_ASG, indexName.makeIdent(), 
+                    make().Assignop(JCTree.Tag.PLUS_ASG, indexName.makeIdent(), 
                         make().Apply(null, 
                                 naming.makeQualIdent(make().Type(syms().characterObjectType), "charCount"), 
                                 List.<JCExpression>of(elemNameExpr)))));
@@ -1707,7 +1707,7 @@ public class StatementTransformer extends AbstractTransformer {
             
             JCForLoop loop = make().ForLoop(
                     List.<JCStatement>of(makeVar(indexName, make().Type(syms().intType), make().Literal(0))), 
-                    make().Binary(JCTree.LT, indexName.makeIdent(), lengthName.makeIdent()), 
+                    make().Binary(JCTree.Tag.LT, indexName.makeIdent(), lengthName.makeIdent()), 
                     List.<JCExpressionStatement>nil(), 
                     block);
             stmts.add(make().Labelled(this.label, loop));
@@ -1874,7 +1874,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected JCBinary stepCheck(final SyntheticName stepName) {
-            return make().Binary(JCTree.LE, stepName.makeIdent(), make().Literal(0));
+            return make().Binary(JCTree.Tag.LE, stepName.makeIdent(), make().Literal(0));
         }
 
         protected JCExpression makeIndexType() {
@@ -1891,14 +1891,14 @@ public class StatementTransformer extends AbstractTransformer {
         
         protected JCExpression makeIncrement(SyntheticName stepName) {
             if (stepName == null) {
-                return make().Unary(JCTree.POSTINC, indexName.makeIdent());
+                return make().Unary(JCTree.Tag.POSTINC, indexName.makeIdent());
             } else {
-                return make().Assignop(JCTree.PLUS_ASG, indexName.makeIdent(), stepName.makeIdent());
+                return make().Assignop(JCTree.Tag.PLUS_ASG, indexName.makeIdent(), stepName.makeIdent());
             }
         }
         
         protected JCExpression makeCondition() {
-            return make().Binary(JCTree.LT, indexName.makeIdent(), lengthName.makeIdent());
+            return make().Binary(JCTree.Tag.LT, indexName.makeIdent(), lengthName.makeIdent());
         }
         
         protected abstract JCExpression makeIndexableType();
@@ -1960,7 +1960,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         protected JCExpression makeCondition() {
-            return make().Binary(JCTree.LT, indexName.makeIdent(), lengthName.makeIdent());
+            return make().Binary(JCTree.Tag.LT, indexName.makeIdent(), lengthName.makeIdent());
         }
         
         @Override
@@ -2066,7 +2066,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         protected JCExpression makeCondition() {
             JCExpression lengthExpr = naming.makeQualIdent(indexableName.makeIdent(), "length");
-            return make().Binary(JCTree.LT, indexName.makeIdent(), lengthExpr);
+            return make().Binary(JCTree.Tag.LT, indexName.makeIdent(), lengthExpr);
         }
         
         @Override
@@ -2300,8 +2300,8 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCBinary stepCheck(final SyntheticName stepName) {
-            return make().Binary(JCTree.AND, 
-                    make().Binary(JCTree.GT, lengthName.makeIdent(), make().Literal(0)),
+            return make().Binary(JCTree.Tag.AND, 
+                    make().Binary(JCTree.Tag.GT, lengthName.makeIdent(), make().Literal(0)),
                     super.stepCheck(stepName));
         }
         
@@ -2327,10 +2327,10 @@ public class StatementTransformer extends AbstractTransformer {
         protected JCExpression makeIndexedAccess() {
             if (elementType.isExactly(typeFact().getIntegerType())) {
                 if (step == null) {
-                    return make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent());
+                    return make().Binary(JCTree.Tag.PLUS, indexName.makeIdent(), indexableName.makeIdent());
                 } else{ 
-                    return make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
-                            make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent()),
+                    return make().Conditional(make().Binary(JCTree.Tag.EQ, stepName.makeIdent(), make().Literal(1L)),
+                            make().Binary(JCTree.Tag.PLUS, indexName.makeIdent(), indexableName.makeIdent()),
                             make().Apply(null,
                                 naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
                                 List.<JCExpression>of(
@@ -2343,11 +2343,11 @@ public class StatementTransformer extends AbstractTransformer {
                             List.<JCExpression>of(
                                     indexableName.makeIdent(), indexName.makeIdent()));
                 } else {
-                    return make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
+                    return make().Conditional(make().Binary(JCTree.Tag.EQ, stepName.makeIdent(), make().Literal(1L)),
                             make().Apply(null,
                                     naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "codepoint"),
                                     List.<JCExpression>of(
-                            make().Binary(JCTree.PLUS, indexName.makeIdent(), indexableName.makeIdent()))),
+                            make().Binary(JCTree.Tag.PLUS, indexName.makeIdent(), indexableName.makeIdent()))),
                             make().Apply(null,
                                 naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
                                 List.<JCExpression>of(
@@ -2379,11 +2379,11 @@ public class StatementTransformer extends AbstractTransformer {
         
         protected JCExpression makeIncrement(SyntheticName stepName) {
             if (stepName == null) {
-                return make().Unary(JCTree.POSTINC, indexName.makeIdent());
+                return make().Unary(JCTree.Tag.POSTINC, indexName.makeIdent());
             } else {
                 return make().Assign(indexName.makeIdent(),
-                        make().Conditional(make().Binary(JCTree.EQ, stepName.makeIdent(), make().Literal(1L)),
-                                make().Binary(JCTree.PLUS, indexName.makeIdent(), make().Literal(1L)),
+                        make().Conditional(make().Binary(JCTree.Tag.EQ, stepName.makeIdent(), make().Literal(1L)),
+                                make().Binary(JCTree.Tag.PLUS, indexName.makeIdent(), make().Literal(1L)),
                             make().Apply(null,
                                     naming.makeSelect(make().Type(syms().ceylonIntegerType), "neighbour"),
                                     List.<JCExpression>of(
@@ -2493,7 +2493,7 @@ public class StatementTransformer extends AbstractTransformer {
 
                 if (needsFailVar()) {
                     // boolean $doforelse$X = true;
-                    JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), failVar, make().TypeIdent(TypeTags.BOOLEAN), make().Literal(TypeTags.BOOLEAN, 1));
+                    JCVariableDecl failtest_decl = make().VarDef(make().Modifiers(0), failVar, make().TypeIdent(TypeTag.BOOLEAN), make().Literal(TypeTag.BOOLEAN, 1));
                     outer.append(failtest_decl);
                     currentForFailVariable = failtest_decl.getName();
                 } else {
@@ -2649,10 +2649,10 @@ public class StatementTransformer extends AbstractTransformer {
         if (optForTuple) {
             result.append(makeVar(FINAL, isTupleName, 
                     make().Type(syms().booleanType), 
-                    make().Binary(JCTree.AND, 
+                    make().Binary(JCTree.Tag.AND, 
                             make().TypeTest(iterableName.makeIdent(), 
                                     make().QualIdent(syms().ceylonTupleType.tsym)),
-                            make().Binary(JCTree.NE, 
+                            make().Binary(JCTree.Tag.NE, 
                                     make().Apply(null, 
                                             naming.makeQualIdent(
                                                     make().TypeCast(make().QualIdent(syms().ceylonTupleType.tsym), iterableName.makeIdent()),
@@ -2694,7 +2694,7 @@ public class StatementTransformer extends AbstractTransformer {
             
         	JCExpression cond;
         	if(optForArray && optForTuple)
-        		cond = make().Binary(JCTree.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
+        		cond = make().Binary(JCTree.Tag.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
         	else if(optForArray)
         		cond = isArrayName.makeIdent();
         	else
@@ -2704,7 +2704,7 @@ public class StatementTransformer extends AbstractTransformer {
                         make().Block(0, whenIterable.toList())));
             
             getIter = make().Conditional(
-                    optForArray && optForTuple ? make().Binary(JCTree.OR, isTupleName.makeIdent(), isArrayName.makeIdent()): optForArray ? isArrayName.makeIdent() : isTupleName.makeIdent(), 
+                    optForArray && optForTuple ? make().Binary(JCTree.Tag.OR, isTupleName.makeIdent(), isArrayName.makeIdent()): optForArray ? isArrayName.makeIdent() : isTupleName.makeIdent(), 
                     makeNull(), 
                     make().Apply(null, makeSelect(iterableName.makeIdent(), "iterator"), List.<JCExpression> nil()));
         } else {
@@ -2720,7 +2720,7 @@ public class StatementTransformer extends AbstractTransformer {
         if(optForArray || optForTuple) {
         	JCExpression cond;
         	if(optForArray && optForTuple)
-        		cond = make().Binary(JCTree.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
+        		cond = make().Binary(JCTree.Tag.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
         	else if(optForArray)
         		cond = isArrayName.makeIdent();
         	else
@@ -2729,7 +2729,7 @@ public class StatementTransformer extends AbstractTransformer {
         						make().Exec(make().Assign(iterationVarName.makeIdent(),
         								make().Apply(null,
         										naming.makeQualIdent(iterableName.makeIdent(), "getFromFirst"),
-        										List.<JCExpression>of(make().Unary(JCTree.POSTINC, arrayIndex.makeIdent()))))),
+        										List.<JCExpression>of(make().Unary(JCTree.Tag.POSTINC, arrayIndex.makeIdent()))))),
                     				null));
         }
         
@@ -2745,19 +2745,19 @@ public class StatementTransformer extends AbstractTransformer {
         JCExpression elem_assign = make().Assign(iterationVarName.makeIdent(), iter_elem);
         // !((ELEM_NAME = LOOP_VAR_NAME$iter$X.next()) instanceof Finished)
         JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
-        JCExpression loopCond = make().Unary(JCTree.NOT, instof);
+        JCExpression loopCond = make().Unary(JCTree.Tag.NOT, instof);
         if (optForArray || optForTuple) {
             JCExpression cond;
             if (optForArray && optForTuple) {
-                cond = make().Binary(JCTree.OR, isTupleName.makeIdent(), isArrayName.makeIdent());
+                cond = make().Binary(JCTree.Tag.OR, isTupleName.makeIdent(), isArrayName.makeIdent());
             } else if (optForArray) {
                 cond = isArrayName.makeIdent();
             } else {
                 cond = isTupleName.makeIdent();
             }
             loopCond = make().Conditional(cond,
-                    make().Binary(JCTree.LT, arrayIndex.makeIdent(), arrayLength.makeIdent()), 
-                    make().Unary(JCTree.NOT, instof));
+                    make().Binary(JCTree.Tag.LT, arrayIndex.makeIdent(), arrayLength.makeIdent()), 
+                    make().Unary(JCTree.Tag.NOT, instof));
         }
         
         // while (!(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
@@ -2834,17 +2834,17 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (isIntegerSpan()) {
                 this.pt = typeFact().getIntegerType();
             } else {
-                throw new BugException(range, "unhandled Range type: " + type.tag); 
+                throw new BugException(range, "unhandled Range type: " + type.getTag()); 
             }
             varname = naming.alias(getVariable().getIdentifier().getText());
         }
         
         protected final boolean isIntegerSpan() {
-            return type.tag == syms().longType.tag;
+            return type.getTag() == syms().longType.getTag();
         }
         
         protected final boolean isCharacterSpan() {
-            return type.tag == syms().intType.tag;
+            return type.getTag() == syms().intType.getTag();
         }
         
         protected Tree.Variable getVariable() {
@@ -2938,8 +2938,8 @@ public class StatementTransformer extends AbstractTransformer {
                  */
                 at(span);
                 result.append(makeVar(naming.temp(), make().Type(syms().booleanType), 
-                    make().Binary(JCTree.AND,
-                        make().Binary(JCTree.GT,
+                    make().Binary(JCTree.Tag.AND,
+                        make().Binary(JCTree.Tag.GT,
                             make().Apply(null,
                                 naming.makeQualIdent(make().QualIdent(syms().ceylonCharacterType.tsym), "offsetSign"),
                                 List.<JCExpression>of(
@@ -2948,7 +2948,7 @@ public class StatementTransformer extends AbstractTransformer {
                                         naming.makeQualIdent(make().QualIdent(syms().ceylonCharacterType.tsym), "getSuccessor"),
                                             List.<JCExpression>of(firstName.makeIdent())))),
                             make().Literal(0L)),
-                        make().Binary(JCTree.GT,
+                        make().Binary(JCTree.Tag.GT,
                             make().Apply(null,
                                 naming.makeQualIdent(make().QualIdent(syms().ceylonCharacterType.tsym), "offsetSign"),
                                 List.<JCExpression>of(
@@ -2977,7 +2977,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         /** The initial value of the {@code boolean $increasing} variable */
         protected JCExpression makeIncreasingExpr() {
-            JCBinary incrExpr = at(span).Binary(JCTree.GE, make().Apply(null,
+            JCBinary incrExpr = at(span).Binary(JCTree.Tag.GE, make().Apply(null,
                     naming.makeSelect(makeType(true), "offset"),
                     List.<JCExpression>of(lastName.makeIdent(), firstName.makeIdent())),
                     make().Literal(0));
@@ -2992,7 +2992,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (isIntegerSpan()) {
                 return make().Literal(1L);
             } else {
-                return makeErroneous(span, "unhandled Span type: " + type.tag);
+                return makeErroneous(span, "unhandled Span type: " + type.getTag());
             }
         }
         
@@ -3004,7 +3004,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (isIntegerSpan()) {
                 return make().Literal(-1L);
             } else {
-                return makeErroneous(span, "unhandled Span type: " + type.tag);
+                return makeErroneous(span, "unhandled Span type: " + type.getTag());
             }
         }
         
@@ -3047,7 +3047,7 @@ public class StatementTransformer extends AbstractTransformer {
                         naming.makeSelect(makeType(true), "neighbour"),
                         List.<JCExpression>of(elementName.makeIdent(), incrementName.makeIdent())));
             } else {
-                stepExpr = at(span).Assignop(JCTree.PLUS_ASG, elementName.makeIdent(), incrementName.makeIdent());
+                stepExpr = at(span).Assignop(JCTree.Tag.PLUS_ASG, elementName.makeIdent(), incrementName.makeIdent());
             }
             return stepExpr;
         }
@@ -3060,8 +3060,8 @@ public class StatementTransformer extends AbstractTransformer {
         /** The expression used for the condition on the {@code while} loop */
         protected JCExpression makeLoopCondition(SyntheticName varname) {
             JCExpression cond = at(span).Conditional(increasingName.makeIdent(),
-                        make().Binary(JCTree.NE, make().Binary(JCTree.MINUS, varname.makeIdent(), lastName.makeIdent()), makeZero()), 
-                        make().Binary(JCTree.NE, make().Binary(JCTree.MINUS, varname.makeIdent(), lastName.makeIdent()), makeZero()));
+                        make().Binary(JCTree.Tag.NE, make().Binary(JCTree.Tag.MINUS, varname.makeIdent(), lastName.makeIdent()), makeZero()), 
+                        make().Binary(JCTree.Tag.NE, make().Binary(JCTree.Tag.MINUS, varname.makeIdent(), lastName.makeIdent()), makeZero()));
             return cond;
         }
         
@@ -3071,7 +3071,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (isIntegerSpan()) {
                 return make().Literal(0L);
             } else {
-                return makeErroneous(span, "unhandled Range type: " + type.tag);
+                return makeErroneous(span, "unhandled Range type: " + type.getTag());
             }
         }
     }
@@ -3103,7 +3103,7 @@ public class StatementTransformer extends AbstractTransformer {
                     expressionGen().transformExpression(step, BoxingStrategy.UNBOXED, getType())));
             // if ($step <= 0) throw Exception("step size must be greater than zero");
             result.append(at(step).If(
-                    make().Binary(JCTree.LE, stepName.makeIdent(), make().Literal(0)),
+                    make().Binary(JCTree.Tag.LE, stepName.makeIdent(), make().Literal(0)),
                     makeThrowAssertionException(
                             new AssertionExceptionMessageBuilder(null)
                                 .appendViolatedCondition("step > 0")
@@ -3127,9 +3127,9 @@ public class StatementTransformer extends AbstractTransformer {
             // if ($f && step == 1) n=neighbour($i, $step);
             blockStatements = blockStatements.prepend(
                 make().If(
-                    make().Binary(JCTree.AND, 
+                    make().Binary(JCTree.Tag.AND, 
                         fName.makeIdent(), 
-                        make().Binary(JCTree.EQ, 
+                        make().Binary(JCTree.Tag.EQ, 
                             stepName.makeIdent(), 
                             make().Literal(1L))),
                     make().Exec(makeIncrementElement()), 
@@ -3139,7 +3139,7 @@ public class StatementTransformer extends AbstractTransformer {
                 // if (step != 1) $n=neighbour($i, $step)
                 blockStatements = blockStatements.append(
                     make().If(
-                        make().Binary(JCTree.NE, 
+                        make().Binary(JCTree.Tag.NE, 
                             stepName.makeIdent(), 
                             make().Literal(1L)),
                         make().Exec(makeIncrementElement()), null));
@@ -3153,7 +3153,7 @@ public class StatementTransformer extends AbstractTransformer {
                 List<JCStatement> blockStatements) {
                 // loop condition is on varname if step == 1 otherwise on n 
             return make().DoLoop(make().Block(0, blockStatements),
-            make().Conditional(make().Binary(JCTree.EQ, 
+            make().Conditional(make().Binary(JCTree.Tag.EQ, 
                         stepName.makeIdent(), 
                         make().Literal(1L)),
             makeLoopCondition(varname), makeLoopCondition(elementName)));
@@ -3174,7 +3174,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected JCExpression makeIncreasingExpr() {
             return unitStep(stepName, 
                     super.makeIncreasingExpr(), 
-                    at(span).Binary(JCTree.GE, 
+                    at(span).Binary(JCTree.Tag.GE, 
                             make().Apply(null,
                                     naming.makeSelect(makeType(true), "offsetSign"),
                                     List.<JCExpression>of(lastName.makeIdent(), firstName.makeIdent())),
@@ -3185,7 +3185,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (by == null) {
                 return withoutBy;
             } else {
-                return make().Conditional(make().Binary(JCTree.EQ, by.makeIdent(), make().Literal(1)),
+                return make().Conditional(make().Binary(JCTree.Tag.EQ, by.makeIdent(), make().Literal(1)),
                         withoutBy, withBy);
             }
         }
@@ -3199,29 +3199,29 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected JCExpression makeDecreasingIncrement() {
             // long incr = increasing ? by : -by;
-            return make().Unary(JCTree.NEG, stepName.makeIdent());
+            return make().Unary(JCTree.Tag.NEG, stepName.makeIdent());
         }
         
         @Override
         protected JCExpression makeLoopCondition(SyntheticName varname) {
             JCExpression cond = unitStep(stepName, super.makeLoopCondition(varname),
                     at(span).Conditional(increasingName.makeIdent(),
-                        make().Binary(JCTree.AND, 
-                            make().Binary(JCTree.LE, make().Apply(null,
+                        make().Binary(JCTree.Tag.AND, 
+                            make().Binary(JCTree.Tag.LE, make().Apply(null,
                                     naming.makeSelect(makeType(true), "offsetSign"),
                                     List.<JCExpression>of(varname.makeIdent(), lastName.makeIdent())), 
                                     makeZero()),
-                            make().Binary(JCTree.GE, make().Apply(null,
+                            make().Binary(JCTree.Tag.GE, make().Apply(null,
                                     naming.makeSelect(makeType(true), "offsetSign"),
                                     List.<JCExpression>of(varname.makeIdent(), firstName.makeIdent())), 
                                     makeZero())
                         ),
-                        make().Binary(JCTree.AND, 
-                                make().Binary(JCTree.GE, make().Apply(null,
+                        make().Binary(JCTree.Tag.AND, 
+                                make().Binary(JCTree.Tag.GE, make().Apply(null,
                                         naming.makeSelect(makeType(true), "offsetSign"),
                                         List.<JCExpression>of(varname.makeIdent(), lastName.makeIdent())), 
                                         makeZero()),
-                                make().Binary(JCTree.LE, make().Apply(null,
+                                make().Binary(JCTree.Tag.LE, make().Apply(null,
                                         naming.makeSelect(makeType(true), "offsetSign"),
                                         List.<JCExpression>of(varname.makeIdent(), firstName.makeIdent())), 
                                         makeZero())
@@ -3507,7 +3507,7 @@ public class StatementTransformer extends AbstractTransformer {
         
             if (currentForFailVariable != null) {
                 JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
-                List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, make().Literal(TypeTags.BOOLEAN, 0))));
+                List<JCStatement> list = List.<JCStatement> of(at(stmt).Exec(at(stmt).Assign(failtest_id, make().Literal(TypeTag.BOOLEAN, 0))));
                 list = list.append(brk);
                 return list;
             } else {
@@ -3772,7 +3772,7 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression closeCall2 = resourceTx.makeRecover(resVar1, exarg);
                 
                 // if ($tmpex != null) { ... } else { ... }
-                JCBinary closeCatchCond = make().Binary(JCTree.NE, makeUnquotedIdent(innerExTmpVarName), makeNull());
+                JCBinary closeCatchCond = make().Binary(JCTree.Tag.NE, makeUnquotedIdent(innerExTmpVarName), makeNull());
                 JCIf closeCatchIf = make().If(closeCatchCond, closeTry, make().Exec(closeCall2));
     
                 // try { .... } catch (Exception ex) { $tmpex=ex; throw ex; }
@@ -4315,7 +4315,7 @@ public class StatementTransformer extends AbstractTransformer {
             for (Tree.CaseClause caseClause : getCaseClauses(switchClause, caseList)) {
                 Tree.Term term = getSingletonNullCase(caseClause);
                 if (term != null) {
-                    ifElse  = make().If(make().Binary(JCTree.EQ, ident, makeNull()),
+                    ifElse  = make().If(make().Binary(JCTree.Tag.EQ, ident, makeNull()),
                             transformCaseClauseBlock(caseClause, tmpVar, outerExpression, expectedType), 
                             make().Block(0, List.<JCStatement>of(switch_)));
                     break;
@@ -4558,7 +4558,7 @@ public class StatementTransformer extends AbstractTransformer {
                         test = make().Apply(null, 
                                 makeSelect(unboxType(selectorAlias.makeIdent(), term.getTypeModel()), "equals"), List.<JCExpression>of(transformedExpression));
                     } else {
-                        test = make().Binary(JCTree.EQ, 
+                        test = make().Binary(JCTree.Tag.EQ, 
                                 primitiveSelector ? selectorAlias.makeIdent() : unboxType(selectorAlias.makeIdent(), term.getTypeModel()), 
                                 transformedExpression);
                     }
@@ -4566,7 +4566,7 @@ public class StatementTransformer extends AbstractTransformer {
                     test = make().Apply(null, makeSelect(selectorAlias.makeIdent(), "equals"), List.<JCExpression>of(transformedExpression));
                 }
                 if (isOptional(switchType)) {
-                    test = make().Binary(JCTree.AND, make().Binary(JCTree.NE, selectorAlias.makeIdent(), makeNull()), test);
+                    test = make().Binary(JCTree.Tag.AND, make().Binary(JCTree.Tag.NE, selectorAlias.makeIdent(), makeNull()), test);
                 }
             } else {
                 JCExpression selectorExpr;
@@ -4575,15 +4575,15 @@ public class StatementTransformer extends AbstractTransformer {
                 } else {
                     selectorExpr = selectorAlias.makeIdent();
                 }
-                test = make().Binary(JCTree.EQ, selectorExpr, transformedExpression);
+                test = make().Binary(JCTree.Tag.EQ, selectorExpr, transformedExpression);
             }
             if(tests == null)
                 tests = test;
             else if (isNull(term.getTypeModel())) {
                 // ensure we do any null check as the first operation in the ||-ed expression
-                tests = make().Binary(JCTree.OR, test, tests);
+                tests = make().Binary(JCTree.Tag.OR, test, tests);
             } else {
-                tests = make().Binary(JCTree.OR, tests, test);
+                tests = make().Binary(JCTree.Tag.OR, tests, test);
             }
         }
         

@@ -53,7 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
-import com.redhat.ceylon.langtools.tools.javac.code.TypeTags;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
@@ -814,7 +814,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if ((flags & EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK) == 0) {
                 if(ret instanceof JCTree.JCUnary){
                     JCTree.JCUnary unary = (JCTree.JCUnary)ret;
-                    if(unary.getTag() == JCTree.NEG
+                    if(unary.getTag() == JCTree.Tag.NEG
                             && unary.arg instanceof JCTree.JCLiteral){
                         Object value = ((JCTree.JCLiteral)unary.arg).value;
                         if(value instanceof Integer){
@@ -1081,7 +1081,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.CharLiteral lit) {
-        return make().Literal(TypeTags.INT, literalValue(lit));
+        return make().Literal(TypeTag.INT, literalValue(lit));
     }
 
     public JCExpression transform(Tree.FloatLiteral lit) {
@@ -1758,7 +1758,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.NotOp op) {
         // No need for an erasure cast since Term must be Boolean and we never need to erase that
         JCExpression term = transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), null);
-        JCUnary jcu = at(op).Unary(JCTree.NOT, term);
+        JCUnary jcu = at(op).Unary(JCTree.Tag.NOT, term);
         return jcu;
     }
 

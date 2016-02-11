@@ -24,7 +24,7 @@ import static com.redhat.ceylon.langtools.tools.javac.code.Flags.ABSTRACT;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.FINAL;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PUBLIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.STATIC;
-import static com.redhat.ceylon.langtools.tools.javac.code.TypeTags.VOID;
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.VOID;
 
 import java.util.Collections;
 
@@ -609,7 +609,7 @@ public class MethodDefinitionBuilder
         int i = 0;
         for (ParameterDefinitionBuilder param : params) {
             sb.append(param);
-            if (i < params.count -1) {
+            if (i < params.size() -1) {
                 sb.append(',');
             }
         }

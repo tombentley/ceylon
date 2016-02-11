@@ -299,7 +299,7 @@ public class CeylonVisitor extends Visitor {
             // lazy
             adb.initialValue(gen.makeNull());
             List<JCStatement> l = List.<JCStatement>of(
-            gen.make().If(gen.make().Binary(JCTree.EQ, field.makeIdent(), gen.makeNull()),
+            gen.make().If(gen.make().Binary(JCTree.Tag.EQ, field.makeIdent(), gen.makeNull()),
                     gen.make().Exec(gen.make().Assign(field.makeIdent(),
                             gen.make().NewClass(null, null, 
                                     gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
