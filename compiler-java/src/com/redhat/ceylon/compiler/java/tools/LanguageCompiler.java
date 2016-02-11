@@ -82,6 +82,7 @@ import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
 import com.redhat.ceylon.langtools.tools.javac.comp.AttrContext;
+import com.redhat.ceylon.langtools.tools.javac.comp.CompileStates.CompileState;
 import com.redhat.ceylon.langtools.tools.javac.comp.Env;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.langtools.tools.javac.jvm.ClassWriter;
@@ -761,6 +762,9 @@ public class LanguageCompiler extends JavaCompiler {
 
     @Override
     protected boolean shouldStop(CompileState cs) {
+        CompileState shouldStopPolicy = (errorCount() > 0 || unrecoverableError())
+                ? shouldStopPolicyIfError
+                : shouldStopPolicyIfNoError;
         // we override this to make sure we don't stop because of errors, because we want to generate
         // code for classes with no errors
         boolean result;
