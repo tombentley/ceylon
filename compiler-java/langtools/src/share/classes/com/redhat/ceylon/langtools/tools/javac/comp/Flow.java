@@ -199,6 +199,8 @@ public class Flow {
     private final boolean allowEffectivelyFinalInInnerClasses;
     private final boolean enforceThisDotInit;
 
+    private SourceLanguage sourceLanguage;
+
     public static Flow instance(Context context) {
         Flow instance = context.get(flowKey);
         if (instance == null)
@@ -839,6 +841,9 @@ public class Flow {
          *  is caught.
          */
         void markThrown(JCTree tree, Type exc) {
+            if (sourceLanguage.isCeylon()) {
+                return;
+            }
             if (!chk.isUnchecked(tree.pos(), exc)) {
                 if (!chk.isHandled(exc, caught)) {
                     pendingExits.append(new FlowPendingExit(tree, exc));
@@ -1503,6 +1508,10 @@ public class Flow {
                    classDef.sym.isEnclosedBy((ClassSymbol)sym.owner));
         }
 
+        protected boolean ceylonNoInitCheck(VarSymbol sym) {
+            return sourceLanguage.isCeylon() && sym.attribute(syms.ceylonAtNoInitCheckType.tsym) != null;
+        }
+        
         boolean isFinalUninitializedStaticField(VarSymbol sym) {
             return isFinalUninitializedField(sym) && sym.isStatic();
         }

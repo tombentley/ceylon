@@ -96,6 +96,8 @@ public class Attr extends JCTree.Visitor {
     final DeferredLintHandler deferredLintHandler;
     final TypeEnvs typeEnvs;
 
+    private SourceLanguage sourceLanguage;
+
     public static Attr instance(Context context) {
         Attr instance = context.get(attrKey);
         if (instance == null)

@@ -100,6 +100,9 @@ public class Resolve {
     private final boolean debugResolve;
     private final boolean compactMethodDiags;
     final EnumSet<VerboseResolutionMode> verboseResolutionMode;
+    
+    private final AbstractModelLoader modelLoader;
+    private final SourceLanguage sourceLanguage;
 
     Scope polymorphicSignatureScope;
 
@@ -1923,14 +1926,14 @@ public class Resolve {
                         && !nameString.equals("java.lang.Override")){
                     // Check if the class is accessible according to Ceylon's access rules
                     String scopePackageName = pkgSymbol(env.info.scope.owner).toString();
-                    Package scopePackage = modelLoader.findPackage(scopePackageName);
+                    com.redhat.ceylon.model.typechecker.model.Package scopePackage = modelLoader.findPackage(scopePackageName);
                     // Don't check if we failed to find it
                     if(scopePackage != null){
                         Module scopeModule = scopePackage.getModule();
                         // Ugly special case where we skip the test when we're compiling the language module itself
                         if (scopeModule != modelLoader.getLanguageModule()) {
                             String importedPackageName = modelLoader.getPackageNameForQualifiedClassName(pkgName(nameString), nameString);
-                            Package importedPackage = scopeModule.getPackage(importedPackageName);
+                            com.redhat.ceylon.model.typechecker.model.Package importedPackage = scopeModule.getPackage(importedPackageName);
                             // Don't check if we failed to find it
                             if(importedPackage == null){
                                 return new ImportError(c, scopeModule);
