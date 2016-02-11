@@ -453,7 +453,39 @@ public enum Option {
             }
             return false;
         }
-    };
+    },
+    
+    // Ceylon options
+    CEYLONCWD("-cwd", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONREPO("-rep", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONSYSTEMREPO("-sysrep", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONCACHEREPO("-cacherep", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONNODEFREPOS("-nodefreps", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONUSER("-user", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONPASS("-pass", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONNOOSGI("-noosgi", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONJIGSAW("-module-info", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONOSGIPROVIDEDBUNDLES("-osgi-provided-bundles", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONNOPOM("-nopom", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONPACK200("-pack200", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONSOURCEPATH("-src", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONRESOURCEPATH("-res", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONRESOURCEROOT("-resroot", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONDISABLEOPT("-disableOptimization", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    //CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{"+optimizations()+"}", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONSUPPRESSWARNINGS("-suppress-warnings", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONOUT("-out", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONOFFLINE("-offline", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONTIMEOUT("-timeout", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONCONTINUE("-continue", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONPROGRESS("-progress", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    // Backwards-compat
+    CEYLONMAVENOVERRIDES("-maven-overrides", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONOVERRIDES("-overrides", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONDOWNGRADEDIST("-downgrade-dist", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONFLATCLASSPATH("-flat-classpath", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.STANDARD, OptionGroup.CEYLON);
 
     /** The kind of an Option. This is used by the -help and -X options. */
     public enum OptionKind {
@@ -477,7 +509,8 @@ public enum Option {
         /** A command-line option that requests information, such as -help. */
         INFO,
         /** A command-line "option" representing a file or class name. */
-        OPERAND
+        OPERAND,
+        CEYLON
     }
 
     /** The kind of choice for "choice" options. */

@@ -32,6 +32,7 @@ import com.redhat.ceylon.javax.lang.model.element.ElementVisitor;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.*;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.*;
 import com.redhat.ceylon.langtools.tools.javac.jvm.*;
+import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.*;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.*;
@@ -528,7 +529,7 @@ public class Symtab {
         functionalInterfaceType = enterClass("java.lang.FunctionalInterface");
 
         // Only load the ceylon symbols from class files if we're not boostrapping it
-        if(Options.instance(context).get(OptionName.BOOTSTRAPCEYLON) == null){
+        if(Options.instance(context).get(Option.BOOTSTRAPCEYLON) == null){
             loadCeylonSymbols();
         }
         

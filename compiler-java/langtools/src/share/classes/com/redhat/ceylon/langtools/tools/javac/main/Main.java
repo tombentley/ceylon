@@ -25,8 +25,6 @@
 
 package com.redhat.ceylon.langtools.tools.javac.main;
 
-import static com.redhat.ceylon.langtools.tools.javac.main.OptionName.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -46,7 +46,7 @@ public class Options {
         new Context.Key<Options>();
 
     private LinkedHashMap<String,String> values;
-    private LinkedHashMap<String,List<String>> multiValues;
+    private LinkedHashMap<String,java.util.List<String>> multiValues;
 
     /** Get the Options instance for this context. */
     public static Options instance(Context context) {
@@ -59,7 +59,7 @@ public class Options {
     protected Options(Context context) {
 // DEBUGGING -- Use LinkedHashMap for reproducability
         values = new LinkedHashMap<String,String>();
-        multiValues = new LinkedHashMap<String,List<String>>();
+        multiValues = new LinkedHashMap<String,java.util.List<String>>();
         context.put(optionsKey, this);
     }
 
@@ -70,7 +70,7 @@ public class Options {
         return values.get(name);
     }
 
-    public List<String> getMulti(String name) {
+    public java.util.List<String> getMulti(String name) {
         if(multiValues.containsKey(name))
             return multiValues.get(name);
         return Collections.emptyList();
@@ -83,8 +83,8 @@ public class Options {
         return values.get(option.text);
     }
 
-    public List<String> getMulti(OptionName name) {
-        return getMulti(name.optionName);
+    public java.util.List<String> getMulti(Option name) {
+        return getMulti(name.text);
     }
 
     /**
@@ -154,7 +154,7 @@ public class Options {
     }
 
     public void addMulti(String name, String value) {
-        List<String> list = multiValues.get(name);
+        java.util.List<String> list = multiValues.get(name);
         if(list == null){
             list = new LinkedList<String>();
             multiValues.put(name, list);
@@ -163,8 +163,8 @@ public class Options {
             list.add(value);
     }
 
-    public void addMulti(OptionName name, String value) {
-        addMulti(name.optionName, value);
+    public void addMulti(Option name, String value) {
+        addMulti(name.text, value);
     }
 
     public void putAll(Options options) {
