@@ -493,9 +493,6 @@ public abstract class JCTree implements Tree, Cloneable, DiagnosticPosition {
         public StarImportScope starImportScope;
         /** Line starting positions, defined only if option -g is set. */
         public Position.LineMap lineMap = null;
-        /** A table that stores all documentation comments indexed by the tree
-         * nodes they refer to. defined only if option -s is set. */
-        public DocCommentTable docComments = null;
         /* An object encapsulating ending positions of source ranges indexed by
          * the tree nodes they belong to. Defined only if option -Xjcov is set. */
         public EndPosTable endPositions = null;

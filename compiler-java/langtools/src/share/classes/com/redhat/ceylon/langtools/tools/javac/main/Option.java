@@ -36,7 +36,6 @@ import java.util.Set;
 
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 
-import com.sun.tools.doclint.DocLint;
 import com.redhat.ceylon.langtools.tools.javac.code.Lint;
 import com.redhat.ceylon.langtools.tools.javac.code.Source;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
@@ -82,24 +81,6 @@ public enum Option {
 
     XLINT_CUSTOM("-Xlint:", "opt.Xlint.suboptlist",
             EXTENDED,   BASIC, ANYOF, getXLintChoices()),
-
-    XDOCLINT("-Xdoclint", "opt.Xdoclint", EXTENDED, BASIC),
-
-    XDOCLINT_CUSTOM("-Xdoclint:", "opt.Xdoclint.subopts", "opt.Xdoclint.custom", EXTENDED, BASIC) {
-        @Override
-        public boolean matches(String option) {
-            return DocLint.isValidOption(
-                    option.replace(XDOCLINT_CUSTOM.text, DocLint.XMSGS_CUSTOM_PREFIX));
-        }
-
-        @Override
-        public boolean process(OptionHelper helper, String option) {
-            String prev = helper.get(XDOCLINT_CUSTOM);
-            String next = (prev == null) ? option : (prev + " " + option);
-            helper.put(XDOCLINT_CUSTOM.text, next);
-            return false;
-        }
-    },
 
     // -nowarn is retained for command-line backward compatibility
     NOWARN("-nowarn", "opt.nowarn", STANDARD, BASIC) {

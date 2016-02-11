@@ -364,20 +364,6 @@ public class TreeInfo {
         return false;
     }
 
-    public static String getCommentText(Env<?> env, JCTree tree) {
-        DocCommentTable docComments = (tree.hasTag(JCTree.Tag.TOPLEVEL))
-                ? ((JCCompilationUnit) tree).docComments
-                : env.toplevel.docComments;
-        return (docComments == null) ? null : docComments.getCommentText(tree);
-    }
-
-    public static DCTree.DCDocComment getCommentTree(Env<?> env, JCTree tree) {
-        DocCommentTable docComments = (tree.hasTag(JCTree.Tag.TOPLEVEL))
-                ? ((JCCompilationUnit) tree).docComments
-                : env.toplevel.docComments;
-        return (docComments == null) ? null : docComments.getCommentTree(tree);
-    }
-
     /** The position of the first statement in a block, or the position of
      *  the block itself if it is empty.
      */

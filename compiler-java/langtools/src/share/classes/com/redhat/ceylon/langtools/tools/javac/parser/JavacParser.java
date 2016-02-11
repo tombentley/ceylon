@@ -163,7 +163,7 @@ public class JavacParser implements Parser {
         this.allowTypeAnnotations = source.allowTypeAnnotations();
         this.allowAnnotationsAfterTypeParams = source.allowAnnotationsAfterTypeParams();
         this.keepDocComments = keepDocComments;
-        docComments = newDocCommentTable(keepDocComments, fac);
+        docComments = null;
         this.keepLineMap = keepLineMap;
         this.errorTree = F.Erroneous();
         endPosTable = newEndPosTable(keepEndPositions);
@@ -173,10 +173,6 @@ public class JavacParser implements Parser {
         return  keepEndPositions
                 ? new SimpleEndPosTable(this)
                 : new EmptyEndPosTable(this);
-    }
-
-    protected DocCommentTable newDocCommentTable(boolean keepDocComments, ParserFactory fac) {
-        return keepDocComments ? new LazyDocCommentTable(fac) : null;
     }
 
     /** Switch: Should generics be recognized?
