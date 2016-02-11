@@ -809,7 +809,7 @@ public class JavacFileManager extends BaseFileManager implements StandardJavaFil
         return locations.getLocation(location);
     }
 
-    private File getClassOutDir() {
+    protected File getClassOutDir() {
         return locations.getOutputLocation(CLASS_OUTPUT);
     }
 

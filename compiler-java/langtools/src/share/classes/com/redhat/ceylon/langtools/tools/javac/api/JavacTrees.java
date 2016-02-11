@@ -25,6 +25,9 @@
 
 package com.redhat.ceylon.langtools.tools.javac.api;
 
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.ARRAY;
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.CLASS;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +36,6 @@ import com.redhat.ceylon.javax.annotation.processing.ProcessingEnvironment;
 import com.redhat.ceylon.javax.lang.model.element.AnnotationMirror;
 import com.redhat.ceylon.javax.lang.model.element.AnnotationValue;
 import com.redhat.ceylon.javax.lang.model.element.Element;
-import com.redhat.ceylon.javax.lang.model.element.ElementKind;
 import com.redhat.ceylon.javax.lang.model.element.ExecutableElement;
 import com.redhat.ceylon.javax.lang.model.element.TypeElement;
 import com.redhat.ceylon.javax.lang.model.type.DeclaredType;
@@ -53,7 +55,6 @@ import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
-import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.VarSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
@@ -72,22 +73,24 @@ import com.redhat.ceylon.langtools.tools.javac.comp.Resolve;
 import com.redhat.ceylon.langtools.tools.javac.model.JavacElements;
 import com.redhat.ceylon.langtools.tools.javac.processing.JavacProcessingEnvironment;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCatch;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCClassDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeCopier;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeInfo;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
-import com.redhat.ceylon.langtools.tools.javac.util.Abort;
 import com.redhat.ceylon.langtools.tools.javac.util.Assert;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
-import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.langtools.tools.javac.util.Names;
 import com.redhat.ceylon.langtools.tools.javac.util.Pair;
-import com.redhat.ceylon.langtools.tools.javac.util.Position;
-import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.*;
 
 /**
  * Provides an implementation of Trees.

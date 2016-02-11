@@ -1185,7 +1185,7 @@ public class JavaCompiler {
         }
     }
 
-    private boolean unrecoverableError() {
+    protected boolean unrecoverableError() {
         if (deferredDiagnosticHandler != null) {
             for (JCDiagnostic d: deferredDiagnosticHandler.getDiagnostics()) {
                 if (d.getKind() == JCDiagnostic.Kind.ERROR && !d.isFlagSet(RECOVERABLE))
