@@ -213,7 +213,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (str2 == null) {
                 return str1;
             }
-            return make().Binary(JCTree.PLUS, str1, str2);
+            return make().Binary(JCTree.Tag.PLUS, str1, str2);
         }
         
         private JCExpression cat(JCExpression strExpr, String literal) {
