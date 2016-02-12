@@ -132,11 +132,6 @@ public class StatementTransformer extends AbstractTransformer {
         Options options = context.get(Options.optionsKey);
         if (options.isSet(Option.CEYLONDISABLEOPT)) {
             disabledOptimizations = EnumSet.allOf(Optimization.class);
-        } else if (options.isSet(Option.CEYLONDISABLEOPT_CUSTOM)) {
-            disabledOptimizations = new HashSet<Optimization>();
-            for (String name : options.get(Option.CEYLONDISABLEOPT_CUSTOM).split(",")) {
-                disabledOptimizations.add(Optimization.valueOf(name));
-            }
         } else {
             disabledOptimizations = EnumSet.noneOf(Optimization.class);
         }

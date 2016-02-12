@@ -189,29 +189,42 @@ public class TreeInfo {
         }
         return null;
     }
+    
+    private static boolean calledMethodNameisSelfOrSuper(JCTree tree, boolean this_, boolean super_) {
+        if (tree.getTag() == JCTree.Tag.EXEC) {
+            JCExpressionStatement exec = (JCExpressionStatement)tree;
+            if (exec.expr.getTag() == JCTree.Tag.APPLY) {
+                Name mname = TreeInfo.name(((JCMethodInvocation) exec.expr).meth);
+                if (this_ && mname == mname.table.names._this) {
+                    return true;
+                } else if (super_ && mname == mname.table.names._super) {
+                    return true;
+                }
+                return false;
+            }
+            if (exec.expr.getTag() == JCTree.Tag.LETEXPR) {
+                LetExpr let = (LetExpr)exec.expr;
+                for (JCStatement stmt : let.stats) {
+                    if (calledMethodNameisSelfOrSuper(stmt, this_, super_)) {
+                        return true;
+                    }
+                }
+                return calledMethodNameisSelfOrSuper(let.expr, this_, super_);
+            }
+        }
+        return false;
+     }
 
     /** Is this a call to this or super?
      */
     public static boolean isSelfCall(JCTree tree) {
-        Name name = calledMethodName(tree);
-        if (name != null) {
-            Names names = name.table.names;
-            return name==names._this || name==names._super;
-        } else {
-            return false;
-        }
+        return calledMethodNameisSelfOrSuper(tree, true, true);
     }
 
     /** Is this a call to super?
      */
     public static boolean isSuperCall(JCTree tree) {
-        Name name = calledMethodName(tree);
-        if (name != null) {
-            Names names = name.table.names;
-            return name==names._super;
-        } else {
-            return false;
-        }
+        return calledMethodNameisSelfOrSuper(tree, false, true);
     }
 
     /** Is this a constructor whose first (non-synthetic) statement is not

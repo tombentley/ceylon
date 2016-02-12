@@ -4138,9 +4138,9 @@ public class JavacParser implements Parser {
     /*
      * a default skeletal implementation without any mapping overhead.
      */
-    protected static class EmptyEndPosTable extends AbstractEndPosTable {
+    public static class EmptyEndPosTable extends AbstractEndPosTable {
 
-        EmptyEndPosTable(JavacParser parser) {
+        public EmptyEndPosTable(JavacParser parser) {
             super(parser);
         }
 

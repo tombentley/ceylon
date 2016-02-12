@@ -29,6 +29,7 @@ import static com.redhat.ceylon.langtools.tools.javac.code.Flags.STATIC;
 import java.util.ArrayList;
 
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.langtools.tools.javac.code.BoundKind;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
@@ -105,6 +106,8 @@ public class ClassDefinitionBuilder {
 
     private Type thisType;
 
+    private Node at;
+
     public static ClassDefinitionBuilder klass(AbstractTransformer gen, String javaClassName, String ceylonClassName, boolean isLocal) {
         ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, javaClassName, ceylonClassName, isLocal);
         builder.setContainingClassBuilder(gen.current());
@@ -165,6 +168,11 @@ public class ClassDefinitionBuilder {
         return result;
     }
     
+    public ClassDefinitionBuilder at(Node at) {
+        this.at= at;
+        return this;
+    }
+    
     public List<JCTree> build() {
         if (built) {
             throw new BugException("already built");
@@ -177,7 +185,7 @@ public class ClassDefinitionBuilder {
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
         }
         
-        JCTree.JCClassDecl klass = gen.make().ClassDef(
+        JCTree.JCClassDecl klass = gen.at(at).ClassDef(
                 gen.make().Modifiers(modifiers, getAnnotations()),
                 gen.names().fromString(name),
                 typeParams.toList(),

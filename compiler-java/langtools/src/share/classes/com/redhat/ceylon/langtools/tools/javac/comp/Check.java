@@ -2302,8 +2302,7 @@ public class Check {
                                 // Object it's just that the compiler represents
                                 // things that way.
                                 checkOverride(tree, implmeth, absmeth, origin);
-                            } else if(sourceLanguage.isCeylon())
-                                implmeth.flags_field |= CEYLON_METHOD_OVERRIDE_CHECKED;
+                            }
                         }
                     }
                 }

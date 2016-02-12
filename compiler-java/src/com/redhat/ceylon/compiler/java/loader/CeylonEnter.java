@@ -21,10 +21,12 @@
 package com.redhat.ceylon.compiler.java.loader;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.Token;
@@ -69,11 +71,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
+
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
-import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
+import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
@@ -88,7 +91,9 @@ import com.redhat.ceylon.langtools.tools.javac.comp.Check;
 import com.redhat.ceylon.langtools.tools.javac.comp.Enter;
 import com.redhat.ceylon.langtools.tools.javac.comp.Env;
 import com.redhat.ceylon.langtools.tools.javac.comp.Todo;
+import com.redhat.ceylon.langtools.tools.javac.file.Locations;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
+import com.redhat.ceylon.langtools.tools.javac.tree.EndPosTable;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.redhat.ceylon.langtools.tools.javac.util.Abort;
@@ -157,13 +162,13 @@ public class CeylonEnter extends Enter {
             // FIXME
             e.printStackTrace();
         }
+        
         phasedUnits = LanguageCompiler.getPhasedUnitsInstance(context);
         compilerDelegate = LanguageCompiler.getCompilerDelegate(context);
         log = CeylonLog.instance(context);
         modelLoader = CeylonModelLoader.instance(context);
         options = Options.instance(context);
         timer = com.redhat.ceylon.compiler.java.util.Timer.instance(context);
-        paths = Paths.instance(context);
         fileManager = (CeyloncFileManager) context.get(JavaFileManager.class);
         verbose = options.get(Option.VERBOSE) != null;
         isBootstrap = options.get(Option.BOOTSTRAPCEYLON) != null;
@@ -219,7 +224,7 @@ public class CeylonEnter extends Enter {
             // and complete their new trees
             try {
                 sourceLanguage.push(Language.CEYLON);
-                super.main(ceylonTrees);                    
+                super.main(ceylonTrees);
             } finally {
                 sourceLanguage.pop();
             }
@@ -412,7 +417,7 @@ public class CeylonEnter extends Enter {
     }
 
     private boolean isVerbose(String key) {
-        return verbose || options.get(Option.VERBOSE + ":" + key) != null;
+        return verbose || options.get(Option.VERBOSE.text + ":" + key) != null;
     }
 
     public void addOutputModuleToClassPath(Module module){
@@ -444,8 +449,8 @@ public class CeylonEnter extends Enter {
         if(verbose)
             log.printRawLines(WriterKind.NOTICE, "[Adding module to classpath: "+module.getNameAsString()+"/"+module.getVersion()+"]");        
         
-        Paths.Path classPath = paths.getPathForLocation(StandardLocation.CLASS_PATH);
-
+        Collection<File> classPath = fileManager.getLocations().getLocation(StandardLocation.CLASS_PATH);
+        
         File artifact = null;
         try {
             artifact = result != null ? result.artifact() : null;
@@ -466,7 +471,13 @@ public class CeylonEnter extends Enter {
 
         if(modulesAddedToClassPath.add(module)){
             if(artifact != null && artifact.exists()){
-                classPath.add(artifact);
+                ArrayList<File> newClassPath = new ArrayList<File>(classPath);
+                newClassPath.add(artifact);
+                try {
+                    fileManager.getLocations().setLocation(StandardLocation.CLASS_PATH, newClassPath);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 ((LazyModule)module).loadPackageList(result);
             }else if(errorIfMissing){
                 log.error("ceylon", "Failed to find module "+module.getNameAsString()+"/"+module.getVersion()+" in repositories");
@@ -784,7 +795,7 @@ public class CeylonEnter extends Enter {
                             }
                             
                             @Override
-                            public int getEndPosition(Map<JCTree, Integer> endPosTable) {
+                            public int getEndPosition(EndPosTable endPosTable) {
                                 return endOffset;
                             }
                         };

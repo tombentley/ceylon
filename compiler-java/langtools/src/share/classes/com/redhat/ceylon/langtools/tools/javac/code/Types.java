@@ -124,6 +124,7 @@ public class Types {
         diags = JCDiagnostic.Factory.instance(context);
         functionDescriptorLookupError = new FunctionDescriptorLookupError();
         noWarnings = new Warner(null);
+        sourceLanguage = SourceLanguage.instance(context);
     }
     // </editor-fold>
 
@@ -2867,7 +2868,8 @@ public class Types {
                         }
                         if (implmeth == null || implmeth == absmeth) {
                             undef = absmeth;
-                        }
+                        } else if(sourceLanguage.isCeylon())
+                            implmeth.flags_field |= CEYLON_METHOD_OVERRIDE_CHECKED;
                     }
                 }
                 if (undef == null) {

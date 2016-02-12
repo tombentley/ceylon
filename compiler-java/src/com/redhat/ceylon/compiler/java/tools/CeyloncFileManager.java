@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -250,7 +251,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         String cacheRepo = getCacheRepoOption();
         String outRepo = getOutputRepoOption();
         String overrides = options.get(Option.CEYLONOVERRIDES);
-        boolean upgradeDist = !options.getBoolean(Option.CEYLONDOWNGRADEDIST.optionName);
+        boolean upgradeDist = !options.getBoolean(Option.CEYLONDOWNGRADEDIST.text);
         
         repoManager = CeylonUtils.repoManager()
                 .config(CompilerConfig.instance(context))
@@ -335,7 +336,11 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         // set the default value for Ceylon
         if (outDir == null) {
             String dir = Repositories.withConfig(CompilerConfig.instance(context)).getOutputRepository().getUrl();
-            classOutDir = new File(dir);
+            try {
+                super.setLocation(StandardLocation.CLASS_OUTPUT, Collections.singleton(new File(dir)));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return outDir;
     }

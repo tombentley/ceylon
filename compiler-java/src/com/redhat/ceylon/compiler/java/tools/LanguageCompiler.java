@@ -88,6 +88,7 @@ import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.langtools.tools.javac.jvm.ClassWriter;
 import com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
+import com.redhat.ceylon.langtools.tools.javac.parser.JavacParser;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.TreeInfo;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
@@ -358,6 +359,7 @@ public class LanguageCompiler extends JavaCompiler {
                 t = parse(filename, readSource(filename));
             } else {
                 t = ceylonParse(filename, readSource(filename));
+                t.endPositions = new JavacParser.EmptyEndPosTable(null);
             }
             if (t.endPositions != null)
                 log.setEndPosTable(filename, t.endPositions);
@@ -606,7 +608,7 @@ public class LanguageCompiler extends JavaCompiler {
         JavaFileObject fileObject;
         try {
             if(options.get(Option.VERBOSE) != null){
-                log.printRawLines(WriterKind.NOTICE, "[Trying to load module "+moduleClassName+"]");
+                log.printRawLines(WriterKind.NOTICE, "[Trying to load source for module "+moduleClassName+"]");
             }
             fileObject = fileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH, moduleClassName, Kind.SOURCE);
             if(options.get(Option.VERBOSE) != null){

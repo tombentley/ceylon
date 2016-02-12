@@ -290,8 +290,7 @@ public class Enter extends JCTree.Visitor {
         if (tree.pid != null) {
             tree.packge = reader.enterPackage(TreeInfo.fullName(tree.pid));
             if (tree.packageAnnotations.nonEmpty()
-                    || pkginfoOpt == PkgInfo.ALWAYS
-                    || tree.docComments != null) {
+                    || pkginfoOpt == PkgInfo.ALWAYS) {
                 if (isPkgInfo) {
                     addEnv = true;
                 } else if (tree.packageAnnotations.nonEmpty()){
@@ -317,9 +316,7 @@ public class Enter extends JCTree.Visitor {
                                                  : null,
                                 "pkg-info.already.seen",
                                 tree.packge);
-                    if (addEnv || (tree0.packageAnnotations.isEmpty() &&
-                                   tree.docComments != null &&
-                                   tree.docComments.hasComment(tree))) {
+                    if (addEnv || (tree0.packageAnnotations.isEmpty())) {
                         typeEnvs.put(tree.packge, topEnv);
                     }
                 }

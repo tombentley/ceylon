@@ -328,22 +328,25 @@ public class MethodDefinitionBuilder
         return this;
     }
 
-    public MethodDefinitionBuilder parameter(long modifiers, 
+    public MethodDefinitionBuilder parameter(
+            Node node,
+            long modifiers, 
             java.util.List<Annotation> annos, 
             String name, 
             Parameter decl, 
             TypedDeclaration nonWideningDecl, 
             Type nonWideningType, 
             int flags, boolean canWiden) {
-        return parameter(modifiers, annos, null, name, name, decl, nonWideningDecl, nonWideningType, flags);
+        return parameter(node, modifiers, annos, null, name, name, decl, nonWideningDecl, nonWideningType, flags);
     }
     
-    private MethodDefinitionBuilder parameter(long modifiers, 
+    private MethodDefinitionBuilder parameter(Node node, long modifiers, 
             java.util.List<Annotation> modelAnnotations, List<JCAnnotation> userAnnotations,
             String name, String aliasedName, 
             Parameter decl, TypedDeclaration nonWideningDecl, Type nonWideningType, 
             int flags) {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(gen, decl);
+        pdb.at(node);
         pdb.modifiers(modifiers);
         pdb.modelAnnotations(modelAnnotations);
         pdb.userAnnotations(userAnnotations);
@@ -388,10 +391,10 @@ public class MethodDefinitionBuilder
         return gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
     }
     
-    public MethodDefinitionBuilder parameter(Parameter paramDecl, 
+    public MethodDefinitionBuilder parameter(Node node, Parameter paramDecl, 
             Type paramType, int mods, int flags, boolean canWiden) {
         String name = paramDecl.getName();
-        return parameter(mods, paramDecl.getModel().getAnnotations(), 
+        return parameter(node, mods, paramDecl.getModel().getAnnotations(), 
                 name, paramDecl, paramDecl.getModel(), paramType, flags, canWiden);
     }
     
@@ -413,12 +416,12 @@ public class MethodDefinitionBuilder
         FOR_MIXIN;
     }
 
-    public MethodDefinitionBuilder parameter(Parameter param,  
+    public MethodDefinitionBuilder parameter(Node node, Parameter param,  
             List<JCAnnotation> userAnnotations, int flags, WideningRules wideningRules) {
-        return parameter(param, null, userAnnotations, flags, wideningRules);
+        return parameter(node, param, null, userAnnotations, flags, wideningRules);
     }
     
-    public MethodDefinitionBuilder parameter(Parameter param, TypedReference typedRef, 
+    public MethodDefinitionBuilder parameter(Node node, Parameter param, TypedReference typedRef, 
             List<JCAnnotation> userAnnotations, int flags, WideningRules wideningRules) {
         String paramName = param.getName();
         String aliasedName = Naming.getAliasedParameterName(param);
@@ -431,7 +434,7 @@ public class MethodDefinitionBuilder
         }
         NonWideningParam nonWideningParam = getNonWideningParam(typedRef, wideningRules);
         flags |= nonWideningParam.flags;
-        return parameter(mods, param.getModel().getAnnotations(), userAnnotations, paramName, aliasedName, param, 
+        return parameter(node, mods, param.getModel().getAnnotations(), userAnnotations, paramName, aliasedName, param, 
                 nonWideningParam.nonWideningDecl, nonWideningParam.nonWideningType, flags);
     }
 

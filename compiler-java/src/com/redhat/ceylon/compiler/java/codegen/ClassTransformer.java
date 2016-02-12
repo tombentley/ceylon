@@ -486,7 +486,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
             if (formalMember instanceof Value) {
-                addRefinedThrowerAttribute(classBuilder, errorMessage, classModel,
+                addRefinedThrowerAttribute(classBuilder, errorMessage, def, classModel,
                         (Value)formalMember);
             } else if (formalMember instanceof Function) {
                 addRefinedThrowerMethod(classBuilder, errorMessage, classModel,
@@ -555,7 +555,7 @@ public class ClassTransformer extends AbstractTransformer {
                 mdb.reifiedTypeParameter(tp);
             }
             for (Parameter param : parameterList) {
-                mdb.parameter(param, null, 0, WideningRules.NONE);
+                mdb.parameter(null, param, null, 0, WideningRules.NONE);
             }
             mdb.resultType(refined, 0);
             mdb.body(makeThrowUnresolvedCompilationError(error));
@@ -676,6 +676,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private void addRefinedThrowerAttribute(
             ClassDefinitionBuilder classBuilder, String error,
+            Node node,
             ClassOrInterface classModel, Value formalAttribute) {
         Value refined = refineValue(formalAttribute, formalAttribute.appliedTypedReference(null, null), classModel, classModel.getUnit());
         AttributeDefinitionBuilder getterBuilder = AttributeDefinitionBuilder.getter(this, refined.getName(), refined);
@@ -684,7 +685,7 @@ public class ClassTransformer extends AbstractTransformer {
         getterBuilder.getterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
         classBuilder.attribute(getterBuilder);
         if (formalAttribute.isVariable()) {
-            AttributeDefinitionBuilder setterBuilder = AttributeDefinitionBuilder.setter(this, refined.getName(), refined);
+            AttributeDefinitionBuilder setterBuilder = AttributeDefinitionBuilder.setter(this, node, refined.getName(), refined);
             setterBuilder.skipField();
             setterBuilder.modifiers(transformAttributeGetSetDeclFlags(refined, false));
             setterBuilder.setterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
@@ -1213,7 +1214,7 @@ public class ClassTransformer extends AbstractTransformer {
             adb.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, memberTree));
             classBuilder.attribute(adb);
             if (value.isVariable()) {
-                AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl.getName(), decl.getModel());
+                AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, parameterTree, decl.getName(), decl.getModel());
                 setter.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
                 //setter.userAnnotations(expressionGen().transform(AnnotationTarget.SETTER, memberTree.getAnnotationList()));
                 classBuilder.attribute(setter);
@@ -1267,6 +1268,7 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.Parameter p, Parameter param, Tree.TypedDeclaration member) {
         JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
+        pdb.at(p);
         pdb.aliasName(Naming.getAliasedParameterName(param));
         if (Naming.aliasConstructorParameterName(param.getModel())) {
             naming.addVariableSubst(param.getModel(), naming.suffixName(Suffix.$param$, param.getName()));
@@ -2928,7 +2930,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         for (Parameter param : parameters) {
             final TypedReference typedParameter = typedMember.getTypedParameter(param);
-            concreteWrapper.parameter(param, typedParameter, null, FINAL, WideningRules.FOR_MIXIN);
+            concreteWrapper.parameter(null, param, typedParameter, null, FINAL, WideningRules.FOR_MIXIN);
             arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
         }
         if(includeBody){
@@ -3446,6 +3448,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (useField || withinInterface || lazy) {
             if (!withinInterface || model.isShared()) {
                 // Generate getter in main class or interface (when shared)
+                at(decl.getType());
                 classBuilder.attribute(makeGetter(decl, false, lazy));
             }
             if (withinInterface && lazy) {
@@ -3475,7 +3478,7 @@ public class ClassTransformer extends AbstractTransformer {
                  * We use the getter as TypedDeclaration here because this is the same type but has a refined
                  * declaration we can use to make sure we're not widening the attribute type.
                  */
-            .setter(this, name, decl.getDeclarationModel().getGetter())
+            .setter(this, decl, name, decl.getDeclarationModel().getGetter())
             .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
         
         // companion class members are never actual no matter what the Declaration says
@@ -3701,7 +3704,7 @@ public class ClassTransformer extends AbstractTransformer {
     private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
-        AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, attrName, decl.getDeclarationModel());
+        AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl, attrName, decl.getDeclarationModel());
         setter.userAnnotationsSetter(expressionGen().transformAnnotations(OutputElement.SETTER, decl));
         return makeGetterOrSetter(decl, forCompanion, lazy, setter, false);
     }
@@ -3738,7 +3741,7 @@ public class ClassTransformer extends AbstractTransformer {
         if(Decl.isLocal(model)){
             builder.annotations(makeAtLocalDeclaration(model.getQualifier(), false));
         }
-        
+        builder.at(def);
         List<JCTree> result = builder.build();
         
         if (Decl.isLocal(def)) {
@@ -3958,7 +3961,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if(typedDeclaration != null)
                     annotations = expressionGen().transformAnnotations(OutputElement.PARAMETER, typedDeclaration);
             }
-            methodBuilder.parameter(parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
+            methodBuilder.parameter(parameter, parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
 
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
                     || Strategy.hasDefaultParameterOverload(parameterModel)) {
@@ -4519,7 +4522,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (currentParameter != null && Decl.equal(parameter, currentParameter)) {
                     break;
                 }
-                overloadBuilder.parameter(parameter, null, 0, getWideningRules(parameter));
+                overloadBuilder.parameter(null, parameter, null, 0, getWideningRules(parameter));
             }
         }
         
@@ -4714,7 +4717,7 @@ public class ClassTransformer extends AbstractTransformer {
                     break;
                 }
                 final TypedReference typedParameter = typedMember.getTypedParameter(param);
-                overloadBuilder.parameter(param, typedParameter, null, 0, forMixin ? WideningRules.FOR_MIXIN : WideningRules.CAN_WIDEN);
+                overloadBuilder.parameter(null, param, typedParameter, null, 0, forMixin ? WideningRules.FOR_MIXIN : WideningRules.CAN_WIDEN);
             }
         }
         
@@ -5155,7 +5158,7 @@ public class ClassTransformer extends AbstractTransformer {
                 break;
             }
             at(p);
-            methodBuilder.parameter(p.getParameterModel(), null, 0, wideningRules);
+            methodBuilder.parameter(p, p.getParameterModel(), null, 0, wideningRules);
         }
 
         // The method's return type is the same as the parameter's type
@@ -5294,7 +5297,7 @@ public class ClassTransformer extends AbstractTransformer {
             objectClassBuilder
             .modelAnnotations(model.getAnnotations())
             .modifiers(transformObjectDeclFlags(model));
-        
+        at(def);
         List<JCTree> result = objectClassBuilder.build();
         
         if (makeLocalInstance) {

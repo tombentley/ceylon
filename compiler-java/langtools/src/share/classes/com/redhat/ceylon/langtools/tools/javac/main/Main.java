@@ -108,7 +108,7 @@ public class Main {
     private Option[] recognizedOptions =
             Option.getJavaCompilerOptions().toArray(new Option[0]);
 
-    private OptionHelper optionHelper = new OptionHelper() {
+    protected OptionHelper optionHelper = new OptionHelper() {
         @Override
         public String get(Option option) {
             return options.get(option);
@@ -167,7 +167,7 @@ public class Main {
     }
 
     /** A table of all options that's passed to the JavaCompiler constructor.  */
-    private Options options = null;
+    protected Options options = null;
 
     /** The list of source files to process
      */
@@ -276,13 +276,21 @@ public class Main {
             return null;
 
         String sourceString = options.get(SOURCE);
+        if (sourceString == null) {
+            sourceString = "7";
+            options.put(Option.SOURCE, sourceString);
+        }
         Source source = (sourceString != null)
             ? Source.lookup(sourceString)
-            : Source.DEFAULT;
+            : Source.JDK1_7;
         String targetString = options.get(TARGET);
+        if (targetString == null) {
+            targetString = "7";
+            options.put(Option.TARGET, targetString);
+        }
         Target target = (targetString != null)
             ? Target.lookup(targetString)
-            : Target.DEFAULT;
+            : Target.JDK1_7;
         // We don't check source/target consistency for CLDC, as J2ME
         // profiles are not aligned with J2SE targets; moreover, a
         // single CLDC target may have many profiles.  In addition,
@@ -335,7 +343,7 @@ public class Main {
         return filenames;
     }
     // where
-        private boolean checkDirectory(Option option) {
+        protected boolean checkDirectory(Option option) {
             String value = options.get(option);
             if (value == null)
                 return true;
@@ -603,7 +611,7 @@ public class Main {
     }
 
     /** Display the location and checksum of a class. */
-    void showClass(String className) {
+    protected void showClass(String className) {
         PrintWriter pw = log.getWriter(WriterKind.NOTICE);
         pw.println("javac: show class: " + className);
         URL url = getClass().getResource('/' + className.replace('.', '/') + ".class");
@@ -668,7 +676,7 @@ public class Main {
 //    }
 
     public static final String javacBundleName =
-        "com.redhat.ceylon.langtools.tools.javac.resources.javac";
+        "com.redhat.ceylon.langtools.tools.javac.resources.ceylonc";
 //
 //    private static JavacMessages messages;
 }

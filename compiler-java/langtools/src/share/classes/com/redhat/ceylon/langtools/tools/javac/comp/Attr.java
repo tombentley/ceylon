@@ -3979,8 +3979,12 @@ public class Attr extends JCTree.Visitor {
                         rs.methodArguments(Type.map(argtypes, checkDeferredMap)),
                         kindName(sym.location()),
                         sym.location());
+                // Don't erase the return type of the instantiated method type 
+                // for Ceylon #1095
                owntype = new MethodType(owntype.getParameterTypes(),
-                       types.erasure(owntype.getReturnType()),
+                       sourceLanguage.isCeylon() 
+                       && typeargtypes != null 
+                       && !typeargtypes.isEmpty() ? owntype.getReturnType() : types.erasure(owntype.getReturnType()),
                        types.erasure(owntype.getThrownTypes()),
                        syms.methodClass);
             }
@@ -4736,7 +4740,7 @@ public class Attr extends JCTree.Visitor {
                             tree.clazz.type.tsym);
                 }
                 if (tree.def != null) {
-                    checkForDeclarationAnnotations(tree.def.mods.annotations, tree.clazz.type.tsym);
+                    //checkForDeclarationAnnotations(tree.def.mods.annotations, tree.clazz.type.tsym);
                 }
 
                 validateAnnotatedType(tree.clazz, tree.clazz.type);

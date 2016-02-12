@@ -33,6 +33,7 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 
@@ -92,6 +93,15 @@ public enum Option {
     },
 
     VERBOSE("-verbose", "opt.verbose", STANDARD, BASIC),
+    VERBOSE_ALL("-verbose:all", "opt.verbose.all", STANDARD, BASIC) {
+        @Override
+        public boolean process(OptionHelper helper, String option) {
+            helper.put("-verbose:", "all");
+            return false;
+        }
+    },
+    VERBOSE_CUSTOM("-verbose:", "opt.verbose.suboptlist", STANDARD, BASIC, ANYOF, "loader", "ast", "code", "cmr", "benchmark"),
+    
 
     // -deprecation is retained for command-line backward compatibility
     DEPRECATION("-deprecation", "opt.deprecation", STANDARD, BASIC) {
@@ -457,35 +467,70 @@ public enum Option {
     
     // Ceylon options
     CEYLONCWD("-cwd", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONREPO("-rep", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONSYSTEMREPO("-sysrep", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONCACHEREPO("-cacherep", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONNODEFREPOS("-nodefreps", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONUSER("-user", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONPASS("-pass", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONNOOSGI("-noosgi", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONJIGSAW("-module-info", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONOSGIPROVIDEDBUNDLES("-osgi-provided-bundles", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONNOPOM("-nopom", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONPACK200("-pack200", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONSOURCEPATH("-src", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONRESOURCEPATH("-res", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONRESOURCEROOT("-resroot", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONDISABLEOPT("-disableOptimization", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONREPO("-rep", null, OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper helper, String option, String arg) {
+            helper.put(option, arg);
+            return false;
+        }
+    },
+    CEYLONSYSTEMREPO("-sysrep", "opt.arg.url", "opt.ceylonsystemrepo", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONCACHEREPO("-cacherep", "opt.arg.url", "opt.ceyloncacherepo", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONNODEFREPOS("-nodefreps", "opt.ceylonnodefrepos", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONUSER("-user", "opt.arg.value", "opt.ceylonuser", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONPASS("-pass", "opt.arg.value",     "opt.ceylonpass", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONNOOSGI("-noosgi", "opt.ceylonnoosgi", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONJIGSAW("-module-info", "opt.ceylonjigsaw", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONOSGIPROVIDEDBUNDLES("-osgi-provided-bundles", "opt.arg.value", "opt.ceylonosgiprovidedbundles", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONNOPOM("-nopom", "opt.ceylonnopom", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONPACK200("-pack200", "opt.ceylonpack200", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONSOURCEPATH("-src", "opt.arg.directory", "opt.ceylonsourcepath", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper options, String option, String arg) {
+            if(options != null)
+                options.put(SOURCEPATH.getText(), arg);// was putMulti
+            return false;
+        }
+    },
+    CEYLONRESOURCEPATH("-res", "opt.arg.url",      "opt.ceylonresourcepath", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper options, String option, String arg) {
+            if(options != null)
+                options.put(CEYLONRESOURCEPATH.getText(), arg);// was putMulti
+            return false;
+        }
+    },
+    CEYLONRESOURCEROOT("-resroot", "opt.arg.path",      "opt.ceylonresourceroot", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONDISABLEOPT("-disableOptimization", "opt.ceylondisableopt", OptionKind.STANDARD, OptionGroup.CEYLON),
     //CEYLONDISABLEOPT_CUSTOM("-disableOptimization:{"+optimizations()+"}", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONSUPPRESSWARNINGS("-suppress-warnings", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONOUT("-out", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONOFFLINE("-offline", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONTIMEOUT("-timeout", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONCONTINUE("-continue", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONPROGRESS("-progress", null, OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONSUPPRESSWARNINGS("-suppress-warnings", "opt.arg.value",     "opt.ceylonsuppresswarnings", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONOUT("-out", "opt.arg.url", "opt.ceylonout", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper helper, String option, String arg) {
+            return D.process(helper, "-d", arg);
+        } 
+    },
+    CEYLONOFFLINE("-offline", "opt.ceylonoffline", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONTIMEOUT("-timeout", "opt.arg.number",       "opt.ceylontimeout", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONCONTINUE("-continue", "opt.ceyloncontinue", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONPROGRESS("-progress", "opt.ceylonprogress", OptionKind.STANDARD, OptionGroup.CEYLON),
     // Backwards-compat
-    CEYLONMAVENOVERRIDES("-maven-overrides", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONOVERRIDES("-overrides", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONDOWNGRADEDIST("-downgrade-dist", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONFLATCLASSPATH("-flat-classpath", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.STANDARD, OptionGroup.CEYLON);
+    CEYLONMAVENOVERRIDES("-maven-overrides", "opt.arg.url",        "opt.ceylonoverrides", OptionKind.STANDARD, OptionGroup.CEYLON) {
+            @Override
+            public boolean process(OptionHelper options, String option, String arg) {
+                return super.process(options, "-overrides", arg);
+            }
+    },
+    CEYLONOVERRIDES("-overrides",  "opt.arg.url",        "opt.ceylonoverrides", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONDOWNGRADEDIST("-downgrade-dist", "opt.ceylondistpolicy",        "opt.ceylondistpolicy", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper options, String option, String arg) {
+            return super.process(options, "-dist-version-policy", arg);
+        } 
+    },
+    CEYLONFLATCLASSPATH("-flat-classpath",  "opt.ceylonflatclasspath", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies", "opt.ceylonautoexportmavendependencies", OptionKind.STANDARD, OptionGroup.CEYLON),
+    BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.HIDDEN, OptionGroup.CEYLON);
 
     /** The kind of an Option. This is used by the -help and -X options. */
     public enum OptionKind {
@@ -743,7 +788,7 @@ public enum Option {
         return choices;
     }
 
-    static Set<Option> getJavaCompilerOptions() {
+    public static Set<Option> getJavaCompilerOptions() {
         return EnumSet.allOf(Option.class);
     }
 
@@ -752,7 +797,7 @@ public enum Option {
     }
 
     public static Set<Option> getJavacToolOptions() {
-        return getOptions(EnumSet.of(BASIC));
+        return getOptions(EnumSet.of(BASIC, CEYLON));
     }
 
     static Set<Option> getOptions(Set<OptionGroup> desired) {

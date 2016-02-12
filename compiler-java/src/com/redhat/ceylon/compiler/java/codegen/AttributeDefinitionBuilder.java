@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
@@ -96,7 +97,7 @@ public class AttributeDefinitionBuilder {
     private JCExpression setterClass;
     private JCExpression getterClass;
 
-    private AttributeDefinitionBuilder(AbstractTransformer owner, TypedDeclaration attrType, 
+    private AttributeDefinitionBuilder(AbstractTransformer owner, Node node, TypedDeclaration attrType, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect) {
         int typeFlags = 0;
         TypedReference typedRef = owner.getTypedReference(attrType);
@@ -139,8 +140,8 @@ public class AttributeDefinitionBuilder {
             .resultType(attrType(), attrType);
         
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, attrName);
+        pdb.at(node);
         pdb.modifiers(Flags.FINAL);
-        
         pdb.aliasName(attrName);
         int seterParamFlags = 0;
         if (owner.rawParameters(attrType)) {
@@ -161,13 +162,13 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, attrType, javaClassName, classBuilder, attrName, "value", toplevel, false);
+        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, "value", toplevel, false);
     }
     
     public static AttributeDefinitionBuilder singleton(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false);
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false);
         adb.getterBuilder.realName(attrType.getName());
         return adb;
     }
@@ -175,20 +176,21 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder indirect(AbstractTransformer owner, 
             String javaClassName, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, attrType, javaClassName, null, attrName, "value", toplevel, true);
+        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, null, attrName, "value", toplevel, true);
     }
     
     public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
             String attrAndFieldName, TypedDeclaration attrType) {
-        return new AttributeDefinitionBuilder(owner, attrType, null, null,
+        return new AttributeDefinitionBuilder(owner, null, attrType, null, null,
                 attrAndFieldName, attrAndFieldName, false, false)
             .skipField()
             .immutable();
     }
     
     public static AttributeDefinitionBuilder setter(AbstractTransformer owner, 
+            Node node, 
             String attrAndFieldName, TypedDeclaration attrType) {
-        return new AttributeDefinitionBuilder(owner, attrType, null, null,
+        return new AttributeDefinitionBuilder(owner, node, attrType, null, null,
                 attrAndFieldName, attrAndFieldName, false, false)
             .skipField()
             .skipGetter();

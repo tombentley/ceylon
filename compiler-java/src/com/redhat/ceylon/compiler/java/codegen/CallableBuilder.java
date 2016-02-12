@@ -289,7 +289,7 @@ public class CallableBuilder {
             target = gen.naming.makeUnquotedIdent(Unfix.$instance$);
             target = gen.expressionGen().applyErasureAndBoxing(target, producedReference.getQualifyingType(), true, BoxingStrategy.BOXED, qualifyingType);
         }
-        CallableBuilder inner = new CallableBuilder(gen, null, type, parameterList);
+        CallableBuilder inner = new CallableBuilder(gen, qmte, type, parameterList);
         inner.parameterTypes = inner.getParameterTypesFromCallableModel();//FromParameterModels();
         if (hasOuter) {
             inner.defaultValueCall = inner.new MemberReferenceDefaultValueCall(methodClassOrCtor);
@@ -382,7 +382,7 @@ public class CallableBuilder {
         valueModel.setType(accessType);
         valueModel.setUnboxed(false);
         outerPl.getParameters().add(instanceParameter);
-        CallableBuilder outer = new CallableBuilder(gen, null, typeModel, outerPl);
+        CallableBuilder outer = new CallableBuilder(gen, qmte, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
         List<JCStatement> outerBody = List.<JCStatement>of(gen.make().Return(inner.build()));
         outer.useDefaultTransformation(outerBody);
@@ -406,12 +406,13 @@ public class CallableBuilder {
         }
     }
     
-    public static CallableBuilder javaStaticMethodReference(CeylonTransformer gen, 
+    public static CallableBuilder javaStaticMethodReference(CeylonTransformer gen,
+            Node node,
             Type typeModel, 
             final Functional methodOrClass, 
             Reference producedReference) {
         final ParameterList parameterList = methodOrClass.getFirstParameterList();
-        CallableBuilder inner = new CallableBuilder(gen, null, typeModel, parameterList);
+        CallableBuilder inner = new CallableBuilder(gen, node, typeModel, parameterList);
         
         ArrayList<Type> pt = new ArrayList<>();
         for (Parameter p : methodOrClass.getFirstParameterList().getParameters()) {
@@ -493,7 +494,7 @@ public class CallableBuilder {
         valueModel.setType(accessType);
         valueModel.setUnboxed(false);
         outerPl.getParameters().add(instanceParameter);
-        CallableBuilder outer = new CallableBuilder(gen, null, typeModel, outerPl);
+        CallableBuilder outer = new CallableBuilder(gen, qmte, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
         List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
         outer.useDefaultTransformation(innerBody);
@@ -517,7 +518,7 @@ public class CallableBuilder {
         gen.expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
         
-        return methodArgument(gen, null, model, callableTypeModel, parameterListTree, stmts, delegateDefaultedCalls);
+        return methodArgument(gen, node, model, callableTypeModel, parameterListTree, stmts, delegateDefaultedCalls);
     }
 
     public static CallableBuilder methodArgument(
@@ -1525,7 +1526,7 @@ public class CallableBuilder {
             callableType = typeModel;
         }
         
-        JCNewClass callableInstance = gen.make().NewClass(null, 
+        JCNewClass callableInstance = gen.at(node).NewClass(null, 
                 null, 
                 gen.makeJavaType(callableType, JT_EXTENDS | JT_CLASS_NEW), 
                 List.<JCExpression>of(gen.makeReifiedTypeArgument(callableType.getTypeArgumentList().get(0)),
