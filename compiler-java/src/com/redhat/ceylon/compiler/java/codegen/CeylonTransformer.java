@@ -159,13 +159,13 @@ public class CeylonTransformer extends AbstractTransformer {
                         && decl instanceof Tree.AnyClass
                         && TreeUtil.hasAnnotation(decl.getAnnotationList(), "annotation", decl.getUnit())){
                     String annotationName = Naming.suffixName(Suffix.$annotation$, name);
-                    defs.add(makeClassDef(decl, Flags.ANNOTATION, annotationName, WantedDeclaration.Annotation));
+                    defs.add(makeClassDef(decl, Flags.ANNOTATION | Flags.INTERFACE, annotationName, WantedDeclaration.Annotation));
                     
                     for(Tree.StaticType sat : ((Tree.AnyClass)decl).getSatisfiedTypes().getTypes()){
                         if(sat instanceof Tree.BaseType 
                                 && ((Tree.BaseType) sat).getIdentifier().getText().equals("SequencedAnnotation")){
                             String annotationsName = Naming.suffixName(Suffix.$annotations$, name);
-                            defs.add(makeClassDef(decl, Flags.ANNOTATION, annotationsName, WantedDeclaration.AnnotationSequence));
+                            defs.add(makeClassDef(decl, Flags.ANNOTATION | Flags.INTERFACE, annotationsName, WantedDeclaration.AnnotationSequence));
                         }
                     }
                 }
