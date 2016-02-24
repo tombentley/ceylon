@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.MissingResourceException;
@@ -54,6 +55,7 @@ import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.tools.javac.code.Source;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
+import com.redhat.ceylon.langtools.tools.javac.main.CommandLine;
 import com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.main.Main.Result;
@@ -127,16 +129,6 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
     /** A timer used to calculate task execution times times */
     private Timer timer = null;
     
-    /**
-     * The list of source files to process
-     */
-    public ListBuffer<File> filenames = null; // XXX sb protected
-
-    /**
-     * List of class files names passed on the command line
-     */
-    public ListBuffer<String> classnames = null; // XXX sb protected
-
     /**
      * Rich information about the failure (or success) of a compilation.
      * 
@@ -408,7 +400,8 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
      * `options' table and return all source filenames.
      * @param flags The array of command line arguments.
      */
-    public List<File> processArgs(String[] flags) { // XXX sb protected
+    @Override
+    public Collection<File> processArgs(String[] flags, String[] classNames) {
         int ac = 0;
         while (ac < flags.length) {
             String flag = flags[ac];
@@ -444,6 +437,10 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             }
         }
 
+        if (this.classnames != null && classNames != null) {
+            this.classnames.addAll(Arrays.asList(classNames));
+        }
+        
         if (!checkDirectoryOrURL("-d"))
             return null;
         if (!checkDirectory("-s"))
@@ -484,7 +481,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                 }
             }
         }
-        return filenames.toList();
+        return filenames;
     }
 
     // where
@@ -577,7 +574,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             options = Options.instance(context); // creates a new one
         }
 
-        filenames = new ListBuffer<File>();
+        filenames = new LinkedHashSet<File>();
         classnames = new ListBuffer<String>();
         exitState = ExitState.cmderror();
         JavaCompiler comp = null;
@@ -589,7 +586,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                 this.exitState = ExitState.cmderror();
                 return CMDERR;
             }
-            List<File> filenames = processArgs(args);
+            Collection<File> filenames = processArgs(CommandLine.parse(args), classNames);
             if (filenames == null) {
                 // null signals an error in options, abort
                 this.exitState = ExitState.cmderror();
@@ -630,15 +627,15 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             }
 
             if(!classnames.isEmpty()) {
-                filenames = addModuleFiles(filenames);
+                this.filenames.addAll(addModuleFiles(filenames));
                 classnames.clear();
             }
             
-            if (!filenames.isEmpty()) {
+            if (!this.filenames.isEmpty()) {
                 // add filenames to fileObjects
                 List<JavaFileObject> otherFiles = List.nil();
                 JavacFileManager dfm = (JavacFileManager) fileManager;
-                for (JavaFileObject fo : dfm.getJavaFileObjectsFromFiles(filenames)) {
+                for (JavaFileObject fo : dfm.getJavaFileObjectsFromFiles(this.filenames)) {
                     otherFiles = otherFiles.append(fo);
                 }
                 fileObjects = fileObjects.prependList(otherFiles);
@@ -711,13 +708,15 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
 
     // Now add the files for each of the modules that were given on the command line
     @SuppressWarnings("unchecked")
-    private List<File> addModuleFiles(List<File> filenames) throws IOException {
+    private ListBuffer<File> addModuleFiles(Collection<File> f) throws IOException {
         Iterable<File> srcdirs = (Iterable<File>) ((JavacFileManager)fileManager).getLocation(StandardLocation.SOURCE_PATH);
         Iterable<File> resdirs = (Iterable<File>) ((JavacFileManager)fileManager).getLocation(CeylonLocation.RESOURCE_PATH);
         SourceArgumentsResolver resolver = new SourceArgumentsResolver(srcdirs, resdirs, Constants.CEYLON_SUFFIX, Constants.JAVA_SUFFIX);
         resolver.parse(classnames.toList());
-        filenames = appendAll(filenames, resolver.getSourceFiles());
-        filenames = appendAll(filenames, resolver.getResourceFiles());
+        ListBuffer<File> filenames = ListBuffer.<File>lb();
+        filenames.addAll(f);
+        filenames.addAll(resolver.getSourceFiles());
+        filenames.addAll(resolver.getResourceFiles());
         return filenames;
     }
     

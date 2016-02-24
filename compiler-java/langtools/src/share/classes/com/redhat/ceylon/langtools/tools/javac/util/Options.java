@@ -70,21 +70,11 @@ public class Options {
         return values.get(name);
     }
 
-    public java.util.List<String> getMulti(String name) {
-        if(multiValues.containsKey(name))
-            return multiValues.get(name);
-        return Collections.emptyList();
-    }
-
     /**
      * Get the value for an option.
      */
     public String get(Option option) {
         return values.get(option.text);
-    }
-
-    public java.util.List<String> getMulti(Option name) {
-        return getMulti(name.text);
     }
 
     /**
@@ -153,19 +143,6 @@ public class Options {
         values.put(option.text, value);
     }
 
-    public void addMulti(String name, String value) {
-        java.util.List<String> list = multiValues.get(name);
-        if(list == null){
-            list = new LinkedList<String>();
-            multiValues.put(name, list);
-        }
-        if(!list.contains(value))
-            list.add(value);
-    }
-
-    public void addMulti(Option name, String value) {
-        addMulti(name.text, value);
-    }
 
     public void putAll(Options options) {
         values.putAll(options.values);

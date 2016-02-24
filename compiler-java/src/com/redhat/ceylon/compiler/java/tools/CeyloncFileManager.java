@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -246,7 +247,9 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
 
         // any user defined repos
         List<String> userRepos = new LinkedList<String>();
-        userRepos.addAll(options.getMulti(Option.CEYLONREPO));
+        if (options.get(Option.CEYLONREPO) != null) {
+            userRepos.addAll(Arrays.asList(options.get(Option.CEYLONREPO).split(":")));
+        }
         String systemRepo = getSystemRepoOption();
         String cacheRepo = getCacheRepoOption();
         String outRepo = getOutputRepoOption();

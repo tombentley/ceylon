@@ -28,6 +28,7 @@ package com.redhat.ceylon.langtools.tools.javac.main;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -35,6 +36,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 
 import com.redhat.ceylon.langtools.tools.javac.code.Lint;
@@ -48,6 +51,8 @@ import com.redhat.ceylon.langtools.tools.javac.util.Log.PrefixKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.StringUtils;
+import com.redhat.ceylon.model.typechecker.model.Module;
+
 import static com.redhat.ceylon.langtools.tools.javac.main.Option.ChoiceKind.*;
 import static com.redhat.ceylon.langtools.tools.javac.main.Option.OptionGroup.*;
 import static com.redhat.ceylon.langtools.tools.javac.main.Option.OptionKind.*;
@@ -431,46 +436,16 @@ public enum Option {
         }
     },
 
-    /*
-     * TODO: With apt, the matches method accepts anything if
-     * -XclassAsDecls is used; code elsewhere does the lookup to
-     * see if the class name is both legal and found.
-     *
-     * In apt, the process method adds the candidate class file
-     * name to a separate list.
-     */
-    SOURCEFILE("sourcefile", null, HIDDEN, INFO) {
-        @Override
-        public boolean matches(String s) {
-            return s.endsWith(".java")  // Java source file
-                || SourceVersion.isName(s);   // Legal type name
-        }
-        @Override
-        public boolean process(OptionHelper helper, String option) {
-            if (option.endsWith(".java") ) {
-                File f = new File(option);
-                if (!f.exists()) {
-                    helper.error("err.file.not.found", f);
-                    return true;
-                }
-                if (!f.isFile()) {
-                    helper.error("err.file.not.file", f);
-                    return true;
-                }
-                helper.addFile(f);
-            } else {
-                helper.addClassName(option);
-            }
-            return false;
-        }
-    },
-    
     // Ceylon options
-    CEYLONCWD("-cwd", null, OptionKind.STANDARD, OptionGroup.CEYLON),
-    CEYLONREPO("-rep", null, OptionKind.STANDARD, OptionGroup.CEYLON) {
+    CEYLONCWD("-cwd", "opt.arg.value", "javac.opt.ceyloncwd", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONREPO("-rep", "opt.arg.url", "javac.opt.ceylonrepo", OptionKind.STANDARD, OptionGroup.CEYLON) {
         @Override
         public boolean process(OptionHelper helper, String option, String arg) {
-            helper.put(option, arg);
+            if (helper.get(this) == null) {
+                helper.put(option, arg);
+            } else {
+                helper.put(option, helper.get(this) + ":" + arg);
+            }
             return false;
         }
     },
@@ -487,16 +462,22 @@ public enum Option {
     CEYLONSOURCEPATH("-src", "opt.arg.directory", "opt.ceylonsourcepath", OptionKind.STANDARD, OptionGroup.CEYLON) {
         @Override
         public boolean process(OptionHelper options, String option, String arg) {
-            if(options != null)
-                options.put(SOURCEPATH.getText(), arg);// was putMulti
+            if (options.get(SOURCEPATH) == null) {
+                options.put(SOURCEPATH.getText(), arg);
+            } else {
+                options.put(SOURCEPATH.getText(), options.get(SOURCEPATH) + ":" + arg);
+            }
             return false;
         }
     },
     CEYLONRESOURCEPATH("-res", "opt.arg.url",      "opt.ceylonresourcepath", OptionKind.STANDARD, OptionGroup.CEYLON) {
         @Override
         public boolean process(OptionHelper options, String option, String arg) {
-            if(options != null)
-                options.put(CEYLONRESOURCEPATH.getText(), arg);// was putMulti
+            if (options.get(this) == null) {
+                options.put(getText(), arg);
+            } else {
+                options.put(getText(), options.get(this) + ":" + arg);
+            }
             return false;
         }
     },
@@ -530,7 +511,115 @@ public enum Option {
     },
     CEYLONFLATCLASSPATH("-flat-classpath",  "opt.ceylonflatclasspath", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies", "opt.ceylonautoexportmavendependencies", OptionKind.STANDARD, OptionGroup.CEYLON),
-    BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.HIDDEN, OptionGroup.CEYLON);
+    BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.HIDDEN, OptionGroup.CEYLON),
+    
+    // End of Ceylon options: Option parsing code depends on SOURCEFILE being 
+    // the last option in this enum.
+    
+    /*
+     * TODO: With apt, the matches method accepts anything if
+     * -XclassAsDecls is used; code elsewhere does the lookup to
+     * see if the class name is both legal and found.
+     *
+     * In apt, the process method adds the candidate class file
+     * name to a separate list.
+     */
+    SOURCEFILE("sourcefile", null, HIDDEN, INFO) {
+        @Override
+        public boolean matches(String s) {
+            return s.endsWith(".java")  // Java source file
+                    || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
+                    || "default".equals(s) // FIX for ceylon because default is not a valid name for Java
+                    || isCeylonName(s)   // Legal type name for Ceylon
+                    || (new File(s)).isFile();   // Possibly a resource file
+        }
+        @Override
+        public boolean process(OptionHelper helper, String option) {
+            String s= option;
+            File f = new File(s);
+            if (s.endsWith(".java")
+                    || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
+            ) {
+                // Most likely a source file
+                if (!f.isFile()) {
+                    // -sourcepath not -src because the COption for 
+                    // CEYLONSOURCEPATH puts it in the options map as -sourcepath
+                    String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(":");
+                    if(sourcePaths == null || sourcePaths.length == 0)
+                        sourcePaths = FileUtil.filesToPathArray(DefaultToolOptions.getCompilerSourceDirs().toArray(new File[0]));
+                    if (checkIfModule(sourcePaths, s)) {
+                        // A Ceylon module name that ends with .ceylon or .java
+                        helper.addClassName(s);
+                        return false;
+                    }
+
+                    if (f.exists()) {
+                        helper.error("err.file.not.file", f);
+                        return true;
+                    }
+                }
+                if (!f.exists()) {
+                    helper.error("err.file.not.found", f);
+                    return true;
+                }
+                helper.addFile(f);
+            } 
+            if (f.isFile()) {
+                // Most likely a resource file
+                helper.addFile(f);
+            } else {
+                // Should be a module name
+                // the default module is always allowed, it doesn't need to have any folder
+                if(s.equals(Module.DEFAULT_MODULE_NAME)){
+                    helper.addClassName(s);
+                    return false;
+                }
+                // find a corresponding physical module in the source path
+                String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(":");
+                if(sourcePaths == null || sourcePaths.length == 0)
+                    sourcePaths = FileUtil.filesToPathArray(DefaultToolOptions.getCompilerSourceDirs().toArray(new File[0]));
+                if (checkIfModule(sourcePaths, s)) {
+                    helper.addClassName(s);
+                    return false;
+                }
+
+                String paths = Arrays.toString(sourcePaths);
+                helper.error("err.module.not.found", s, paths.substring(1,  paths.length()-1));
+                return true;
+            }
+            return false;
+        }
+        
+        private boolean checkIfModule(String[] paths, String moduleName) {
+            String moduleDirName = moduleName.replace(".", File.separator);
+            // walk every path arg
+            for(String path : paths){
+                // split the path
+                for(String part : path.split("\\"+File.pathSeparator)){
+                    // try to see if it's a module folder
+                    File moduleFolder = new File(part, moduleDirName);
+                    if (moduleFolder.isDirectory()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        /**
+         * Version of isName for Ceylon which allows keywords since we do allow them as part of module names 
+         * @param name
+         * @return
+         */
+        public boolean isCeylonName(CharSequence name) {
+            String id = name.toString();
+            
+            for(String s : id.split("\\.", -1)) {
+                if (!SourceVersion.isIdentifier(s))
+                    return false;
+            }
+            return true;
+        }
+    };
 
     /** The kind of an Option. This is used by the -help and -X options. */
     public enum OptionKind {

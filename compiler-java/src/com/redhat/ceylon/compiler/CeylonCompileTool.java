@@ -21,12 +21,12 @@ package com.redhat.ceylon.compiler;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
@@ -118,56 +118,49 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
     private static final class Helper extends com.redhat.ceylon.langtools.tools.javac.main.OptionHelper {
         String lastError = null;
+        private final HashMap<String,String> options = new HashMap<String,String>();
         @Override
         public String get(com.redhat.ceylon.langtools.tools.javac.main.Option option) {
-            // TODO Auto-generated method stub
-            return null;
+            return options.get(option.text);
         }
 
         @Override
         public void put(String name, String value) {
-            // TODO Auto-generated method stub
-            
+            options.put(name, value);
         }
 
         @Override
         public void remove(String name) {
-            // TODO Auto-generated method stub
-            
+            options.remove(name);
         }
 
         @Override
         public Log getLog() {
-            // TODO Auto-generated method stub
             return null;
         }
 
         @Override
         public String getOwnName() {
-            // TODO Auto-generated method stub
             return null;
         }
 
         @Override
         protected void error(String key, Object... args) {
-            // TODO Auto-generated method stub
-            
+            lastError = Main.getLocalizedString(key, args);
         }
 
         @Override
         protected void addFile(File f) {
-            // TODO Auto-generated method stub
             
         }
 
         @Override
         protected void addClassName(String s) {
-            // TODO Auto-generated method stub
             
         }
     }
     
-    private static final Helper HELPER = new Helper();
+    private Helper helper = new Helper();
 
     private List<File> sources = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
@@ -337,17 +330,17 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         return sources;
     }
 
-    private static void validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option option, String argument, String key) {
-        HELPER.lastError = null;
+    private void validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option option, String argument, String value) {
+        helper.lastError = null;
         if (option.hasArg()) {
-            if (option.process(HELPER, option.text, argument)
-                    || HELPER.lastError != null) {
-                throw new IllegalArgumentException(HELPER.lastError);
+            if (option.process(helper, option.text, value)
+                    || helper.lastError != null) {
+                throw new IllegalArgumentException(helper.lastError);
             }
         } else {
-            if (option.process(HELPER, option.text)
-                    || HELPER.lastError != null) {
-                throw new IllegalArgumentException(HELPER.lastError);
+            if (option.process(helper, argument)
+                    || helper.lastError != null) {
+                throw new IllegalArgumentException(helper.lastError);
             }
         }
     }
@@ -355,6 +348,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Override
     public void initialize(CeylonTool mainTool) throws IOException {
         compiler = new Main("ceylon compile");
+        helper.options.clear();
         Options options = Options.instance(new Context());
         
         if (modulesOrFiles.isEmpty() &&
@@ -374,7 +368,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         for (File source : applyCwd(this.sources)) {
             arguments.add("-src");
             arguments.add(source.getPath());
-            options.addMulti(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEPATH, source.getPath());
+            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEPATH, "-sourcepath", source.getPath());
+            //options.addMulti(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEPATH, source.getPath());
         }
         
         for (File resource : applyCwd(this.resources)) {
@@ -511,7 +506,10 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
         
         for (String moduleOrFile : expandedModulesOrFiles) {
-            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEFILE, moduleOrFile, "argument.error");
+            if (!com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEFILE.matches(moduleOrFile)) {
+                throw new IllegalArgumentException(CeylonCompileMessages.msg("argument.error", moduleOrFile));
+            }
+            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEFILE, moduleOrFile, moduleOrFile);
         }
         
         validateSourceArguments(expandedModulesOrFiles);
@@ -573,58 +571,9 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
 
     private void addJavacArguments(List<String> arguments) {
-        com.redhat.ceylon.langtools.tools.javac.main.OptionHelper helper = new com.redhat.ceylon.langtools.tools.javac.main.OptionHelper(){
-
-            @Override
-            public String get(com.redhat.ceylon.langtools.tools.javac.main.Option option) {
-                // TODO Auto-generated method stub
-                return null;
-            }
-
-            @Override
-            public void put(String name, String value) {
-                // TODO Auto-generated method stub
-                
-            }
-
-            @Override
-            public void remove(String name) {
-                // TODO Auto-generated method stub
-                
-            }
-
-            @Override
-            public Log getLog() {
-                // TODO Auto-generated method stub
-                return null;
-            }
-
-            @Override
-            public String getOwnName() {
-                // TODO Auto-generated method stub
-                return null;
-            }
-
-            @Override
-            protected void error(String key, Object... args) {
-                // TODO Auto-generated method stub
-                
-            }
-
-            @Override
-            protected void addFile(File f) {
-                // TODO Auto-generated method stub
-                
-            }
-
-            @Override
-            protected void addClassName(String s) {
-                // TODO Auto-generated method stub
-                
-            }
-        };
+        Helper helper = new Helper();
         for (String argument : javac) {
-            HELPER.lastError = null;
+            helper.lastError = null;
             String value = null;
             int index = argument.indexOf('=');
             if (index != -1) {
@@ -646,7 +595,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                     throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.javac", argument));
                 }
                 if (javacOpt.process(helper, argument, value)) {
-                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, HELPER.lastError));
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, helper.lastError));
                 }
                 
             
@@ -658,7 +607,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                     throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.javac", argument));
                 }
                 if (javacOpt.process(helper, argument)) {
-                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, HELPER.lastError));
+                    throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.syntax.javac", argument, helper.lastError));
                 }
             }
             
