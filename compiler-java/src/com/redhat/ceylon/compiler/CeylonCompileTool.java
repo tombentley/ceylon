@@ -22,6 +22,9 @@ package com.redhat.ceylon.compiler;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -466,9 +469,15 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             fileEncoding = DefaultToolOptions.getDefaultEncoding();
         }
         if (fileEncoding != null) {
-            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.ENCODING, fileEncoding, "option.error.syntax.encoding");
+            
+            try {
+                Charset.forName(fileEncoding);
+            } catch (IllegalCharsetNameException|UnsupportedCharsetException e) {
+                throw new IllegalArgumentException("Unsupported encoding: "+ fileEncoding);
+            }
             arguments.add(com.redhat.ceylon.langtools.tools.javac.main.Option.ENCODING.text);
             arguments.add(fileEncoding);
+            
         }
 
         if (systemRepo != null) {
