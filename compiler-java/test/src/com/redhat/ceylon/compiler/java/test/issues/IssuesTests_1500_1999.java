@@ -800,7 +800,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug18xx/Bug1830.ceylon");
         ExitState call2 = task.call2();
         Assert.assertEquals(CeylonState.ERROR, call2.ceylonState);
-        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode);
+        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode.exitCode);
     }
     
     @Test
@@ -819,7 +819,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug18xx/Bug1836.ceylon");
         ExitState call2 = task.call2();
         Assert.assertEquals(CeylonState.ERROR, call2.ceylonState);
-        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode);
+        Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode.exitCode);
     }
     
     @Test
