@@ -3897,8 +3897,7 @@ public abstract class AbstractTransformer implements Transformation {
                     swtch = make().Switch(naming.makeUnquotedIdent(Unfix.$index$), cases.toList());
                 }
                 mdb.body(swtch);
-
-                return make().NewClass(null, 
+                return at(sequencedArgument).NewClass(null, 
                         List.<JCExpression>nil(),//of(makeJavaType(seqElemType), makeJavaType(absentType)),
                         make().TypeApply(make().QualIdent(syms.ceylonLazyIterableType.tsym),
                                 List.<JCExpression>of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT), makeJavaType(absentType, JT_TYPE_ARGUMENT))), 
@@ -3939,7 +3938,7 @@ public abstract class AbstractTransformer implements Transformation {
                     mdb.body(expr);
                     methods.add(mdb.build());
                 }
-                return make().NewClass(null, 
+                return at(sequencedArgument).NewClass(null, 
                         List.<JCExpression>nil(),//of(makeJavaType(seqElemType), makeJavaType(absentType)),
                         make().TypeApply(make().QualIdent(syms.ceylonLazyInvokingIterableType.tsym),
                                 List.<JCExpression>of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT), makeJavaType(absentType, JT_TYPE_ARGUMENT))), 

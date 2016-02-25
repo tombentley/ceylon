@@ -1514,7 +1514,7 @@ public class CallableBuilder {
         }
         
         transformation.appendMethods(classBody);
-        
+        gen.at(node);
         JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0, annotations != null ? annotations : List.<JCAnnotation>nil()), classBody.toList());
         
         int variadicIndex = isVariadic ? numParams - 1 : -1;

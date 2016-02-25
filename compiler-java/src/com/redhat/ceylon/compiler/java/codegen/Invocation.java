@@ -1341,6 +1341,7 @@ class NamedArgumentInvocation extends Invocation {
         // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
         // not match, so we go raw, we also ignore primitives naturally
         int flags = JT_RAW | JT_NO_PRIMITIVES;
+        gen.at(sequencedArgument);
         JCTree.JCExpression sequenceValue = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
         JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
         
@@ -1487,7 +1488,9 @@ class NamedArgumentInvocation extends Invocation {
             exprFlags |= ExpressionTransformer.EXPR_DOWN_CAST;
         }
         JCExpression typeExpr = gen.makeJavaType(type, jtFlags);
+        gen.at(specifiedArg);
         JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type, exprFlags);
+        gen.at(specifiedArg);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);
         statements = ListBuffer.<JCStatement>of(varDecl);
         bind(declaredParam, argName, gen.makeJavaType(type, jtFlags), statements.toList());
@@ -1532,6 +1535,7 @@ class NamedArgumentInvocation extends Invocation {
                 Collections.singletonList(methodArg.getParameterLists().get(0)),
                 gen.classGen().transformMplBody(methodArg.getParameterLists(), model, body));
         JCExpression callable = callableBuilder.build();
+        gen.at(methodArg);
         JCExpression typeExpr = gen.makeJavaType(callableType, JT_RAW);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, callable);
         
