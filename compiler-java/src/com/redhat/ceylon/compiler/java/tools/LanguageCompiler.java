@@ -765,7 +765,7 @@ public class LanguageCompiler extends JavaCompiler {
 
     @Override
     protected boolean shouldStop(CompileState cs) {
-        CompileState shouldStopPolicy = (errorCount() > 0 || unrecoverableError())
+        CompileState shouldStopPolicy = (unrecoverableError())
                 ? shouldStopPolicyIfError
                 : shouldStopPolicyIfNoError;
         // we override this to make sure we don't stop because of errors, because we want to generate
@@ -774,7 +774,7 @@ public class LanguageCompiler extends JavaCompiler {
         if (shouldStopPolicy == null)
             result = false;
         else
-            result = cs.ordinal() > shouldStopPolicy.ordinal();
+            result = cs.isAfter(shouldStopPolicy);
         if (!result && super.shouldStop(cs)) {
             treatLikelyBugsAsErrors = true;
         }
