@@ -351,17 +351,8 @@ abstract class Invocation {
 
     protected JCExpression unboxCallableIfNecessary(JCExpression actualPrimExpr, Tree.Term primary) {
         Type primaryModel = primary.getTypeModel();
-        if(!gen.isCeylonCallable(primaryModel)){
-            // if it's not exactly a Callable we may have to unerase it to one
-            Type expectedType;
-            if (gen.typeFact().getNothingType().isExactly(primaryModel)) {
-                expectedType = gen.typeFact().getCallableType(gen.typeFact().getNothingType());
-            } else {
-                expectedType = primaryModel.getSupertype(gen.typeFact().getCallableDeclaration());
-            }
-            return gen.expressionGen().applyErasureAndBoxing(actualPrimExpr, primaryModel, 
-                                                             primary.getTypeErased(), !primary.getUnboxed(), BoxingStrategy.BOXED, 
-                                                             expectedType, 0);
+        if (gen.willEraseToObject(primaryModel)) {
+            actualPrimExpr = gen.make().TypeCast(gen.makeQuotedQualIdentFromString("ceylon.language.Callable"), actualPrimExpr);
         }
         return actualPrimExpr;
     }
