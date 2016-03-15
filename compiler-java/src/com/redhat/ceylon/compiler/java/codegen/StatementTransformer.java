@@ -430,7 +430,7 @@ public class StatementTransformer extends AbstractTransformer {
     
     class IfCondList extends BlockCondList {
 
-        final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+        final ListBuffer<JCStatement> varDecls = new ListBuffer<JCStatement>();
         final SyntheticName ifVar = naming.temp("if");
         private List<JCStatement> unassignedResultVars = List.nil();
         private JCBlock thenBlock;
@@ -564,7 +564,7 @@ public class StatementTransformer extends AbstractTransformer {
                     && (elsePart == null || !isElseDefinitelyReturns())) {
                 stmts = stmts.append(makeFlowAppeaser(conditions.get(0)));
             }
-            ListBuffer<JCStatement> result = ListBuffer.lb();
+            ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
             if (isDeferred()) {
                 result.append(makeVar(ifVar, make().Type(syms().booleanType), makeBoolean(false)));
             }
@@ -704,7 +704,7 @@ public class StatementTransformer extends AbstractTransformer {
     
     class WhileCondList extends BlockCondList {
 
-        private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+        private final ListBuffer<JCStatement> varDecls = new ListBuffer<JCStatement>();
         private final Name label;
         public WhileCondList(Tree.WhileClause whileClause) {
             super(whileClause.getConditionList().getConditions(), whileClause.getBlock());
@@ -753,7 +753,7 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public List<JCStatement> getResult() {
             List<JCStatement> stmts = transformList(conditions);
-            ListBuffer<JCStatement> loopStmts = ListBuffer.lb();
+            ListBuffer<JCStatement> loopStmts = new ListBuffer<JCStatement>();
             loopStmts.appendList(varDecls);
             loopStmts.appendList(stmts);
             List<JCStatement> result = List.nil(); 
@@ -800,8 +800,8 @@ public class StatementTransformer extends AbstractTransformer {
     
     class AssertCondList extends BlockCondList {
         private final Tree.Assertion ass;
-        private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
-        private final ListBuffer<JCStatement> fieldDecls = ListBuffer.lb();
+        private final ListBuffer<JCStatement> varDecls = new ListBuffer<JCStatement>();
+        private final ListBuffer<JCStatement> fieldDecls = new ListBuffer<JCStatement>();
         private final SyntheticName messageSb = naming.temp("assert");
         private List<JCStatement> unassignedResultVars = List.nil();
         
@@ -885,7 +885,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
             List<JCStatement> stmts = transformList(conditions);
             at(this.ass);
-            ListBuffer<JCStatement> result = ListBuffer.lb();
+            ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
             if (isMulti()) {
                 result.append(makeVar(messageSb, make().Type(syms().stringType), makeNull()));
             }
@@ -1616,7 +1616,7 @@ public class StatementTransformer extends AbstractTransformer {
             JCStatement forLoop = make().Labelled(label, make().ForeachLoop(loopvar, 
                     expressionGen().transformExpression(forIterator.getSpecifierExpression().getExpression()), 
                     make().Block(0, body)));
-            ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
             result.add(forLoop);
             if (failVar != null) {
                 
@@ -1655,7 +1655,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         protected ListBuffer<JCStatement> transformForClause() {
-            ListBuffer<JCStatement> stmts = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
             
             SyntheticName stringName = naming.alias("s");
             stmts.append(makeVar(stringName, make().Type(syms().stringType), 
@@ -1762,7 +1762,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         protected ListBuffer<JCStatement> transformForClause() {
-            ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
             
             // java.lang.Object array = ITERABLE.toArray();
             result.add(makeVar(FINAL, indexableName,
@@ -2474,7 +2474,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         protected List<JCStatement> transform() {
             at(stmt);
-            ListBuffer<JCStatement> outer = ListBuffer.<JCStatement> lb();
+            ListBuffer<JCStatement> outer = new ListBuffer<JCStatement>();
             Name tempForFailVariable = currentForFailVariable;
             try {
                 // Install the outer substitutions
@@ -2568,7 +2568,7 @@ public class StatementTransformer extends AbstractTransformer {
             List<JCStatement> stmts = transformBlock(stmt.getForClause().getBlock());
             currentForClause = prevControlClause;
             
-            return ListBuffer.<JCStatement>lb().appendList(transformIterableIteration(stmt,
+            return new ListBuffer<JCStatement>().appendList(transformIterableIteration(stmt,
                     this.label,
                     elem_name, 
                     iteratorVarName,
@@ -2620,7 +2620,7 @@ public class StatementTransformer extends AbstractTransformer {
             List<JCStatement> bodyStmts,
             boolean allowArrayOpt, boolean allowArraySeqOpt) {
         Type iteratorElementType = iteratedType;
-        ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+        ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
         
         // TODO Only when the iterable *could be* an array (e.g. if static type is Iterable, but not if static type is Sequence)
         // TODO Need to use naming.Infix for the hidden members of Array
@@ -2672,7 +2672,7 @@ public class StatementTransformer extends AbstractTransformer {
             at(node);
             result.append(makeVar(arrayIndex, make().Type(syms().intType), make().Literal(0)));
             result.append(makeVar(FINAL, arrayLength, make().Type(syms().intType), null));
-            ListBuffer<JCStatement> whenTupleOrArray = ListBuffer.<JCTree.JCStatement>lb();
+            ListBuffer<JCStatement> whenTupleOrArray = new ListBuffer<JCStatement>();
             whenTupleOrArray.append(make().Exec(make().Assign(
                     arrayLength.makeIdent(),
                     make().TypeCast(make().Type(syms().intType),
@@ -2682,7 +2682,7 @@ public class StatementTransformer extends AbstractTransformer {
                     						"getSize"),
                     				List.<JCExpression>nil())))));
 
-            ListBuffer<JCStatement> whenIterable = ListBuffer.<JCTree.JCStatement>lb();
+            ListBuffer<JCStatement> whenIterable = new ListBuffer<JCStatement>();
             whenIterable.append(make().Exec(make().Assign(
                     arrayLength.makeIdent(),
                     make().Literal(0))));
@@ -2710,7 +2710,7 @@ public class StatementTransformer extends AbstractTransformer {
         // .ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
         result.append(iteratorDecl);
         
-        ListBuffer<JCStatement> loopBody = ListBuffer.<JCStatement>lb();
+        ListBuffer<JCStatement> loopBody = new ListBuffer<JCStatement>();
         
         if(optForArray || optForTuple) {
         	JCExpression cond;
@@ -2856,7 +2856,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected ListBuffer<JCStatement> transformForClause() {
-            ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
             at(span);
             // Generate variable decls we'll need
             prelude(result);
@@ -3430,7 +3430,7 @@ public class StatementTransformer extends AbstractTransformer {
     
     // FIXME There is a similar implementation in ClassGen!
     public List<JCStatement> transform(Tree.AttributeDeclaration decl) {
-        ListBuffer<JCStatement> result = ListBuffer.<JCStatement> lb();
+        ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
         // If the attribute is really from a parameter then don't generate a local variable
         Parameter parameter = CodegenUtil.findParamForDecl(decl);
         if (parameter == null) {
@@ -3842,7 +3842,7 @@ public class StatementTransformer extends AbstractTransformer {
      */
     private List<JCCatch> transformCatchesPolymorphic(
             java.util.List<Tree.CatchClause> catchClauses) {
-        final ListBuffer<JCCatch> catches = ListBuffer.<JCCatch>lb();
+        final ListBuffer<JCCatch> catches = new ListBuffer<JCCatch>();
         for (Tree.CatchClause catchClause : catchClauses) {
             at(catchClause);
             Tree.Variable variable = catchClause.getCatchVariable().getVariable();
@@ -4199,7 +4199,7 @@ public class StatementTransformer extends AbstractTransformer {
                 String tmpVar, Tree.Term outerExpression, Type expectedType, 
                 JCExpression switchExpr) {
             Name label = names().fromString("switch_" + gen().visitor.lv.getSwitchId(switchClause));
-            ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
+            ListBuffer<JCCase> cases = new ListBuffer<JCCase>();
             for (Tree.CaseClause caseClause : getCaseClauses(switchClause, caseList)) {
                 if (getSingletonNullCase(caseClause) != null) {
                     continue;

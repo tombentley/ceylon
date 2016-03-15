@@ -199,7 +199,7 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder modelAnnotations(List<JCAnnotation> annotations) {
         if (annotations != null) {
             if (this.modelAnnotations == null) {
-                this.modelAnnotations = ListBuffer.lb();
+                this.modelAnnotations = new ListBuffer<JCAnnotation>();
             }
             this.modelAnnotations.appendList(annotations);
         }
@@ -209,7 +209,7 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder classAnnotations(List<JCAnnotation> annotations) {
         if (annotations != null) {
             if (this.classAnnotations == null) {
-                this.classAnnotations = ListBuffer.lb();
+                this.classAnnotations = new ListBuffer<JCAnnotation>();
             }
             this.classAnnotations.appendList(annotations);
         }
@@ -219,7 +219,7 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder fieldAnnotations(List<JCAnnotation> annotations) {
         if (annotations != null) {
             if (this.fieldAnnotations == null) {
-                this.fieldAnnotations = ListBuffer.lb();
+                this.fieldAnnotations = new ListBuffer<JCAnnotation>();
             }
             this.fieldAnnotations.appendList(annotations);
         }
@@ -229,7 +229,7 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder userAnnotations(List<JCAnnotation> annotations) {
         if (annotations != null) {
             if (this.userAnnotations == null) {
-                this.userAnnotations = ListBuffer.lb();
+                this.userAnnotations = new ListBuffer<JCAnnotation>();
             }
             this.userAnnotations.appendList(annotations);
         }
@@ -239,7 +239,7 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder userAnnotationsSetter(List<JCAnnotation> annotations) {
         if (annotations != null) {
             if (this.userAnnotationsSetter == null) {
-                this.userAnnotationsSetter = ListBuffer.lb();
+                this.userAnnotationsSetter = new ListBuffer<JCAnnotation>();
             }
             this.userAnnotationsSetter.appendList(annotations);
         }
@@ -251,7 +251,7 @@ public class AttributeDefinitionBuilder {
      * @return the generated class tree, to be added to the appropriate {@link JCTree.JCCompilationUnit}.
      */
     public List<JCTree> build() {
-        ListBuffer<JCTree> defs = ListBuffer.lb();
+        ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
         appendDefinitionsTo(defs);
         if (javaClassName != null) {
             classBuilder.getInitBuilder().modifiers(Flags.PRIVATE);

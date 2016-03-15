@@ -158,7 +158,7 @@ public class ParameterDefinitionBuilder {
     public ParameterDefinitionBuilder userAnnotations(List<JCAnnotation> annos) {
         if (annos != null) {
             if (this.userAnnotations == null) {
-                this.userAnnotations = ListBuffer.lb();
+                this.userAnnotations = new ListBuffer<JCAnnotation>();
             }
             this.userAnnotations.appendList(annos);
         }
@@ -168,7 +168,7 @@ public class ParameterDefinitionBuilder {
     public ParameterDefinitionBuilder modelAnnotations(java.util.List<Annotation> annos) {
         if (annos != null) {
             if (this.modelAnnotations == null) {
-                this.modelAnnotations = ListBuffer.lb();
+                this.modelAnnotations = new ListBuffer<JCAnnotation>();
             }
             this.modelAnnotations.appendList(gen.makeAtAnnotations(annos));
         }
@@ -224,7 +224,7 @@ public class ParameterDefinitionBuilder {
             throw new BugException("already built");
         }
         built = true;
-        ListBuffer<JCAnnotation> annots = ListBuffer.lb();
+        ListBuffer<JCAnnotation> annots = new ListBuffer<JCAnnotation>();
         if (Annotations.includeModel(annotationFlags)) {
             annots.appendList(gen.makeAtName(name));
             if (functionalParameterName != null) {

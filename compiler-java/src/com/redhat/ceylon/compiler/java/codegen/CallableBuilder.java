@@ -179,7 +179,7 @@ public class CallableBuilder {
      */
     public static JCExpression methodReference(CeylonTransformer gen, 
             final Tree.StaticMemberOrTypeExpression forwardCallTo, ParameterList parameterList) {
-        ListBuffer<JCStatement> letStmts = ListBuffer.<JCTree.JCStatement>lb();
+        ListBuffer<JCStatement> letStmts = new ListBuffer<JCStatement>();
         CallableBuilder cb = new CallableBuilder(gen, forwardCallTo, forwardCallTo.getTypeModel(), parameterList);
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
         Naming.SyntheticName instanceFieldName;
@@ -330,7 +330,7 @@ public class CallableBuilder {
         } else {
             throw BugException.unhandledDeclarationCase((Declaration)methodClassOrCtor, qmte);
         }
-        ListBuffer<ExpressionAndType> reified = ListBuffer.lb();
+        ListBuffer<ExpressionAndType> reified = new ListBuffer<ExpressionAndType>();
         
         DirectInvocation.addReifiedArguments(gen, producedReference, reified);
         for (ExpressionAndType reifiedArgument : reified) {
@@ -1105,7 +1105,7 @@ public class CallableBuilder {
         protected final int makeSequencedArgument(final int arity,
                 ListBuffer<JCStatement> stmts, ListBuffer<JCExpression> args,
                 int a) {
-            ListBuffer<JCExpression> varargs = ListBuffer.<JCExpression>lb();
+            ListBuffer<JCExpression> varargs = new ListBuffer<JCExpression>();
             for (; a < arity; a++) {
                 if (arity < numParams - 1) {
                     Parameter param1 = paramLists.getParameters().get(Math.min(a, numParams-1));
@@ -1177,7 +1177,7 @@ public class CallableBuilder {
                 return null;
             }
             ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-            ListBuffer<JCExpression> args = ListBuffer.lb();
+            ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
             if (arity <= CALLABLE_MAX_FIZED_ARITY) {
                 case3(arity, stmts, args);
             } else { 
@@ -1230,12 +1230,12 @@ public class CallableBuilder {
                 makeParameterArgument(arity1, stmts, args, a);
                 a++;
             }
-            ListBuffer<JCExpression> lb = ListBuffer.lb();
+            ListBuffer<JCExpression> lb = new ListBuffer<JCExpression>();
             for (; a < arity1-1 && a < CALLABLE_MAX_FIZED_ARITY; a++) {
                 Parameter param = paramLists.getParameters().get(Math.min(a, numParams-1));
                 lb.append(makeParameterExpr(param, a, getVariadicIteratedType(), false, false));
             }
-            ListBuffer<JCExpression> spreadCallArgs = ListBuffer.lb();
+            ListBuffer<JCExpression> spreadCallArgs = new ListBuffer<JCExpression>();
             spreadCallArgs.append(gen.makeReifiedTypeArgument(getVariadicIteratedType()));
             if (arity1 > CALLABLE_MAX_FIZED_ARITY+1) {
                 spreadCallArgs.append(gen.make().Literal(getMinimumArguments()));
@@ -1256,7 +1256,7 @@ public class CallableBuilder {
                 return null;
             }
             ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
-            ListBuffer<JCExpression> args = ListBuffer.lb();
+            ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
             if (arity <= CALLABLE_MAX_FIZED_ARITY) {
                 if (arity1 <  getMinimumParameters()) {
                     // We need to extract some arguments from the sequential parameter
@@ -1332,12 +1332,12 @@ public class CallableBuilder {
                 }
                 makeParameterArgument(arity, stmts, args, a);
             }
-            ListBuffer<JCExpression> variadicElements = ListBuffer.lb();
+            ListBuffer<JCExpression> variadicElements = new ListBuffer<JCExpression>();
             for (; a < arity; a++) {
                 Parameter param = paramLists.getParameters().get(Math.min(a, numParams-1));
                 variadicElements.append(makeParameterExpr(param, a, getVariadicIteratedType(), false, false));
             }
-            ListBuffer<JCExpression> spreadCallArgs = ListBuffer.lb();
+            ListBuffer<JCExpression> spreadCallArgs = new ListBuffer<JCExpression>();
             spreadCallArgs.append(gen.makeReifiedTypeArgument(getVariadicIteratedType()));
             if (arity > CALLABLE_MAX_FIZED_ARITY) {
                 spreadCallArgs.append(gen.make().Literal(getMinimumArguments()));
@@ -1492,7 +1492,7 @@ public class CallableBuilder {
     
     private CallableBuilder parameterDefaultValueMethods(Tree.ParameterList parameterListTree) {
         if (parameterDefaultValueMethods == null) {
-            parameterDefaultValueMethods = ListBuffer.lb();
+            parameterDefaultValueMethods = new ListBuffer<MethodDefinitionBuilder>();
         }
         for(Tree.Parameter p : parameterListTree.getParameters()){
             if(Decl.getDefaultArgument(p) != null){
@@ -1585,7 +1585,7 @@ public class CallableBuilder {
             pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().ceylonTypeDescriptorType)), null);
             typedApply.parameter(pdb);
         }
-        ListBuffer<JCTypeParameter> typeParameters = ListBuffer.<JCTypeParameter>lb();
+        ListBuffer<JCTypeParameter> typeParameters = new ListBuffer<JCTypeParameter>();
         for (TypeParameter typeParameter : typeModel.getDeclaration().getTypeParameters()) {
             Type typeArgument = typeModel.getTypeArguments().get(typeParameter);
             typeParameters.add(gen.makeTypeParameter(typeParameter, null));

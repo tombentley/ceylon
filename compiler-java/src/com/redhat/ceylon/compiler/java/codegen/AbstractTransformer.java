@@ -658,7 +658,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     private JCExpression makeLetExpr(String varBaseName, List<JCStatement> statements, JCExpression... args) {
         String varName = null;
-        ListBuffer<JCStatement> decls = ListBuffer.lb();
+        ListBuffer<JCStatement> decls = new ListBuffer<JCStatement>();
         int i;
         for (i = 0; (i + 1) < args.length; i += 2) {
             JCExpression typeExpr = args[i];
@@ -3585,7 +3585,7 @@ public abstract class AbstractTransformer implements Transformation {
         String name = serialiseTypeSignature(type);
         boolean erased = hasTypeErased || hasErasure(type);
         // Add the original type to the annotations
-        ListBuffer<JCExpression> annotationArgs = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> annotationArgs = new ListBuffer<JCExpression>();
         annotationArgs.add(
                 make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name)));
         if (erased) {
@@ -3887,7 +3887,7 @@ public abstract class AbstractTransformer implements Transformation {
                         .type(make().Type(syms().intType), null));
                 JCSwitch swtch;
                 try (SavedPosition sp = noPosition()) {
-                    ListBuffer<JCCase> cases = ListBuffer.<JCCase>lb();
+                    ListBuffer<JCCase> cases = new ListBuffer<JCCase>();
                 
                     i = 0;
                     for (JCStatement e : returns) {
@@ -4966,7 +4966,7 @@ public abstract class AbstractTransformer implements Transformation {
             return typeArguments(((Generic)method).getTypeParameters(), method.getType().getTypeArguments());
         }
         else {
-            return ListBuffer.<JCExpression>lb().toList();
+            return new ListBuffer<JCExpression>().toList();
         }
     }
     
@@ -4975,7 +4975,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     final List<JCExpression> typeArguments(java.util.List<TypeParameter> typeParameters, Map<TypeParameter, Type> typeArguments) {
-        ListBuffer<JCExpression> typeArgs = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
         for (TypeParameter tp : typeParameters) {
             Type type = typeArguments.get(tp);
             if (type != null) {

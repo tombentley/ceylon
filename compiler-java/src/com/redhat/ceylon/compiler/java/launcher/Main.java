@@ -715,7 +715,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
         Iterable<File> resdirs = (Iterable<File>) ((JavacFileManager)fileManager).getLocation(CeylonLocation.RESOURCE_PATH);
         SourceArgumentsResolver resolver = new SourceArgumentsResolver(srcdirs, resdirs, Constants.CEYLON_SUFFIX, Constants.JAVA_SUFFIX);
         resolver.parse(classnames.toList());
-        ListBuffer<File> filenames = ListBuffer.<File>lb();
+        ListBuffer<File> filenames = new ListBuffer<File>();
         filenames.addAll(f);
         filenames.addAll(resolver.getSourceFiles());
         filenames.addAll(resolver.getResourceFiles());

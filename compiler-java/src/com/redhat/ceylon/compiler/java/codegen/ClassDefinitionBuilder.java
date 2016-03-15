@@ -81,17 +81,17 @@ public class ClassDefinitionBuilder {
      */
     private ClassOrInterface forDefinition;
 
-    private final ListBuffer<JCExpression> satisfies = ListBuffer.lb();
-    private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
-    private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
+    private final ListBuffer<JCExpression> satisfies = new ListBuffer<JCExpression>();
+    private final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
+    private final ListBuffer<JCExpression> typeParamAnnotations = new ListBuffer<JCExpression>();
     
-    private final ListBuffer<JCAnnotation> annotations = ListBuffer.lb();
+    private final ListBuffer<JCAnnotation> annotations = new ListBuffer<JCAnnotation>();
     
-    private final ListBuffer<MethodDefinitionBuilder> constructors = ListBuffer.lb();
-    private final ListBuffer<JCTree> defs = ListBuffer.lb();
+    private final ListBuffer<MethodDefinitionBuilder> constructors = new ListBuffer<MethodDefinitionBuilder>();
+    private final ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
     private ClassDefinitionBuilder concreteInterfaceMemberDefs;
-    private final ListBuffer<JCTree> before = ListBuffer.lb();
-    private final ListBuffer<JCTree> after = ListBuffer.lb();
+    private final ListBuffer<JCTree> before = new ListBuffer<JCTree>();
+    private final ListBuffer<JCTree> after = new ListBuffer<JCTree>();
     
 
     private boolean built = false;
@@ -179,7 +179,7 @@ public class ClassDefinitionBuilder {
         }
         built = true;
         
-        ListBuffer<JCTree> defs = ListBuffer.lb();
+        ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
         appendDefinitionsTo(defs);
         if (!typeParamAnnotations.isEmpty() || typeParams.size() != typeParamAnnotations.size()) {
             annotations(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
@@ -192,7 +192,7 @@ public class ClassDefinitionBuilder {
                 getSuperclass(this.extendingType),
                 satisfies.toList(),
                 defs.toList());
-        ListBuffer<JCTree> klasses = ListBuffer.<JCTree>lb();
+        ListBuffer<JCTree> klasses = new ListBuffer<JCTree>();
         
         // Generate a companion class if we're building an interface
         // or the companion actually has some content 

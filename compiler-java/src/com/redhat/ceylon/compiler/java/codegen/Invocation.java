@@ -1238,7 +1238,7 @@ class CallableSpecifierInvocation extends Invocation {
 class NamedArgumentInvocation extends Invocation {
     
     private final Tree.NamedArgumentList namedArgumentList;
-    private final ListBuffer<JCStatement> vars = ListBuffer.lb();
+    private final ListBuffer<JCStatement> vars = new ListBuffer<JCStatement>();
     private final Naming.SyntheticName callVarName;
     private final Naming.SyntheticName varBaseName;
     private final Set<String> argNames = new HashSet<String>();
@@ -1373,7 +1373,7 @@ class NamedArgumentInvocation extends Invocation {
     // Make a list of ($arg0, $arg1, ... , $argN)
     // or ($arg$this$, $arg0, $arg1, ... , $argN)
     private List<JCExpression> makeVarRefArgumentList(Parameter param) {
-        ListBuffer<JCExpression> names = ListBuffer.<JCExpression> lb();
+        ListBuffer<JCExpression> names = new ListBuffer<JCExpression>();
         if (!Strategy.defaultParameterMethodStatic(getPrimaryDeclaration())
                 && Strategy.defaultParameterMethodTakesThis(param.getModel())) {
             names.append(varBaseName.suffixedBy(Suffix.$argthis$).makeIdent());
@@ -1583,7 +1583,7 @@ class NamedArgumentInvocation extends Invocation {
     }
     
     private ListBuffer<JCStatement> toStmts(Tree.NamedArgument namedArg, final List<JCTree> listOfStatements) {
-        final ListBuffer<JCStatement> result = ListBuffer.<JCStatement>lb();
+        final ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
         for (JCTree tree : listOfStatements) {
             if (tree instanceof JCStatement) {
                 result.append((JCStatement)tree);

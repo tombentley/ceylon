@@ -2947,7 +2947,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private final List<ExpressionAndType> transformArguments(Invocation invocation,
             TransformedInvocationPrimary transformedPrimary, CallBuilder callBuilder) {
-        ListBuffer<ExpressionAndType> result = ListBuffer.<ExpressionAndType>lb();
+        ListBuffer<ExpressionAndType> result = new ListBuffer<ExpressionAndType>();
         withinInvocation(false);
         appendImplicitArguments(invocation, transformedPrimary, result);
         // Explicit arguments
@@ -2999,7 +2999,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Type iteratedType = typeFact().getObjectType();
         // the single spread argument which is allowed
         JCExpression rest = null;
-        ListBuffer<JCExpression> initial = ListBuffer.<JCExpression>lb();
+        ListBuffer<JCExpression> initial = new ListBuffer<JCExpression>();
         for (int ii = 0; ii < invocation.getNumArguments(); ii++) {
             if (invocation.isArgumentSpread(ii)) {
                 rest = invocation.getTransformedArgumentExpression(ii);
@@ -4163,7 +4163,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         try {
             Naming.SyntheticName varBaseName = naming.alias("spread");
-            ListBuffer<JCStatement> letStmts = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCStatement> letStmts = new ListBuffer<JCStatement>();
             final Naming.SyntheticName srcIterableName;
             if (spreadMethodReferenceInner) {
                 // use the var we initialized in the outer
@@ -4447,7 +4447,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             callBuilder.instantiate(
                     gen.makeJavaType(((Class)methodOrClass).getType(), JT_RAW | JT_NO_PRIMITIVES));
         }
-        ListBuffer<ExpressionAndType> reified = ListBuffer.lb();
+        ListBuffer<ExpressionAndType> reified = new ListBuffer<ExpressionAndType>();
         
         DirectInvocation.addReifiedArguments(gen, producedReference, reified);
         for (ExpressionAndType reifiedArgument : reified) {
@@ -4892,7 +4892,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && ((TypedDeclaration)decl).getType().isTypeConstructor()
                 && !expr.getTypeArguments().getTypeModels().isEmpty()) {
             // applying a type constructor
-            ListBuffer<JCExpression> tds = ListBuffer.lb();
+            ListBuffer<JCExpression> tds = new ListBuffer<JCExpression>();
             for (Type t : expr.getTypeArguments().getTypeModels()) {
                 tds.add(makeReifiedTypeArgument(t));
             }
@@ -5701,7 +5701,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             ListBuffer<JCStatement> makeContext(ExpressionTransformer gen, ComprehensionTransformation ct,
                     Tree.ForIterator forIterator,
                     SyntheticName iterVar, SyntheticName itemVar, SyntheticName tmpItem, ListBuffer<JCStatement> elseBody) {
-                ListBuffer<JCStatement> contextBody = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
               //Assign the next item to an Object variable
                 contextBody.add(gen.make().VarDef(gen.make().Modifiers(Flags.FINAL), tmpItem.asName(),
                         gen.makeJavaType(gen.typeFact().getObjectType()),
@@ -5737,7 +5737,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Tree.ForIterator forIterator, 
                     SyntheticName iterVar, SyntheticName itemVar, SyntheticName tmpItem,
                     ListBuffer<JCStatement> elseBody) {
-                ListBuffer<JCStatement> contextBody = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
                 contextBody.add(gen.make().Exec(gen.make().Assign(itemVar.suffixedBy(Suffix.$exhausted$).makeIdent(),
                         gen.make().Unary(JCTree.Tag.NOT, gen.make().Apply(null, gen.makeSelect(iterVar.makeIdent(), "hasNext"), 
                                 List.<JCExpression>nil())))));
@@ -5785,7 +5785,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     SyntheticName iterVar,
                     JCExpression iterableExpr) {
                 SyntheticName arrayVar = arrayVar(gen, ct);
-                ListBuffer<JCStatement> block = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> block = new ListBuffer<JCStatement>();
                 ct.fields.add(gen.make().VarDef(gen.make().Modifiers(Flags.PRIVATE), iterVar.asName(), gen.make().Type(gen.syms().intType),
                         null));
                 ct.fields.add(gen.make().VarDef(gen.make().Modifiers(Flags.PRIVATE), arrayVar.asName(), makeIteratorType(gen, iterType),
@@ -5817,7 +5817,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     Tree.ForIterator forIterator,
                     SyntheticName iterVar, SyntheticName itemVar, SyntheticName tmpItem,
                     ListBuffer<JCStatement> elseBody) {
-                ListBuffer<JCStatement> contextBody = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> contextBody = new ListBuffer<JCStatement>();
                 Tree.SpecifierExpression specexpr = forIterator.getSpecifierExpression();
                 Type iterType = specexpr.getExpression().getTypeModel();
                 SyntheticName arrayVar = arrayVar(gen, ct);
@@ -5877,7 +5877,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 ComprehensionTransformation ct,
                 Type iterType, SyntheticName iterVar,
                 JCExpression iterableExpr) {
-            ListBuffer<JCStatement> block = ListBuffer.<JCStatement>lb();
+            ListBuffer<JCStatement> block = new ListBuffer<JCStatement>();
             ct.fields.add(gen.make().VarDef(gen.make().Modifiers(Flags.PRIVATE), iterVar.asName(), makeIteratorType(gen, iterType), null));
             block.appendList(List.<JCStatement>of(
                     gen.make().If(gen.make().Binary(JCTree.Tag.NE, iterVar.makeIdent(), gen.makeNull()),
@@ -5920,7 +5920,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // the variable captured by whatever gets transformed there holds the value
         // at *that point* on the iteration, and not the (variable) value of 
         // the iterator. See #986, #2304
-        private ListBuffer<VarDefBuilder> valueCaptures = ListBuffer.<VarDefBuilder>lb();
+        private ListBuffer<VarDefBuilder> valueCaptures = new ListBuffer<VarDefBuilder>();
         public ComprehensionTransformation(final Tree.Comprehension comp, Type elementType) {
             this.comp = comp;
             targetIterType = typeFact().getIterableType(elementType);
@@ -6053,7 +6053,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         class IfComprehensionCondList extends CondList {
 
-            private final ListBuffer<JCStatement> varDecls = ListBuffer.lb();
+            private final ListBuffer<JCStatement> varDecls = new ListBuffer<JCStatement>();
             /**
              * A list of statements that are placed in the main body, before the conditions.
              */
@@ -6157,7 +6157,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             public List<JCStatement> getResult() {
                 List<JCStatement> stmts = transformList(conditions);
-                ListBuffer<JCStatement> result = ListBuffer.lb();
+                ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
                 result.appendList(preCheck);
                 result.appendList(varDecls);
                 result.appendList(stmts);
@@ -6252,7 +6252,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 //The subsequent iterators need to be inside a method,
                 //in case they depend on the current element of the previous iterator
-                ListBuffer<JCStatement> block = ListBuffer.<JCStatement>lb();
+                ListBuffer<JCStatement> block = new ListBuffer<JCStatement>();
                 if (lastIteratorCtxtName != null) {
                     block.append(make().If(lastIteratorCtxtName.suffixedBy(Suffix.$exhausted$).makeIdent(),
                             make().Return(makeBoolean(false)),
@@ -6744,7 +6744,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
         }
-        ListBuffer<JCAnnotation> result = ListBuffer.lb();
+        ListBuffer<JCAnnotation> result = new ListBuffer<JCAnnotation>();
         for (Class annotationClass : annotationSet.keySet()) {
             ListBuffer<JCAnnotation> annotations = annotationSet.get(annotationClass);
             if (isSequencedAnnotation(annotationClass)) {
@@ -6880,7 +6880,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCAnnotation annotation, Class annotationClass) {
         ListBuffer<JCAnnotation> list = annotationSet.get(annotationClass);
         if (list == null) {
-            list = ListBuffer.lb();
+            list = new ListBuffer<JCAnnotation>();
         }
         annotationSet.put(annotationClass, list.append(annotation));
     }

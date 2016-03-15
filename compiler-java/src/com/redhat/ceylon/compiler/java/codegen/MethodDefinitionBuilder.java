@@ -77,15 +77,15 @@ public class MethodDefinitionBuilder
     private JCExpression resultTypeExpr;
     private List<JCAnnotation> resultTypeAnnos;
     
-    private final ListBuffer<JCAnnotation> userAnnotations = ListBuffer.lb();
-    private final ListBuffer<JCAnnotation> modelAnnotations = ListBuffer.lb();
+    private final ListBuffer<JCAnnotation> userAnnotations = new ListBuffer<JCAnnotation>();
+    private final ListBuffer<JCAnnotation> modelAnnotations = new ListBuffer<JCAnnotation>();
     
-    private final ListBuffer<JCTypeParameter> typeParams = ListBuffer.lb();
-    private final ListBuffer<JCExpression> typeParamAnnotations = ListBuffer.lb();
+    private final ListBuffer<JCTypeParameter> typeParams = new ListBuffer<JCTypeParameter>();
+    private final ListBuffer<JCExpression> typeParamAnnotations = new ListBuffer<JCExpression>();
     
-    private final ListBuffer<ParameterDefinitionBuilder> params = ListBuffer.lb();
+    private final ListBuffer<ParameterDefinitionBuilder> params = new ListBuffer<ParameterDefinitionBuilder>();
     
-    private ListBuffer<JCStatement> body = ListBuffer.lb();
+    private ListBuffer<JCStatement> body = new ListBuffer<JCStatement>();
 
     private int annotationFlags = Annotations.MODEL_AND_USER;
     
@@ -156,7 +156,7 @@ public class MethodDefinitionBuilder
     }
     
     private ListBuffer<JCAnnotation> getAnnotations() {
-        ListBuffer<JCAnnotation> result = ListBuffer.lb();
+        ListBuffer<JCAnnotation> result = new ListBuffer<JCAnnotation>();
         if (Annotations.includeUser(this.annotationFlags)) {
             result.appendList(this.userAnnotations);
         }
@@ -200,7 +200,7 @@ public class MethodDefinitionBuilder
         if (haveLocation) {
             gen.at(location);
         }
-        ListBuffer<JCVariableDecl> params = ListBuffer.lb();
+        ListBuffer<JCVariableDecl> params = new ListBuffer<JCVariableDecl>();
         for (ParameterDefinitionBuilder pdb : this.params) {
             if (!Annotations.includeModel(this.annotationFlags)) {
                 pdb.noModelAnnotations();

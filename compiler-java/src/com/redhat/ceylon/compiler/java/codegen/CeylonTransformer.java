@@ -303,7 +303,7 @@ public class CeylonTransformer extends AbstractTransformer {
         t.visit(visitor);
         
         
-        ListBuffer<JCTree> result = ListBuffer.lb();
+        ListBuffer<JCTree> result = new ListBuffer<JCTree>();
         result.appendList((ListBuffer<JCTree>) visitor.getResult());
         result.appendList(builder.build());
         

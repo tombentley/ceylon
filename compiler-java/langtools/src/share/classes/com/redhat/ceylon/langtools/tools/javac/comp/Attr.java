@@ -5051,7 +5051,7 @@ public class Attr extends JCTree.Visitor {
 
     //where
     private List<Type> bsmStaticArgToTypes(List<Object> args) {
-        ListBuffer<Type> argtypes = ListBuffer.lb();
+        ListBuffer<Type> argtypes = new ListBuffer<Type>();
         for (Object arg : args) {
             argtypes.append(bsmStaticArgToType(arg));
         }
