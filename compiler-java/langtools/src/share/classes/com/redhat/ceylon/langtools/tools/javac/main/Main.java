@@ -276,17 +276,20 @@ public class Main {
             return null;
 
         String sourceString = options.get(SOURCE);
-        if (sourceString == null) {
+        String targetString = options.get(TARGET);
+        
+        if (sourceString == null
+                && targetString == null) {
             sourceString = "7";
-            options.put(Option.SOURCE, sourceString);
+            options.put(SOURCE, sourceString);
         }
         Source source = (sourceString != null)
             ? Source.lookup(sourceString)
             : Source.JDK1_7;
-        String targetString = options.get(TARGET);
+        
         if (targetString == null) {
             targetString = "7";
-            options.put(Option.TARGET, targetString);
+            options.put(TARGET, targetString);
         }
         Target target = (targetString != null)
             ? Target.lookup(targetString)

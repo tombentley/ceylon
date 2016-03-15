@@ -447,12 +447,14 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             return null;
 
         String sourceString = options.get("-source");
-        if (sourceString == null) {
+        String targetString = options.get("-target");
+        if (sourceString == null
+                && targetString == null) {
             sourceString = "7";
             options.put(Option.SOURCE, sourceString);
         }
         Source source = (sourceString != null) ? Source.lookup(sourceString) : Source.DEFAULT;
-        String targetString = options.get("-target");
+        
         if (targetString == null) {
             targetString = "7";
             options.put(Option.TARGET, targetString);
