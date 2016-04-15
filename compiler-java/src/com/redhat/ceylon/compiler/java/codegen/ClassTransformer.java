@@ -1395,8 +1395,7 @@ public class ClassTransformer extends AbstractTransformer {
                     null,//node
                     null,//pl
                     parameterList,
-                    null,
-                    cls.getTypeParameters());
+                    null);
             instantiatorDeclCb.method(instBuilder);
         }
         if (!Decl.withinInterface(cls)
@@ -1408,8 +1407,7 @@ public class ClassTransformer extends AbstractTransformer {
                     node,
                     pl,
                     parameterList,
-                    null,
-                    cls.getTypeParameters());
+                    null);
             instantiatorImplCb.method(instBuilder);
         }
     }
@@ -1640,8 +1638,7 @@ public class ClassTransformer extends AbstractTransformer {
                                         null,//node
                                         null,//pl
                                         paramList.getModel(),
-                                        param.getParameterModel(),
-                                        cls.getTypeParameters());
+                                        param.getParameterModel());
                         instantiatorDeclCb.method(instBuilder);
                     }
                     if (!Decl.withinInterface(cls) || !cls.isFormal()) {
@@ -1651,8 +1648,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     node,
                                     paramList,
                                     paramList.getModel(),
-                                    param.getParameterModel(),
-                                    cls.getTypeParameters());
+                                    param.getParameterModel());
                         instantiatorImplCb.method(instBuilder);
                     } else {
                         addOverloadedConstructor  = true;
@@ -1673,8 +1669,7 @@ public class ClassTransformer extends AbstractTransformer {
                             node,
                             paramList,
                             paramList.getModel(),
-                            param.getParameterModel(),
-                            cls.getTypeParameters());
+                            param.getParameterModel());
                 }
             
             }
@@ -2476,7 +2471,6 @@ public class ClassTransformer extends AbstractTransformer {
             final TypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
             java.util.List<java.util.List<Type>> producedTypeParameterBounds = producedTypeParameterBounds(
                     typedMember, method);
-            final java.util.List<TypeParameter> typeParameters = method.getTypeParameters();
             final java.util.List<Parameter> parameters = method.getFirstParameterList().getParameters();
 
             for (Parameter param : parameters) {
@@ -2488,8 +2482,7 @@ public class ClassTransformer extends AbstractTransformer {
                             null,//node
                             null,//pl
                             method.getFirstParameterList(),
-                            param,
-                            typeParameters);
+                            param);
                     overload.modifiers(PUBLIC | ABSTRACT);
                     classBuilder.method(overload);
                 }
@@ -2810,8 +2803,7 @@ public class ClassTransformer extends AbstractTransformer {
                                             null,//node
                                             null,//pl
                                             subMethod.getFirstParameterList(),
-                                            param,
-                                            typeParameters);
+                                            param);
                                     classBuilder.method(overload);
                                 }
 
@@ -4189,7 +4181,7 @@ public class ClassTransformer extends AbstractTransformer {
         ListBuffer<MethodDefinitionBuilder> lb = transformMethod(model,
                 def,
                 true, true, true, List.<JCStatement>of(bridgingStmt),
-                DaoKind.STATIC,
+                DaoKind.BRIDGE_TO_STATIC,
                 !Strategy.defaultParameterMethodOnSelf(model));
         
         // Transform the methods again, and them adjust them to make them static
@@ -4199,8 +4191,7 @@ public class ClassTransformer extends AbstractTransformer {
         for (MethodDefinitionBuilder m :  transformMethod(model, 
                 def,
                 true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
-                refinedResultType 
-                    && !Decl.withinInterface(model.getRefinedDeclaration())? DaoKind.SUPER: DaoKind.THIS,
+                DaoKind.STATIC,
                 !Strategy.defaultParameterMethodOnSelf(model))) {
             if ((m.getModifiers() & DEFAULT) != 0) {
                 m.addModifiers(STATIC);
@@ -4270,7 +4261,9 @@ public class ClassTransformer extends AbstractTransformer {
                     
                     if (daoKind != DaoKind.COMPANION || 
                             haveBody) {
-                        lb.append(makeDefaultParameterOverload(!haveBody ? DaoKind.ABSTRACT : DaoKind.THIS,
+                        lb.append(makeDefaultParameterOverload(!haveBody ? DaoKind.ABSTRACT : 
+                            daoKind == DaoKind.BRIDGE_TO_STATIC || daoKind == DaoKind.STATIC ? daoKind 
+                                    : DaoKind.THIS,
                                 methodModel, 
                                 method, parameter));
                         hasOverloads = true;
@@ -4303,8 +4296,7 @@ public class ClassTransformer extends AbstractTransformer {
                         method,
                         method.getParameterLists().get(0),
                     parameterList.getModel(),
-                    null,
-                    methodModel.getTypeParameters());
+                    null);
             lb.append(canonicalMethod);
         }
         
@@ -4356,8 +4348,7 @@ public class ClassTransformer extends AbstractTransformer {
                     method,
                     parameterList,
                     parameterList.getModel(),
-                    null,
-                    methodModel.getTypeParameters());
+                    null);
             lb.append(bridgeToCanonical);
         } else {
             if (body != null) {
@@ -4384,8 +4375,7 @@ public class ClassTransformer extends AbstractTransformer {
                     method,
                     parameterList,
                     parameterList.getModel(),
-                parameter.getParameterModel(),
-                methodModel.getTypeParameters());
+                parameter.getParameterModel());
         overloadedMethod.location(null);
         return overloadedMethod;
     }
@@ -4693,6 +4683,7 @@ public class ClassTransformer extends AbstractTransformer {
         ABSTRACT,
         SUPER,
         COMPANION,
+        BRIDGE_TO_STATIC,
         STATIC
     }
     
@@ -4740,25 +4731,25 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        public void makeBody(
+        protected void makeBody(
                 MethodDefinitionBuilder overloadBuilder,
                 Node node,
                 Tree.ParameterList pl,
                 ParameterList parameterList,
-                Parameter currentParameter,
-                java.util.List<TypeParameter> typeParameterList) {
+                Parameter currentParameter) {
             switch (kind) {
             case ABSTRACT:
                 overloadBuilder.noBody();
                 overloadBuilder.addModifiers(ABSTRACT);
                 break;
+            case BRIDGE_TO_STATIC:
             case STATIC:
             case THIS:
             case COMPANION:
                 ListBuffer<JCExpression> delegateArgs = new ListBuffer<JCExpression>();
-                appendImplicitArgumentsDelegate(typeParameterList, delegateArgs);
+                appendImplicitArgumentsDelegate(delegateArgs);
                 ListBuffer<JCExpression> dpmArgs = new ListBuffer<JCExpression>();
-                appendImplicitArgumentsDpm(typeParameterList, dpmArgs);
+                appendImplicitArgumentsDpm(dpmArgs);
                 
                 ListBuffer<JCStatement> vars = new ListBuffer<JCStatement>();
                 
@@ -4873,25 +4864,53 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        protected void appendImplicitParameters(MethodDefinitionBuilder overloadBuilder, java.util.List<TypeParameter> typeParameterList) {
-            if(typeParameterList != null){
-                overloadBuilder.reifiedTypeParameters(typeParameterList);
+        /** 
+         * Appends any implicit parameters to the method.
+         * 
+         * By default reified type parameters are added for each type 
+         * parameter from {@link #getTypeParameters()}.
+         */
+        protected void appendImplicitParameters(MethodDefinitionBuilder overloadBuilder) {
+            if(getTypeParameters() != null){
+                overloadBuilder.reifiedTypeParameters(getTypeParameters());
             }
         }
         
-        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
+        /**
+         * Appends implicit arguments for the invocation of the 
+         * delegated method.
+         * 
+         * By default this appends a {@code $refied$...} for each 
+         * {@linkplain #getTypeParameters() type parameter}.
+         */
+        protected void appendImplicitArgumentsDelegate(
                 ListBuffer<JCExpression> args) {
-            if(typeParameterList != null){
+            if (kind == DaoKind.BRIDGE_TO_STATIC ||
+                    kind == DaoKind.STATIC) {
+                args.append(naming.makeThis());
+                /*for (TypeParameter tp : ((Interface)getModel().getContainer()).getTypeParameters()) {
+                    args.append(makeReifiedTypeArgument(tp.getType()));
+                }*/
+            }
+            
+            if(getTypeParameters() != null){
                 // we pass the reified type parameters along
-                for(TypeParameter tp : typeParameterList){
+                for(TypeParameter tp : getTypeParameters()){
                     args.append(makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
                 }
             }
         }
         
-        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
+        /**
+         * Appends implicit arguments for the invocation of the
+         * default parameter methods
+         * 
+         * By default this appends a {@code $refied$...} for each 
+         * {@linkplain #getTypeParameters() type parameter}.
+         */
+        protected void appendImplicitArgumentsDpm(
                 ListBuffer<JCExpression> args) {
-            appendImplicitArgumentsDelegate(typeParameterList, args);
+            appendImplicitArgumentsDelegate(args);
         }
         
         protected Type parameterType(MethodDefinitionBuilder overloadBuilder, Parameter parameterModel) {
@@ -4923,6 +4942,8 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         protected abstract Declaration getModel();
+        
+        protected abstract java.util.List<TypeParameter> getTypeParameters();
 
         protected JCExpression makeInvocation(ListBuffer<JCExpression> args) {
             final JCExpression methName = makeMethodName();
@@ -4942,9 +4963,9 @@ public class ClassTransformer extends AbstractTransformer {
                 Node node,
                 Tree.ParameterList pl,
                 ParameterList parameterList,
-                Parameter currentParameter,
-                java.util.List<TypeParameter> typeParameterList) {
-
+                Parameter currentParameter) {
+            
+            
             // Make the declaration
             // need annotations for BC, but the method isn't really there
             overloadBuilder.ignoreModelAnnotations();
@@ -4952,7 +4973,7 @@ public class ClassTransformer extends AbstractTransformer {
             resultType(overloadBuilder);
             typeParameters(overloadBuilder);
 
-            appendImplicitParameters(overloadBuilder, typeParameterList);
+            appendImplicitParameters(overloadBuilder);
             parameters(overloadBuilder, parameterList, currentParameter);
             
             // Make the body, but only if we want one. null means we want a formal method
@@ -4962,8 +4983,7 @@ public class ClassTransformer extends AbstractTransformer {
                     node,
                     pl,
                     parameterList,
-                    currentParameter,
-                    typeParameterList);
+                    currentParameter);
             
             return overloadBuilder;
         }
@@ -4984,6 +5004,11 @@ public class ClassTransformer extends AbstractTransformer {
         @Override
         protected Function getModel() {
             return method;
+        }
+        
+        @Override
+        protected final java.util.List<TypeParameter> getTypeParameters() {
+            return getModel().getTypeParameters();
         }
         
         @Override
@@ -5080,11 +5105,10 @@ public class ClassTransformer extends AbstractTransformer {
                 MethodDefinitionBuilder overloadBuilder,
                 Node node,
                 Tree.ParameterList pl,
-                ParameterList parameterList, Parameter currentParameter,
-                java.util.List<TypeParameter> typeParameterList) {
+                ParameterList parameterList, Parameter currentParameter) {
+            
             overloadBuilder.isOverride(true);
-            return super.makeOverload(overloadBuilder, node, pl, parameterList, currentParameter,
-                    typeParameterList);
+            return super.makeOverload(overloadBuilder, node, pl, parameterList, currentParameter);
         }
         
         
@@ -5114,13 +5138,12 @@ public class ClassTransformer extends AbstractTransformer {
          * Generates a canonical method
          */
         @Override
-        public MethodDefinitionBuilder makeOverload (
+        public final MethodDefinitionBuilder makeOverload (
                 MethodDefinitionBuilder overloadBuilder,
                 Node node,
                 Tree.ParameterList pl,
                 ParameterList parameterList,
-                Parameter currentParameter,
-                java.util.List<TypeParameter> typeParameterList) {
+                Parameter currentParameter) {
             
             // Make the declaration
             // need annotations for BC, but the method isn't really there
@@ -5129,7 +5152,7 @@ public class ClassTransformer extends AbstractTransformer {
             resultType(overloadBuilder);
             typeParameters(overloadBuilder);
             
-            appendImplicitParameters(overloadBuilder, typeParameterList);
+            appendImplicitParameters(overloadBuilder);
             parameters(overloadBuilder, parameterList, currentParameter);
             
             if (body != null) {
@@ -5163,14 +5186,13 @@ public class ClassTransformer extends AbstractTransformer {
                 Node node,
                 Tree.ParameterList pl,
                 ParameterList parameterList,
-                Parameter currentParameter,
-                java.util.List<TypeParameter> typeParameterList) {
+                Parameter currentParameter) {
+            
             makeBody(overloadBuilder,
                     node,
                     pl,
                     parameterList,
-                    currentParameter,
-                    typeParameterList);
+                    currentParameter);
                         
             return overloadBuilder;
         }
@@ -5202,8 +5224,13 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected void appendImplicitParameters(MethodDefinitionBuilder overloadBuilder,java.util.List<TypeParameter> typeParameterList) {
-            super.appendImplicitParameters(overloadBuilder, typeParameterList);
+        protected java.util.List<TypeParameter> getTypeParameters() {
+            return klass.getTypeParameters();
+        }
+        
+        @Override
+        protected void appendImplicitParameters(MethodDefinitionBuilder overloadBuilder) {
+            super.appendImplicitParameters(overloadBuilder);
             if (constructor != null) {
                 if (delegationConstructor) {
                     overloadBuilder.parameter(makeConstructorNameParameter(constructor, DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION));
@@ -5214,9 +5241,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
+        protected void appendImplicitArgumentsDelegate(
                 ListBuffer<JCExpression> args) {
-            super.appendImplicitArgumentsDelegate(typeParameterList, args);
+            super.appendImplicitArgumentsDelegate(args);
             if (constructor != null
                     && !Decl.isDefaultConstructor(constructor)) {
                 args.append(naming.makeUnquotedIdent(Unfix.$name$));
@@ -5224,9 +5251,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected void appendImplicitArgumentsDpm(java.util.List<TypeParameter> typeParameterList,
+        protected void appendImplicitArgumentsDpm(
                 ListBuffer<JCExpression> args) {
-            super.appendImplicitArgumentsDelegate(typeParameterList, args);
+            super.appendImplicitArgumentsDelegate(args);
         }
         
         @Override
@@ -5369,7 +5396,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         @Override
-        protected void appendImplicitArgumentsDelegate(java.util.List<TypeParameter> typeParameterList,
+        protected void appendImplicitArgumentsDelegate(
                 ListBuffer<JCExpression> args) {
             Type type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
             type = type.resolveAliases();
