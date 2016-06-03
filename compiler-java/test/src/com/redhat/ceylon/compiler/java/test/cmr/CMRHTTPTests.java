@@ -51,8 +51,8 @@ import com.sun.net.httpserver.HttpServer;
 
 public class CMRHTTPTests extends CompilerTests {
 
-    public CMRHTTPTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public CMRHTTPTests() {
+        super();
     }
 
     interface ExpectedError {}
