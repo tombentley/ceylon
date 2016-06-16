@@ -167,7 +167,8 @@ public class JarOutputRepositoryManager {
         		Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener) throws IOException{
             this.options = options;
             this.repoManager = repoManager;
-            this.carContext = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+            this.carContext = new ArtifactContext(null, module.getNameAsString(), module.getVersion(),
+                    "default".equals(options.get(Option.CEYLONINTERFACES)) ? ArtifactContext.CAR8 : ArtifactContext.CAR);
             this.log = log;
             this.cmrLog = new JavacLogger(options, Log.instance(ceyloncFileManager.getContext()));
             AbstractModelLoader modelLoader = CeylonModelLoader.instance(ceyloncFileManager.getContext());

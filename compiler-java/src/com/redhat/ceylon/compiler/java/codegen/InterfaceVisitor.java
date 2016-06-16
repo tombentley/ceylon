@@ -51,12 +51,12 @@ public class InterfaceVisitor extends Visitor {
 
     private Set<String> localCompanionClasses = new HashSet<String>();
     
-    Target target;
-
     private ClassOrInterface declaration;
     
-    public InterfaceVisitor(Target target) {
-        this.target = target;
+    private final boolean defaultInterfaces;
+    
+    public InterfaceVisitor(boolean defaultInterfaces) {
+        this.defaultInterfaces = defaultInterfaces;
     }
     
     private void collect(Node that, Interface model) {
@@ -126,7 +126,7 @@ public class InterfaceVisitor extends Visitor {
         
         if (model instanceof Interface &&
                 model.isToplevel() &&
-                target.compareTo(Target.JDK1_8) >= 0 && 
+                defaultInterfaces && 
                 !hasCompilerAnnotation(that.getCompilerAnnotations(), "compileUsing", "companion")) {
             // We might change this back if we find locals which capture the outer
             ((Interface)model).setUseDefaultMethods(true);
@@ -190,7 +190,7 @@ public class InterfaceVisitor extends Visitor {
     private boolean useDefaultMethods(ClassOrInterface model) {
         if (model instanceof Interface 
                 && model.isToplevel()
-                && target.compareTo(Target.JDK1_8) >= 0) {
+                && defaultInterfaces) {
             for (Declaration member : model.getMembers()) {
                 if (member instanceof ClassOrInterface) {
                     return false;

@@ -145,6 +145,7 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
     private Boolean pack200;
     private List<SuppressWarning> suppressWarnings = new ArrayList<SuppressWarning>(0);
     private boolean suppressAllWarnings = false;
+    private String target = "1.2";
     
     private List<File> compileList = new ArrayList<File>(2);
     private Set<Module> modules = null;
@@ -206,6 +207,11 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
 
     public Boolean getPack200() {
         return pack200;
+    }
+    
+    @OptionEquivalent("--target")
+    public void setTarget(String target) {
+        this.target = target;
     }
     
     /**
@@ -558,6 +564,9 @@ public class CeylonCompileAntTask extends LazyCeylonAntTask  {
 
         if (pack200!= null && pack200.booleanValue())
             appendOption(cmd, "--pack200");
+        
+        if (target!= null)
+            appendOptionArgument(cmd, "--target", target);
         
         if (suppressWarnings != null) {
             if (suppressAllWarnings) {

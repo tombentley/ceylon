@@ -89,13 +89,13 @@ public class MiscTests extends CompilerTests {
     @Test
     public void compileRuntime7(){
         String javaSourcePath = "../language/runtime-jdk7";
-        compileRuntime(javaSourcePath, "-source", "7", "-target", "7");
+        compileRuntime(javaSourcePath, "-source", "7", "-target", "7", "-interfaces", "companion");
     }
     
     @Test
     public void compileRuntime8(){
         String javaSourcePath = "../language/runtime-jdk8";
-        compileRuntime(javaSourcePath, "-source", "8", "-target", "8");
+        compileRuntime(javaSourcePath, "-source", "8", "-target", "8", "-interfaces", "default");
     }
     
     private void compileRuntime(String javaSourcePath, String... options){

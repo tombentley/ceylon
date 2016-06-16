@@ -157,7 +157,7 @@ public class CeylonEnter extends Enter {
     private SourceLanguage sourceLanguage;
     private StatusPrinter sp;
     private boolean hasJavaAndCeylonSources;
-    private Target target;
+    private boolean defaultInterfaces;
     
     protected CeylonEnter(Context context) {
         super(context);
@@ -186,7 +186,7 @@ public class CeylonEnter extends Enter {
         annotate = Annotate.instance(context);
         taskListener = context.get(TaskListener.class);
         sourceLanguage = SourceLanguage.instance(context);
-        target = Target.instance(context);
+        defaultInterfaces = "default".equals(options.get(Option.CEYLONINTERFACES));
 
         // now superclass init
         init(context);
@@ -590,7 +590,7 @@ public class CeylonEnter extends Enter {
         AnnotationModelVisitor amv = new AnnotationModelVisitor(gen);
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
         TypeParameterCaptureVisitor tpCaptureVisitor = new TypeParameterCaptureVisitor();
-        InterfaceVisitor localInterfaceVisitor = new InterfaceVisitor(target);
+        InterfaceVisitor localInterfaceVisitor = new InterfaceVisitor(defaultInterfaces);
         // Extra phases for the compiler
         
         i=1;

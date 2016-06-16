@@ -38,6 +38,7 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
 @SuppressWarnings("serial")
 public class ArtifactContext implements Serializable, ContentOptions {
     public static final String CAR = ".car";
+    public static final String CAR8 = "-jdk8.car";
     public static final String JAR = ".jar";
     public static final String JS_MODEL = "-model.js";
     public static final String JS = ".js";
@@ -61,7 +62,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     // NB: SHA1 and ZIP are not part of this list because they are supposed
     // to be "composed" with other suffixes
     private static final String fileSuffixes[] = {
-        CAR, JAR, JS_MODEL, JS, DART, DART_MODEL, CSO, RESOURCES, SRC,
+        CAR, CAR8, JAR, JS_MODEL, JS, DART, DART_MODEL, CSO, RESOURCES, SRC,
         LEGACY_SRC, DOCS, SCRIPTS_ZIPPED
     };
     

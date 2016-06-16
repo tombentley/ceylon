@@ -514,6 +514,20 @@ public enum Option {
     },
     CEYLONFLATCLASSPATH("-flat-classpath",  "opt.ceylonflatclasspath", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies", "opt.ceylonautoexportmavendependencies", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONINTERFACES("-interfaces",  "opt.arg.ceyloninterfaces", "opt.ceyloninterfaces", OptionKind.STANDARD, OptionGroup.CEYLON){
+        @Override
+        public boolean process(OptionHelper helper, String option, String arg) {
+            if (!"default".equals(arg)
+                    && !"companion".equals(arg)) {
+                helper.error("err.invalid.interfaces", arg);
+            }
+            if ("default".equals(arg)
+                    && "7".equals(helper.get(Option.TARGET))) {
+                helper.error("err.interfaces.target", arg);
+            }
+            return super.process(helper, option, arg);
+        }
+    },
     BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.HIDDEN, OptionGroup.CEYLON),
     
     // End of Ceylon options: Option parsing code depends on SOURCEFILE being 

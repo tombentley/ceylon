@@ -198,6 +198,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
+    private String target = "1.2";
     private ModuleSpec jdkProvider;
     {
         String jdkProvider = DefaultToolOptions.getCompilerJdkProvider();
@@ -235,6 +236,18 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Description("Launches the Ceylon module using a flat classpath.")
     public void setFlatClasspath(boolean flatClasspath) {
         this.flatClasspath = flatClasspath;
+    }
+    
+    @OptionArgument(argumentName="target")
+    @Description("Generate modules compatible with a previous release. "
+            + "Possible values: 1.2, 1.3. (default: 1.2)")
+    public void setTarget(String target) {
+        if ("1.2".equals(target)
+                || "1.3".equals(target)) {
+            this.target = target;
+        } else {
+            throw new IllegalArgumentException("only 1.2 or 1.3 are permitted");
+        }
     }
 
     @Option(longName="auto-export-maven-dependencies")
@@ -412,6 +425,27 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add("-cwd");
             arguments.add(cwd.getPath());
             validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.CEYLONCWD, "-cwd", cwd.getPath());
+        }
+        
+        switch(target) {
+        case "1.2":
+            arguments.add("-target");
+            arguments.add("7");
+            arguments.add("-source");
+            arguments.add("7");
+            arguments.add("-interfaces");
+            arguments.add("companion");
+            break;
+        case "1.3":
+            arguments.add("-target");
+            arguments.add("8");
+            arguments.add("-source");
+            arguments.add("8");
+            arguments.add("-interfaces");
+            arguments.add("default");
+            break;
+        default:
+            throw new RuntimeException("illegal --target");
         }
         
         if(jdkProvider != null){
