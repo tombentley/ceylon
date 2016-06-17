@@ -435,6 +435,11 @@ public class CeylonEnter extends Enter {
     }
 
     public void addOutputModuleToClassPath(Module module){
+        if (isBootstrap) {
+            // If we're bootstrapping then don't add any existing ceylon.language
+            // car to the classpath (bootstrap is always clean)
+            return;
+        }
         RepositoryManager repositoryManager = fileManager.getOutputRepositoryManager();
         ArtifactResult artifact = null;
         try {
