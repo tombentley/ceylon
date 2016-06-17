@@ -29,21 +29,6 @@ final class AnnotationClassFloat implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloat.$TypeDescriptor$;
     }
@@ -75,7 +60,7 @@ final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler
         (
             let
             {
-                double $ceylontmp$f$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$default$f();
+                final double $ceylontmp$f$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$default$f();
                 this($ceylontmp$f$0);
             }
             returning null;
@@ -91,21 +76,6 @@ final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler
     
     public static double $default$f() {
         return 3.141;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
     }
     
     @.java.lang.Override
@@ -131,7 +101,7 @@ final class annotationClassFloat_ {
         return (
             let
             {
-                double $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassFloat_.annotationClassFloat$f();
+                final double $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassFloat_.annotationClassFloat$f();
             }
             returning annotationClassFloat($ceylontmp$f$1);
         );

@@ -6,7 +6,7 @@ interface Bug6178 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy 
         (
             let
             {
-                boolean $ceylontmp$boolean$0 = method$boolean();
+                final boolean $ceylontmp$boolean$0 = method$boolean();
                 com$redhat$ceylon$compiler$java$test$issues$bug61xx$Bug6178$method$method$priv$$canonical$($ceylontmp$boolean$0);
             }
             returning null;

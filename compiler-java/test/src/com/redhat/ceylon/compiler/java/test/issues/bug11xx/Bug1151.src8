@@ -6,7 +6,7 @@ public interface Bug1151_A extends .com.redhat.ceylon.compiler.java.language.Obj
         return (
             let
             {
-                long $ceylontmp$a$0 = methodA$a();
+                final long $ceylontmp$a$0 = methodA$a();
             }
             returning methodA$canonical$($ceylontmp$a$0);
         );
@@ -28,7 +28,7 @@ public interface Bug1151_A extends .com.redhat.ceylon.compiler.java.language.Obj
         return (
             let
             {
-                long $ceylontmp$a$1 = methodA2$a();
+                final long $ceylontmp$a$1 = methodA2$a();
             }
             returning methodA2$priv$$canonical$($ceylontmp$a$1);
         );
@@ -50,7 +50,7 @@ public interface Bug1151_A extends .com.redhat.ceylon.compiler.java.language.Obj
         return (
             let
             {
-                long $ceylontmp$a$2 = methodA3$a();
+                final long $ceylontmp$a$2 = methodA3$a();
             }
             returning methodA3$priv$$canonical$($ceylontmp$a$2);
         );
@@ -78,7 +78,7 @@ public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model
         return (
             let
             {
-                long $ceylontmp$a$3 = methodB$a();
+                final long $ceylontmp$a$3 = methodB$a();
             }
             returning methodB$canonical$($ceylontmp$a$3);
         );
@@ -100,7 +100,7 @@ public class Bug1151_B implements .com.redhat.ceylon.compiler.java.runtime.model
         return (
             let
             {
-                long $ceylontmp$a$4 = methodB2$a();
+                final long $ceylontmp$a$4 = methodB2$a();
             }
             returning methodB2$priv$$canonical$($ceylontmp$a$4);
         );
@@ -139,7 +139,7 @@ public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug1
         return (
             let
             {
-                long $ceylontmp$a$5 = methodA$a();
+                final long $ceylontmp$a$5 = methodA$a();
             }
             returning methodA$canonical$($ceylontmp$a$5);
         );
@@ -158,7 +158,7 @@ public class Bug1151_C extends .com.redhat.ceylon.compiler.java.test.issues.bug1
         return (
             let
             {
-                long $ceylontmp$a$6 = methodB$a();
+                final long $ceylontmp$a$6 = methodB$a();
             }
             returning methodB$canonical$($ceylontmp$a$6);
         );

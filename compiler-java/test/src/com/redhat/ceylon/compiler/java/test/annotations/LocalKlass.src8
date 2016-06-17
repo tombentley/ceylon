@@ -166,12 +166,6 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Summable$Other() {
-                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reified$T));
-            }
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final long i1;
             
@@ -198,7 +192,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                 (
                     let
                     {
-                        .ceylon.language.Sequential<? extends T> $ceylontmp$t$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        final .ceylon.language.Sequential<? extends T> $ceylontmp$t$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                         m2$canonical$(arg1, $ceylontmp$t$1);
                     }
                     returning null;

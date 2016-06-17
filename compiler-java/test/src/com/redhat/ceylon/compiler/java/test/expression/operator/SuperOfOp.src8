@@ -149,7 +149,7 @@ class SuperOfBottomLeftClass extends .com.redhat.ceylon.compiler.java.test.expre
     
     @.java.lang.Override
     public long getA() {
-        return super.getA();
+        return super.getA() + super.getA();
     }
     
     @.java.lang.Override

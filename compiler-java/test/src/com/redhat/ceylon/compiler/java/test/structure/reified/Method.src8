@@ -67,8 +67,8 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                long $ceylontmp$a$0 = methodWithOverloads$a($reified$T);
-                long $ceylontmp$b$1 = methodWithOverloads$b($reified$T, $ceylontmp$a$0);
+                final long $ceylontmp$a$0 = methodWithOverloads$a($reified$T);
+                final long $ceylontmp$b$1 = methodWithOverloads$b($reified$T, $ceylontmp$a$0);
                 methodWithOverloads$canonical$($reified$T, $ceylontmp$a$0, $ceylontmp$b$1);
             }
             returning null;
@@ -85,7 +85,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                long $ceylontmp$b$2 = methodWithOverloads$b($reified$T, a);
+                final long $ceylontmp$b$2 = methodWithOverloads$b($reified$T, a);
                 methodWithOverloads$canonical$($reified$T, a, $ceylontmp$b$2);
             }
             returning null;
@@ -179,8 +179,8 @@ public interface MethodInterface extends .com.redhat.ceylon.compiler.java.langua
         (
             let
             {
-                long $ceylontmp$a$5 = methodWithOverloads$a($reified$T);
-                long $ceylontmp$b$6 = methodWithOverloads$b($reified$T, $ceylontmp$a$5);
+                final long $ceylontmp$a$5 = methodWithOverloads$a($reified$T);
+                final long $ceylontmp$b$6 = methodWithOverloads$b($reified$T, $ceylontmp$a$5);
                 methodWithOverloads$canonical$($reified$T, $ceylontmp$a$5, $ceylontmp$b$6);
             }
             returning null;
@@ -197,7 +197,7 @@ public interface MethodInterface extends .com.redhat.ceylon.compiler.java.langua
         (
             let
             {
-                long $ceylontmp$b$7 = methodWithOverloads$b($reified$T, a);
+                final long $ceylontmp$b$7 = methodWithOverloads$b($reified$T, a);
                 methodWithOverloads$canonical$($reified$T, a, $ceylontmp$b$7);
             }
             returning null;

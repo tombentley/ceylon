@@ -22,21 +22,6 @@ final class AnnotationClassParam implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam.$TypeDescriptor$;
     }
@@ -89,21 +74,6 @@ final class AnnotationClassAnnotationClass implements .com.redhat.ceylon.compile
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass.$TypeDescriptor$;
     }
@@ -140,21 +110,6 @@ final class AnnotationClassAnnotationClassSequence implements .com.redhat.ceylon
     }
     
     AnnotationClassAnnotationClassSequence(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam> params) {
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
     }
     
     @.java.lang.Override
@@ -202,7 +157,7 @@ final class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylo
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$default$a();
+                final .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$default$a();
                 this($ceylontmp$a$0);
             }
             returning null;
@@ -218,21 +173,6 @@ final class AnnotationClassAnnotationClassDefaulted implements .com.redhat.ceylo
     
     public static .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam $default$a() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassParam("defaulted");
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$;
     }
     
     @.java.lang.Override

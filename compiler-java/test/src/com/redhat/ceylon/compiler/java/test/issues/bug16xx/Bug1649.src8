@@ -17,7 +17,7 @@ interface Bug1649Subinterface extends .com.redhat.ceylon.compiler.java.test.issu
         return (
             let
             {
-                .java.lang.Object $ceylontmp$var$0 = defaultedVar$var();
+                final .java.lang.Object $ceylontmp$var$0 = defaultedVar$var();
             }
             returning defaultedVar$canonical$($ceylontmp$var$0);
         );

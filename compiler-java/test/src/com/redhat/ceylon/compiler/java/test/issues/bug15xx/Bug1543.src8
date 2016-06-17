@@ -35,10 +35,9 @@ final class bug1543_ {
                 defaultValue = "ceylon.language::Null")})
 public interface My1543Iterable<Element, Absent> extends .ceylon.language.Category<.java.lang.Object> {
     
-    @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Category$Element() {
-        return .ceylon.language.Object.$TypeDescriptor$;
+    public default .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
+        return new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

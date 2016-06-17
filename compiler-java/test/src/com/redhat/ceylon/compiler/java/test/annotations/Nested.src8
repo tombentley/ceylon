@@ -38,7 +38,7 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
         (
             let
             {
-                long $ceylontmp$i1$0 = .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$default$i1();
+                final long $ceylontmp$i1$0 = .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$default$i1();
                 this($ceylontmp$i1$0);
             }
             returning null;
@@ -73,24 +73,6 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf.$TypeDescriptor$;
     }
@@ -120,7 +102,7 @@ final class nestedLeafDefaultedParameter_ {
         return (
             let
             {
-                long $ceylontmp$i2$1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.nestedLeafDefaultedParameter$i2();
+                final long $ceylontmp$i2$1 = .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.nestedLeafDefaultedParameter$i2();
             }
             returning nestedLeafDefaultedParameter($ceylontmp$i2$1);
         );
@@ -239,24 +221,6 @@ final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch.$TypeDescriptor$;
     }
@@ -291,7 +255,7 @@ final class nestedBranchDPClassWithLiteralArgument_ {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$2 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.nestedBranchDPClassWithLiteralArgument$b();
+                final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$2 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.nestedBranchDPClassWithLiteralArgument$b();
             }
             returning nestedBranchDPClassWithLiteralArgument($ceylontmp$b$2);
         );
@@ -339,7 +303,7 @@ final class nestedBranchDPClassDefaultedArgument_ {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$3 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassDefaultedArgument_.nestedBranchDPClassDefaultedArgument$b();
+                final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$3 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPClassDefaultedArgument_.nestedBranchDPClassDefaultedArgument$b();
             }
             returning nestedBranchDPClassDefaultedArgument($ceylontmp$b$3);
         );
@@ -384,7 +348,7 @@ final class nestedBranchDPCtorWithLiteralArgument_ {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$4 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorWithLiteralArgument_.nestedBranchDPCtorWithLiteralArgument$b();
+                final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$4 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorWithLiteralArgument_.nestedBranchDPCtorWithLiteralArgument$b();
             }
             returning nestedBranchDPCtorWithLiteralArgument($ceylontmp$b$4);
         );
@@ -432,7 +396,7 @@ final class nestedBranchDPCtorNullary_ {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$5 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorNullary_.nestedBranchDPCtorNullary$b();
+                final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$5 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorNullary_.nestedBranchDPCtorNullary$b();
             }
             returning nestedBranchDPCtorNullary($ceylontmp$b$5);
         );
@@ -477,7 +441,7 @@ final class nestedBranchDPCtorWithDefaultedArgument_ {
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$6 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorWithDefaultedArgument_.nestedBranchDPCtorWithDefaultedArgument$b();
+                final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$6 = .com.redhat.ceylon.compiler.java.test.annotations.nestedBranchDPCtorWithDefaultedArgument_.nestedBranchDPCtorWithDefaultedArgument$b();
             }
             returning nestedBranchDPCtorWithDefaultedArgument($ceylontmp$b$6);
         );

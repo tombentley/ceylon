@@ -38,21 +38,6 @@ final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor$;
     }
@@ -77,7 +62,7 @@ final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.comp
         (
             let
             {
-                int $ceylontmp$c$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$default$c();
+                final int $ceylontmp$c$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$default$c();
                 this($ceylontmp$c$0);
             }
             returning null;
@@ -104,21 +89,6 @@ final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.comp
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$ProgramElement() {
-        return .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor$;
     }
@@ -141,7 +111,7 @@ final class annotationClassCharacter_ {
         return (
             let
             {
-                int $ceylontmp$c$1 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassCharacter_.annotationClassCharacter$c();
+                final int $ceylontmp$c$1 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassCharacter_.annotationClassCharacter$c();
             }
             returning annotationClassCharacter($ceylontmp$c$1);
         );

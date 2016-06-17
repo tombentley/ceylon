@@ -21,7 +21,7 @@ interface ConcreteMethodBySpecification extends .com.redhat.ceylon.compiler.java
         return (
             let
             {
-                long $ceylontmp$i$0 = mSharedMem$i();
+                final long $ceylontmp$i$0 = mSharedMem$i();
             }
             returning mSharedMem$canonical$($ceylontmp$i$0);
         );
@@ -47,7 +47,7 @@ interface ConcreteMethodBySpecification extends .com.redhat.ceylon.compiler.java
         return (
             let
             {
-                long $ceylontmp$i$1 = mDefaultMem$i();
+                final long $ceylontmp$i$1 = mDefaultMem$i();
             }
             returning mDefaultMem$canonical$($ceylontmp$i$1);
         );
@@ -72,7 +72,7 @@ interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$i$2 = mSharedSup$i();
+                final long $ceylontmp$i$2 = mSharedSup$i();
             }
             returning mSharedSup$canonical$($ceylontmp$i$2);
         );
@@ -94,7 +94,7 @@ interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$i$3 = mDefaultSup$i();
+                final long $ceylontmp$i$3 = mDefaultSup$i();
             }
             returning mDefaultSup$canonical$($ceylontmp$i$3);
         );

@@ -8,7 +8,7 @@ interface I1 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
         return (
             let
             {
-                long $ceylontmp$n$0 = m1$n();
+                final long $ceylontmp$n$0 = m1$n();
             }
             returning m1$canonical$($ceylontmp$n$0);
         );
@@ -51,7 +51,7 @@ interface I2 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
         return (
             let
             {
-                long $ceylontmp$n$1 = m2$n();
+                final long $ceylontmp$n$1 = m2$n();
             }
             returning m2$canonical$($ceylontmp$n$1);
         );
@@ -81,7 +81,7 @@ interface I4 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
         return (
             let
             {
-                long $ceylontmp$n$2 = m4$n();
+                final long $ceylontmp$n$2 = m4$n();
             }
             returning m4$canonical$($ceylontmp$n$2);
         );
@@ -119,7 +119,7 @@ class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         return (
             let
             {
-                long $ceylontmp$n$3 = m2$n();
+                final long $ceylontmp$n$3 = m2$n();
             }
             returning m2$canonical$($ceylontmp$n$3);
         );
@@ -154,7 +154,7 @@ abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (
             let
             {
-                long $ceylontmp$n$4 = m4$n();
+                final long $ceylontmp$n$4 = m4$n();
             }
             returning m4$canonical$($ceylontmp$n$4);
         );
