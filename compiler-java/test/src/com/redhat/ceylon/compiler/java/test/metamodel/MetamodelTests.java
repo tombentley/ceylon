@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.test.metamodel;
 import java.io.File;
 import java.util.Arrays;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -112,6 +113,7 @@ public class MetamodelTests extends JdkVersionDependentTests {
 
     @Test
     public void testBugCL645() throws Throwable {
+        Assume.assumeTrue("7".equals(target));
         compile("bugCL645.ceylon");
         runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.metamodel/123", 
                 Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.metamodel::bugCL645"));

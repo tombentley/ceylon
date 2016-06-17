@@ -20,7 +20,7 @@ public class JdkVersionDependentTests extends CompilerTests {
                 );
     }
     
-    private final String target;
+    protected final String target;
     private final String source;
     
     public JdkVersionDependentTests(String target, String source) {

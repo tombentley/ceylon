@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -278,6 +279,7 @@ public class IssuesTests_2000_2499 extends JdkVersionDependentTests {
 
     @Test
     public void testBug2120() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug21xx/Bug2120");
     }
 
@@ -562,6 +564,7 @@ public class IssuesTests_2000_2499 extends JdkVersionDependentTests {
     
     @Test
     public void testBug2289() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug22xx/bug2289/Bug2289"); 
     }
     
@@ -673,6 +676,7 @@ public class IssuesTests_2000_2499 extends JdkVersionDependentTests {
     
     @Test
     public void testBug2361() throws Exception {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug23xx/Bug2361");
     }
     
@@ -683,6 +687,7 @@ public class IssuesTests_2000_2499 extends JdkVersionDependentTests {
     
     @Test
     public void testBug2370() throws Exception {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug23xx/Bug2370"); 
     }
     

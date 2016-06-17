@@ -35,6 +35,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -52,6 +53,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
 
     @Test
     public void testCarResourceSimple() throws IOException{
+        Assume.assumeTrue("7".equals(target));
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath() + "resmodules/simple/source");
@@ -82,6 +84,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
     
     @Test
     public void testCarResourceFiles() throws IOException{
+        Assume.assumeTrue("7".equals(target));
         testCarResourceFilesSub(false);
         testCarResourceFilesSub(true);
     }
@@ -128,6 +131,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
     
     @Test
     public void testCarResourceMultiple() throws IOException{
+        Assume.assumeTrue("7".equals(target));
         assertEquals(testCarResourceMultipleSub(false), 40);
         assertEquals(testCarResourceMultipleSub(true), 108);
     }
@@ -175,6 +179,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
 
     @Test
     public void testCarResourceDefault() throws IOException{
+        Assume.assumeTrue("7".equals(target));
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath() + "resmodules/default/source");
@@ -202,6 +207,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
 
     @Test
     public void testCarResourceRoot() throws IOException{
+        Assume.assumeTrue("7".equals(target));
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath() + "resmodules/rootdir/source");
@@ -235,6 +241,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
 
     @Test
     public void testCarResourceAlternativeRoot() throws IOException{
+        Assume.assumeTrue("7".equals(target));
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath() + "resmodules/altrootdir/source");
@@ -273,6 +280,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
      */
     @Test
     public void testCarGeneratedManifestComesFirst() throws IOException{
+        Assume.assumeTrue("7".equals(target));
         ErrorCollector ec = new ErrorCollector();
         List<String> options = new LinkedList<String>();
         options.add("-src");
@@ -329,6 +337,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
      */
     @Test
     public void testCarMergedManifestComesFirst() throws IOException{
+        Assume.assumeTrue("7".equals(target));
         ErrorCollector ec = new ErrorCollector();
         List<String> options = new LinkedList<String>();
         options.add("-src");

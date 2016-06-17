@@ -21,6 +21,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -231,6 +232,7 @@ public class BootstrapTests {
      * a read timeout from the client side after 0 bytes served */
     @Test
     public void testBootstrapDownloadReadTimeoutInitial() throws Throwable {
+        Assume.assumeTrue("7".equals(target));
         Assert.assertTrue(distZip.exists());
         BootstrapHttpHandler reliableHandler = new BootstrapHttpHandler() {
             @Override

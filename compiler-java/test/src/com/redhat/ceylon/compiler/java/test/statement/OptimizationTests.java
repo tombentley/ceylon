@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.test.statement;
 
 import java.io.File;
 
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -28,12 +29,14 @@ public class OptimizationTests extends JdkVersionDependentTests {
     
     @Test
     public void testLopRangeOpIterationOptimization(){
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/RangeOpIterationOptimization");
     }
     
     @Test 
     //@Ignore("https://github.com/ceylon/ceylon-compiler/issues/1647")
     public void testLopRangeOpIterationOptimizationCorrect(){
+        Assume.assumeTrue("7".equals(target));
         compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.rangeOpIterationOptimizationCorrect", 
                 "loop/optim/RangeOpIterationOptimizationCorrect.ceylon",
                 "loop/optim/ArrayBuilder.ceylon");
@@ -41,11 +44,13 @@ public class OptimizationTests extends JdkVersionDependentTests {
     
     @Test
     public void testLopOptimSpanIteration() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/SpanIteration");
     }
     
     @Test
     public void testLopOptimBug2130_Span() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/Bug2130_Span");
         //compile("loop/optim/Bug2130_Span.ceylon");
         run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.bug2130Span");
@@ -53,6 +58,7 @@ public class OptimizationTests extends JdkVersionDependentTests {
     
     @Test
     public void testLopOptimBug2130_Measure() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/Bug2130_Measure");
         //compile("loop/optim/Bug2130_Measure.ceylon");
         run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.bug2130Measure");
@@ -60,11 +66,13 @@ public class OptimizationTests extends JdkVersionDependentTests {
     
     @Test
     public void testLopSegmentOpIterationOptimization(){
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/SegmentOpIterationOptimization");
     }
     
     @Test
     public void testLopSegmentOpIterationOptimizationCorrect(){
+        Assume.assumeTrue("7".equals(target));
         compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.segmentOpIterationOptimizationCorrect", 
                 "loop/optim/SegmentOpIterationOptimizationCorrect.ceylon",
                 "loop/optim/ArrayBuilder.ceylon");
@@ -72,11 +80,13 @@ public class OptimizationTests extends JdkVersionDependentTests {
     
     @Test
     public void testLopOptimArrayIterationStatic(){
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/ArrayIterationStatic");
     }
     
     @Test
     public void testLopOptimArrayIterationStaticRequired(){
+        Assume.assumeTrue("7".equals(target));
         assertErrors("loop/optim/ArrayIterationStaticRequired",
                 new CompilerError(35, "@requireOptimization[\"ArrayIterationStatic\"] assertion failed: static type of iterable in for statement is not Array"),
                 new CompilerError(39, "@requireOptimization[\"JavaArrayIterationStatic\"] assertion failed: iterable expression wasn't of form javaArray.array"));
@@ -84,6 +94,7 @@ public class OptimizationTests extends JdkVersionDependentTests {
     
     @Test
     public void testLopOptimJavaArrayIterationStatic(){
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/JavaArrayIterationStatic");
     }
     
@@ -194,16 +205,19 @@ public class OptimizationTests extends JdkVersionDependentTests {
     
     @Test
     public void testLopOptimTupleIterationStatic(){
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/TupleIterationStatic");
     }
     
     @Test
     public void testLopOptimArrayIterationDynamic(){
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/ArrayIterationDynamic");
     }
     
     @Test
     public void testLopOptimCorrect(){
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/Correct");
         //compile("loop/optim/Correct.ceylon");
         run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct");
@@ -211,12 +225,14 @@ public class OptimizationTests extends JdkVersionDependentTests {
     
     @Test
     public void testLopOptimBug1467(){
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/Bug1467");
         run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.bug1467");
     }
     
     @Test
     public void testLopOptimStringIterationStatic() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("loop/optim/StringIterationStatic");
     }
     

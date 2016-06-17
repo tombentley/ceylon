@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -49,6 +50,7 @@ public class IssuesTests_6000_6499 extends JdkVersionDependentTests {
 
     @Test
     public void testBug6005() throws Throwable {
+        Assume.assumeTrue("7".equals(target));
     	compile("bug60xx/bug6005/run.ceylon");
     	runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.issues.bug60xx.bug6005/1", 
     			Arrays.asList("--flat-classpath"));
@@ -83,6 +85,7 @@ public class IssuesTests_6000_6499 extends JdkVersionDependentTests {
 
     @Test
     public void testBug6153() throws Throwable {
+        Assume.assumeTrue("7".equals(target));
         compile("bug61xx/Bug6153.ceylon");
         File err = File.createTempFile("compattest", "out");
         try {
@@ -132,26 +135,31 @@ public class IssuesTests_6000_6499 extends JdkVersionDependentTests {
     
     @Test
     public void testBug6207() {
+        Assume.assumeTrue("7".equals(target));
         compile("bug62xx/Bug6207.ceylon");
         run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6207");
     }
     
     @Test
     public void testBug6213A() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug62xx/Bug6213A");
     }
     @Test
     public void testBug6213B() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug62xx/Bug6213B");
     }
     
     @Test
     public void testBug6215() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug62xx/Bug6215");
     }
     
     @Test
     public void testBug6231() {
+        Assume.assumeTrue("7".equals(target));
         
         compile("bug62xx/bug6231/static/run.ceylon");
         
@@ -166,28 +174,33 @@ public class IssuesTests_6000_6499 extends JdkVersionDependentTests {
     
     @Test
     public void testBug6234() {
+        Assume.assumeTrue("7".equals(target));
         assertErrors("bug62xx/Bug6234", 
                 new CompilerError(15, "forward declaration may not occur in declaration section: 'count'"));
     }
     
     @Test
     public void testBug6239() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug62xx/Bug6239");
     }
     
     @Test
     public void testBug6253() {
+        Assume.assumeTrue("7".equals(target));
         compile("bug62xx/Bug6253.ceylon");
         run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6253run");
     }
     
     @Test
     public void testBug6267() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug62xx/Bug6267");
     }
     
     @Test
     public void testBug6272() {
+        Assume.assumeTrue("7".equals(target));
         assertErrors("bug62xx/Bug6272",
                 new CompilerError(8, "argument of unknown type assigned to inferred type parameter: 'Item' of 'HashMap'"),
                 new CompilerError(8, "function or value does not exist: 'bar'"));
@@ -195,11 +208,13 @@ public class IssuesTests_6000_6499 extends JdkVersionDependentTests {
     
     @Test
     public void testBug6277() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug62xx/Bug6277");
     }
     
     @Test
     public void testBug6283() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug62xx/Bug6283");
     }
 }

@@ -319,6 +319,7 @@ public class InteropTests extends JdkVersionDependentTests {
     
     @Test
     public void testIopRefinesDefaultAccessMethodWithShared(){
+        Assume.assumeTrue("7".equals(target));
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/RefinesDefaultAccessMethodWithShared",
                 new CompilerError(22, "non-actual member collides with an inherited member: 'defaultAccessMethod' in 'RefinesDefaultAccessMethodWithShared' refines 'defaultAccessMethod' in 'JavaAccessModifiers'"));
@@ -389,6 +390,7 @@ public class InteropTests extends JdkVersionDependentTests {
 
     @Test
     public void testIopCallsDefaultAccessClassInAnotherPkg(){
+        Assume.assumeTrue("7".equals(target));
         compile("access/JavaAccessModifiers.java");
         compile("access/JavaDefaultAccessClass3.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkg",
@@ -422,6 +424,7 @@ public class InteropTests extends JdkVersionDependentTests {
 
     @Test
     public void testIopRefinesDefaultAccessMethodInAnotherPkg(){
+        Assume.assumeTrue("7".equals(target));
         compile("access/JavaAccessModifiers.java");
         assertErrors("RefinesDefaultAccessMethodInAnotherPkg",
                 new CompilerError(27, "refined declaration is not visible: 'defaultAccessMethod' in 'RefinesDefaultAccessMethodInAnotherPkg' refines 'defaultAccessMethod' in 'JavaAccessModifiers'"));
@@ -502,6 +505,7 @@ public class InteropTests extends JdkVersionDependentTests {
     
     @Test
     public void testAnnotationBug6145() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("AnnotationBug6145");
     }
     
@@ -714,6 +718,7 @@ public class InteropTests extends JdkVersionDependentTests {
     
     @Test
     public void testIopJavaMapIndex(){
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("JavaMapIndex");
     }
     

@@ -34,6 +34,7 @@ import java.util.zip.ZipEntry;
 
 import junit.framework.Assert;
 
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -146,6 +147,7 @@ public class BcTests extends JdkVersionDependentTests {
     // tests before we renamed module_.class to $module_.class
     @Test
     public void testBinaryVersionIncompatibleModule1() throws IOException {
+        Assume.assumeTrue("7".equals(target));
         CompilationTask compiler = compileJava("binaryVersionOld/module_.java");
         Assert.assertTrue(compiler.call());
         
@@ -174,6 +176,7 @@ public class BcTests extends JdkVersionDependentTests {
     // tests after we renamed module_.class to $module_.class
     @Test
     public void testBinaryVersionIncompatibleModule2() throws IOException {
+        Assume.assumeTrue("7".equals(target));
         CompilationTask compiler = compileJava("binaryVersionOld2/$module_.java");
         Assert.assertTrue(compiler.call());
         

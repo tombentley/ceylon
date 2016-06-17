@@ -351,6 +351,7 @@ public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
 
     @Test
     public void testBug1618() throws Throwable {
+        Assume.assumeTrue("7".equals(target));
         compile("bug16xx/bug1618/dep/Foo.ceylon", "bug16xx/bug1618/dep/module.ceylon", "bug16xx/bug1618/dep/package.ceylon",
                 "bug16xx/bug1618/launcher/module.ceylon", "bug16xx/bug1618/launcher/run.ceylon",
                 "bug16xx/bug1618/main/module.ceylon", "bug16xx/bug1618/main/foo.ceylon");
@@ -551,6 +552,7 @@ public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
     
     @Test
     public void testBug1712() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug17xx/bug1712/Bug1712Mixed");
         compareWithJavaSource("bug17xx/bug1712/Bug1712CRLF");
         compareWithJavaSource("bug17xx/bug1712/Bug1712CR");
@@ -793,6 +795,7 @@ public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
     
     @Test
     public void testBug1825() {
+        Assume.assumeTrue("7".equals(target));
         compareWithJavaSource("bug18xx/bug1825/Bug1825");
     }
     

@@ -36,6 +36,7 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -805,6 +806,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
 
     @Test
     public void testDuplicateInDefault() throws IOException {
+        Assume.assumeTrue("7".equals(target));
         String subPath = "modules/duplicateInDefault";
         String srcPath = getPackagePath()+subPath;
         List<String> options = new LinkedList<String>();
@@ -848,6 +850,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
 
     @Test
     public void testMissingImport() throws IOException {
+        Assume.assumeTrue("7".equals(target));
         String subPath = "modules/missingImport";
         String srcPath = getPackagePath()+subPath;
         List<String> options = new LinkedList<String>();
@@ -882,6 +885,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
 
     @Test
     public void testSyntaxErrorInModule() throws IOException {
+        Assume.assumeTrue("7".equals(target));
         String subPath = "modules/syntaxErrorInModule";
         String srcPath = getPackagePath()+subPath;
         List<String> options = new LinkedList<String>();
@@ -1050,6 +1054,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
 
     @Test
     public void testErrorSameCompilationUnit() throws IOException {
+        Assume.assumeTrue("7".equals(target));
         String subPath = "modules/errorInSameCompilationUnit";
         String srcPath = getPackagePath()+subPath;
         List<String> options = new LinkedList<String>();
