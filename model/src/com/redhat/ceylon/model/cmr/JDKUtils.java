@@ -336,4 +336,21 @@ public class JDKUtils {
         }
         return name;
     }
+    
+    /** 
+     * Gets the Specification version of the executing JVM
+     * (according to the {@code java.vm.specification.version} system
+     * property
+     */
+    public static JDK getJVMVersion() {
+        switch (System.getProperty("java.vm.specification.version")) {
+        case "1.7":
+            return JDK.JDK7;
+        case "1.8":
+            return JDK.JDK8;
+        case "1.9":
+            return JDK.JDK9;
+        }
+        return null;
+    }
 }

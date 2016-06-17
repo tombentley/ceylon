@@ -35,6 +35,7 @@ import java.util.List;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.Target;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -198,7 +199,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
-    private String target = "1.2";
+    private Target target = Target.CEYLON1_2;
     private ModuleSpec jdkProvider;
     {
         String jdkProvider = DefaultToolOptions.getCompilerJdkProvider();
@@ -242,9 +243,9 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Description("Generate modules compatible with a previous release. "
             + "Possible values: 1.2, 1.3. (default: 1.2)")
     public void setTarget(String target) {
-        if ("1.2".equals(target)
-                || "1.3".equals(target)) {
-            this.target = target;
+        Target t = Target.fromString(target);
+        if (t != null) {
+            this.target = t;
         } else {
             throw new IllegalArgumentException("only 1.2 or 1.3 are permitted");
         }
@@ -428,7 +429,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
         
         switch(target) {
-        case "1.2":
+        case CEYLON1_2:
             arguments.add("-target");
             arguments.add("7");
             arguments.add("-source");
@@ -436,7 +437,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add("-interfaces");
             arguments.add("companion");
             break;
-        case "1.3":
+        case CEYLON1_3:
             arguments.add("-target");
             arguments.add("8");
             arguments.add("-source");

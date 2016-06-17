@@ -45,9 +45,9 @@ import com.redhat.ceylon.cmr.util.JarUtils.JarEntryFilter;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.common.Target;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
-import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
@@ -144,7 +144,7 @@ public class JarOutputRepositoryManager {
         private Logger cmrLog;
         private Options options;
         private RepositoryManager repoManager;
-        private ArtifactContext carContext;
+        private final ArtifactContext carContext;
         private ArtifactCreator srcCreator;
         private ArtifactCreator resourceCreator;
         final private Set<String> foldersToAdd = new HashSet<String>();
@@ -162,13 +162,16 @@ public class JarOutputRepositoryManager {
         private JarEntryManifestFileObject manifest;
         private Log log;
 		private JdkProvider jdkProvider;
+        private String carSuffix;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, 
         		Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener) throws IOException{
             this.options = options;
+            Target ceylonTarget = "default".equals(options.get(Option.CEYLONINTERFACES)) ? Target.CEYLON1_3 : Target.CEYLON1_2;
             this.repoManager = repoManager;
+            this.carSuffix = ArtifactContext.getJvmCarSuffix(ceylonTarget);
             this.carContext = new ArtifactContext(null, module.getNameAsString(), module.getVersion(),
-                    "default".equals(options.get(Option.CEYLONINTERFACES)) ? ArtifactContext.CAR8 : ArtifactContext.CAR);
+                    carSuffix);
             this.log = log;
             this.cmrLog = new JavacLogger(options, Log.instance(ceyloncFileManager.getContext()));
             AbstractModelLoader modelLoader = CeylonModelLoader.instance(ceyloncFileManager.getContext());
@@ -205,7 +208,7 @@ public class JarOutputRepositoryManager {
             this.taskListener = taskListener;
             
             this.originalJarFile = repoManager.getArtifact(carContext);
-            this.outputJarFile = File.createTempFile("ceylon-compiler-", ".car");
+            this.outputJarFile = File.createTempFile("ceylon-compiler-", carSuffix);
             this.jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
         }
 
@@ -292,7 +295,7 @@ public class JarOutputRepositoryManager {
                 
                 manifestFirst.close();
                 
-                File finalCarFile = File.createTempFile("ceylon-compiler-", ".car");
+                File finalCarFile = File.createTempFile("ceylon-compiler-", carSuffix);
                 JarCat jc = new JarCat(finalCarFile);
                 jc.cat(metaFirstFile);
                 jc.cat(outputJarFile);

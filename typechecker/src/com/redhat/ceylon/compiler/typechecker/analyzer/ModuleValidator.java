@@ -17,12 +17,15 @@ import com.redhat.ceylon.cmr.api.VersionComparator;
 import com.redhat.ceylon.cmr.impl.JDKRepository;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.Target;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportModule;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -71,11 +74,17 @@ public class ModuleValidator {
         public void retrievingModuleArtifactSuccess(Module module, ArtifactResult artifact) {
         }
     };
+    private final Target ceylonTarget;
     
     public ModuleValidator(Context context, PhasedUnits phasedUnits) {
+        this(context, phasedUnits, Target.CEYLON1_2);
+    }
+    
+    public ModuleValidator(Context context, PhasedUnits phasedUnits, Target ceylonTarget) {
         this.context = context;
         this.moduleManager = phasedUnits.getModuleManager();
         this.moduleManagerUtil = phasedUnits.getModuleSourceMapper();
+        this.ceylonTarget = ceylonTarget;
     }
 
     public void setListener (ProgressListener listener) {
@@ -303,7 +312,12 @@ public class ModuleValidator {
     private String[] getArtifactSuffixes(Iterable<String> extensions) {
         ArrayList<String> suffixes = new ArrayList<String>();
         for (String ext : extensions) {
-            suffixes.add("." + ext);
+            if ("car".equals(ext)
+                    && ArtifactContext.useJdk8CarSuffix(ceylonTarget)) {
+                suffixes.add("-jdk8." + ext);
+            } else {
+                suffixes.add("." + ext);
+            }
         }
         return suffixes.toArray(new String[suffixes.size()]);
     }

@@ -28,9 +28,12 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.Target;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModuleManager;
@@ -47,13 +50,16 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     private CeylonDocTool tool;
     private RepositoryManager outputRepositoryManager;
     private boolean bootstrapCeylon;
+    private final Target ceylonTarget;
 
-    public CeylonDocModuleManager(CeylonDocTool tool, Context context, List<ModuleSpec> modules, RepositoryManager outputRepositoryManager, boolean bootstrapCeylon, Logger log) {
+    public CeylonDocModuleManager(CeylonDocTool tool, Context context, List<ModuleSpec> modules, RepositoryManager outputRepositoryManager, 
+            boolean bootstrapCeylon, Target ceylonTarget, Logger log) {
         super();
         this.outputRepositoryManager = outputRepositoryManager;
         this.modulesSpecs = modules;
         this.tool = tool;
         this.bootstrapCeylon = bootstrapCeylon;
+        this.ceylonTarget = ceylonTarget;
     }
 
     @Override
@@ -149,7 +155,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     }
 
     private void addOutputModuleToClassPath(Module module) {
-        ArtifactContext ctx = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+        ArtifactContext ctx = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.getJvmCarSuffix(ceylonTarget));
         ArtifactResult result = outputRepositoryManager.getArtifactResult(ctx);
         if(result != null)
             getModelLoader().addModuleToClassPath(module, result);

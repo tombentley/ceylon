@@ -26,9 +26,12 @@ import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.Target;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 
 /**
  * Artifact lookup context.
@@ -62,7 +65,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     // NB: SHA1 and ZIP are not part of this list because they are supposed
     // to be "composed" with other suffixes
     private static final String fileSuffixes[] = {
-        CAR, CAR8, JAR, JS_MODEL, JS, DART, DART_MODEL, CSO, RESOURCES, SRC,
+        CAR8, CAR, JAR, JS_MODEL, JS, DART, DART_MODEL, CSO, RESOURCES, SRC,
         LEGACY_SRC, DOCS, SCRIPTS_ZIPPED
     };
     
@@ -478,5 +481,18 @@ public class ArtifactContext implements Serializable, ContentOptions {
         hash = 37 * hash + (getName() != null ? getName().hashCode() : 0);
         hash = 37 * hash + (version != null ? version.hashCode() : 0);
         return hash;
+    }
+    
+    public static String getJvmCarSuffix(Target ceylonTarget) {
+        if (useJdk8CarSuffix(ceylonTarget)) {
+            return ArtifactContext.CAR8;
+        } else {
+            return ArtifactContext.CAR;
+        }
+    }
+
+    public static boolean useJdk8CarSuffix(Target ceylonTarget) {
+        return JDKUtils.getJVMVersion().compareTo(JDK.JDK8) >= 0
+                && ceylonTarget.compareTo(Target.CEYLON1_3) >= 0;
     }
 }

@@ -50,6 +50,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.Target;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
@@ -421,7 +422,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, bootstrapCeylon, log);
+                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, bootstrapCeylon, Target.CEYLON1_2, log);
             }
 
             @Override

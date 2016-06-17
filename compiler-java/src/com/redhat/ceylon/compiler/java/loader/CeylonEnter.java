@@ -112,6 +112,8 @@ import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosit
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.SimpleDiagnosticPosition;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.Timer;
 import com.redhat.ceylon.model.loader.model.LazyModule;
@@ -443,7 +445,8 @@ public class CeylonEnter extends Enter {
         RepositoryManager repositoryManager = fileManager.getOutputRepositoryManager();
         ArtifactResult artifact = null;
         try {
-            ArtifactContext ctx = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.CAR, ArtifactContext.JAR);
+            ArtifactContext ctx = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), 
+                    ArtifactContext.getJvmCarSuffix(defaultInterfaces ? com.redhat.ceylon.common.Target.CEYLON1_3 : com.redhat.ceylon.common.Target.CEYLON1_2), ArtifactContext.JAR);
             artifact = repositoryManager.getArtifactResult(ctx);
         } catch (InvalidArchiveException e) {
             log.error("ceylon", "Module car " + e.getPath()

@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 import com.redhat.ceylon.common.StatusPrinter;
+import com.redhat.ceylon.common.Target;
 import com.redhat.ceylon.compiler.java.loader.UnknownTypeCollector;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.loader.model.LazyModuleSourceMapper;
@@ -140,7 +141,8 @@ public final class CeyloncCompilerDelegate implements
     public void resolveModuleDependencies(PhasedUnits phasedUnits) {
         final StatusPrinter sp = getStatusPrinter();
         com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
-        final ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits);
+        Target target = "default".equals(Options.instance(context).get(Option.CEYLONINTERFACES)) ? Target.CEYLON1_3 : Target.CEYLON1_2;
+        final ModuleValidator validator = new ModuleValidator(ceylonContext, phasedUnits, target);
         if(sp != null){
             validator.setListener(new StatusPrinterProgressListener(validator, sp));
             sp.clearLine();
