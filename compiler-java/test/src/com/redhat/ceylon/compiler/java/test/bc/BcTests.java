@@ -227,6 +227,6 @@ public class BcTests extends JdkVersionDependentTests {
         compareWithJavaSource("refinedreturn/Bug6068_client");
         run("com.redhat.ceylon.compiler.java.test.bc.refinedreturn.bug6068", 
                 new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.bc.refinedreturn", "1"),
-                new ModuleWithArtifact("ceylon.collection", "1.2.3", System.getProperty("user.home")+"/.ceylon/repo", "car"));
+                new ModuleWithArtifact("ceylon.collection", "1.2.3", System.getProperty("user.home")+"/.ceylon/repo", ".car"));
     }
 }

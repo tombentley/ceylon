@@ -671,13 +671,17 @@ public abstract class CompilerTests {
         return run(main, getDestModuleWithArtifact(main));
     }
     
+    protected String getCarSuffix() {
+        return ".car";
+    }
+    
     public class ModuleWithArtifact {
         private String module;
         private String version;
         private File file;
 
         public ModuleWithArtifact(String module, String version) {
-            this(module, version, destDir, "car");
+            this(module, version, destDir, getCarSuffix());
         }
 
         public ModuleWithArtifact(String module, String version, String repo, String extension) {
@@ -947,7 +951,7 @@ public abstract class CompilerTests {
     }
 
     protected static File getModuleArchive(String moduleName, String version, String destDir) {
-        return getArchiveName(moduleName, version, destDir, "car");
+        return getArchiveName(moduleName, version, destDir, ".car");
     }
 
     protected static File getModuleArchive(String moduleName, String version, String destDir, String extension) {
@@ -955,11 +959,11 @@ public abstract class CompilerTests {
     }
 
     protected File getSourceArchive(String moduleName, String version) {
-        return getArchiveName(moduleName, version, destDir, "src");
+        return getArchiveName(moduleName, version, destDir, ".src");
     }
     
     protected static File getSourceArchive(String moduleName, String version, String destDir) {
-        return getArchiveName(moduleName, version, destDir, "src");
+        return getArchiveName(moduleName, version, destDir, ".src");
     }
 
     protected static File getArchiveName(String moduleName, String version, String destDir, String extension) {
@@ -970,7 +974,7 @@ public abstract class CompilerTests {
         String artifactName = modulePath+moduleName;
         if(version != null)
             artifactName += "-"+version;
-        artifactName += "."+extension;
+        artifactName += extension;
         File archiveFile = new File(destDir, artifactName);
         return archiveFile;
     }

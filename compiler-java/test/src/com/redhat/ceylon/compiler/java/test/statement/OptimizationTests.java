@@ -97,7 +97,7 @@ public class OptimizationTests extends JdkVersionDependentTests {
         
         ModuleWithArtifact[] modules = new ModuleWithArtifact[]{
         		getDestModuleWithArtifact("ignored"),
-        		new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", "car")
+        		new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", ".car")
         };
 		long unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBenchDis", modules);
         unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationStaticBenchDis", modules);
@@ -121,7 +121,7 @@ public class OptimizationTests extends JdkVersionDependentTests {
 
     	ModuleWithArtifact[] modules = new ModuleWithArtifact[]{
     			getDestModuleWithArtifact("ignored"),
-    			new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", "car")
+    			new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER, "../../ceylon-sdk/modules", ".car")
     	};
     	long unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBenchDis", modules);
     	unopt = (Long)run("com.redhat.ceylon.compiler.java.test.statement.loop.optim.arrayIterationBoxedStaticBenchDis", modules);

@@ -6,14 +6,17 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import com.redhat.ceylon.compiler.java.test.CompilerTests.ModuleWithArtifact;
+import com.redhat.ceylon.model.typechecker.model.Module;
+
 @RunWith(Parameterized.class)
 public class JdkVersionDependentTests extends CompilerTests {
 
     @Parameters(name="-target {0}")
     public static Iterable<Object[]> testParameters() {
         return Arrays.<Object[]>asList(
-                new Object[]{"7", "7"}//, 
-                //new Object[]{"8", "8"}
+                new Object[]{"7", "7"}, 
+                new Object[]{"8", "8"}
                 );
     }
     
@@ -32,6 +35,13 @@ public class JdkVersionDependentTests extends CompilerTests {
             defaultOptions.add("-source");
             defaultOptions.add(source);
         }
+        if ("8".equals(target)) {
+            defaultOptions.add("-interfaces");
+            defaultOptions.add("default");
+        } else {
+            defaultOptions.add("-interfaces");
+            defaultOptions.add("companion");
+        }
     }
     @Override
     protected String getSrcName(String name) {
@@ -42,5 +52,15 @@ public class JdkVersionDependentTests extends CompilerTests {
             src = name+".src";
         }
         return src;
+    }
+    
+    @Override
+    protected final String getCarSuffix() {
+        if ("8".equals(target)) {
+            return "-jdk8.car";
+        } else {
+            return super.getCarSuffix();
+        }
+        
     }
 }

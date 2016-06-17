@@ -625,7 +625,7 @@ public class IssuesTests_1000_1499 extends JdkVersionDependentTests {
                 "bug13xx/bug1347/bug1347.ceylon").call2());
         run("com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1347.test", 
                 new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1347", "1"),
-                new ModuleWithArtifact("com.ceylon.java8", "1", "test/java8/modules", "jar"));
+                new ModuleWithArtifact("com.ceylon.java8", "1", "test/java8/modules", ".jar"));
     }
 
     @Test

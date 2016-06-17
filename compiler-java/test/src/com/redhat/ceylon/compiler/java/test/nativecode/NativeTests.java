@@ -80,7 +80,7 @@ public class NativeTests extends JdkVersionDependentTests {
             }
             compile(paths);
             String main = "com.redhat.ceylon.compiler.java.test.nativecode." + dir + ".test";
-            mainModule = new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.nativecode." + dir, "1.0");
+            mainModule = new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.nativecode." + dir, "1.0", destDir, ".car");
             if (extraModule1 != null) {
                 if (extraModule2 != null) {
                     run(main, mainModule, extraModule1, extraModule2);

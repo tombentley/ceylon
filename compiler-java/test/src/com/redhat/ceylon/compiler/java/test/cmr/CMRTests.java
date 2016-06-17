@@ -375,7 +375,7 @@ public class CMRTests extends CompilerTests {
         car.close();
 
         // now let's break the SHA1
-        File shaFile = getArchiveName("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6", destDir, "car.sha1");
+        File shaFile = getArchiveName("com.redhat.ceylon.compiler.java.test.cmr.modules.single", "6.6.6", destDir, ".car.sha1");
         Writer w = new FileWriter(shaFile);
         w.write("fubar");
         w.flush();
