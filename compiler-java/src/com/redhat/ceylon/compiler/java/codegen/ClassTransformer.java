@@ -236,6 +236,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
+        expressionGen().new This2(model);
         
         // Transform the class/interface members
         List<JCStatement> childDefs = visitClassOrInterfaceDefinition(def, classBuilder);
@@ -258,6 +259,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         List<JCTree> result = classBuilder.build();
         
+        expressionGen().this_.pop();
         return result;
     }
     private Set<Interface> multiplyInheritedInterfaces(TypeDeclaration model) {
@@ -440,6 +442,12 @@ public class ClassTransformer extends AbstractTransformer {
             classBuilder.extending(model.getType(), null);
         }
         
+        if (model instanceof Interface && !((Interface)model).isUseDefaultMethods()) {
+            expressionGen().new CompanionThis((Interface)model);
+        } else {
+            expressionGen().new This2(model);
+        }
+        
         if (def instanceof Tree.AnyClass) {
             classBuilder.getInitBuilder().modifiers(transformConstructorDeclFlags(model));
             Tree.AnyClass classDef = (Tree.AnyClass)def;
@@ -566,6 +574,7 @@ public class ClassTransformer extends AbstractTransformer {
             result = classBuilder.build();
         }
         
+        expressionGen().this_.pop();
         return result;
     }
 
@@ -4245,14 +4254,17 @@ public class ClassTransformer extends AbstractTransformer {
                 && !(def.getDeclarationModel().isFormal() || ! def.getDeclarationModel().isShared());
         if (q) {
             if (Decl.isObjectMember(def.getDeclarationModel())) {
-                expressionGen().receiver = expressionGen().new DollarThis2((Interface)def.getDeclarationModel().getContainer());        
+                expressionGen().receiver = expressionGen().new DollarThis2((Interface)def.getDeclarationModel().getContainer());
+                expressionGen().new StaticThis((Interface)def.getDeclarationModel().getContainer());
             } else {
                 expressionGen().receiver = expressionGen().new DollarThis((Interface)def.getDeclarationModel().getContainer());
+                expressionGen().new This2((Interface)def.getDeclarationModel().getContainer());
             }
         } 
             
         List<JCStatement> body = transformMethodBody(def);
         if (q) {
+            expressionGen().this_.pop();
             expressionGen().receiver = expressionGen().receiver.parent;
         }
         expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
@@ -4369,10 +4381,12 @@ public class ClassTransformer extends AbstractTransformer {
             // $this parameter (and captured reified type parameters)
             ExpressionTransformer eg = expressionGen();
             eg.receiver = eg.new DollarThis2(iface);
+            eg.new StaticThis(iface);
             lb.addAll(transformMethod(model, 
                     def,
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                     DaoKind.STATIC));
+            eg.this_.pop();
             eg.receiver = eg.receiver.parent;
         
         }
@@ -5873,6 +5887,8 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
                 this, javaClassName, name, Decl.isLocal(klass)).forDefinition(klass);
         
+        expressionGen().new This2(klass);
+        
         if (Strategy.introduceJavaIoSerializable(klass, typeFact().getJavaIoSerializable())) {
             objectClassBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
             if (def instanceof Tree.ObjectDefinition
@@ -5951,6 +5967,8 @@ public class ClassTransformer extends AbstractTransformer {
             .modifiers(transformObjectDeclFlags(model));
         at(def);
         List<JCTree> result = objectClassBuilder.build();
+        
+        expressionGen().this_.pop();
         
         if (makeLocalInstance) {
             if(model.isSelfCaptured()){

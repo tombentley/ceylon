@@ -1760,15 +1760,95 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
+    This2 this_ = null;
+    
+    /** {@code this} transformation within a class or default interface member */
+    public class This2 {
+        private final This2 parent;
+        private ClassOrInterface cls;
+
+        public This2(ClassOrInterface cls) {
+            this.cls = cls;
+            this.parent = ExpressionTransformer.this.this_;
+            ExpressionTransformer.this.this_ = this;
+        }
+        
+        public final void pop() {
+            ExpressionTransformer.this.this_ = this.parent;
+        }
+        
+        public JCExpression this_() {
+            return this_(false);
+        }
+        
+        public JCExpression this_(boolean inConstructor) {
+            // TODO inConstructor: 
+            // Java doesn't grok assigning to Class.this.foo=  
+            // in a constructor, it has to be this.foo= 
+            // But we need a better way of knowing whether 
+            // we're currently in a constructor!
+            if (inConstructor
+                    || willEraseToObject(cls.getType())) {
+                return naming.makeThis();
+            } else {
+                return naming.makeQualifiedThis(makeJavaType(cls.getType(), JT_RAW));
+            }
+        }
+        
+        public JCExpression outer() {
+            return parent.this_(false);
+        }
+    }
+
+    /** {@code this} transformation within a companion class */
+    public class CompanionThis extends This2{
+        public CompanionThis(Interface iface) {
+            super(iface);
+            assert(!iface.isUseDefaultMethods());
+        }
+        @Override
+        public JCExpression this_(boolean inConstructor) {
+            return naming.makeQuotedThis();
+        }
+    }
+    /** {@code this} transformation within a {@code static}-transformed interface member */
+    public class StaticThis extends This2{
+        public StaticThis(Interface iface) {
+            super(iface);
+        }
+        @Override
+        public JCExpression this_(boolean inConstructor) {
+            return naming.makeQuotedThis();
+        }
+    }
+    
     public JCTree transform(Tree.This expr) {
         at(expr);
-        if (needDollarThis(expr.getScope())) {
+        boolean inConstructor = false;
+        Scope scope = expr.getScope();
+        while (!(scope instanceof Package)) {
+            if (scope instanceof Constructor) {
+                inConstructor = true;
+                break;
+            } else if (scope instanceof Class) {
+                inConstructor = true;
+                break;
+            } else if (scope instanceof TypeDeclaration) {
+                break;
+            } else if (scope instanceof TypedDeclaration) {
+                break;
+            }
+            scope = scope.getContainer();
+        }
+        return this_.this_(inConstructor);
+        /*if (needDollarThis(expr.getScope())) {
             return naming.makeQuotedThis();
         }
         if (isWithinSyntheticClassBody()) {
             return naming.makeQualifiedThis(makeJavaType(expr.getTypeModel()));
         } 
         return receiver.qualifier();
+        */
     }
 
     public JCTree transform(Tree.Super expr) {
@@ -3025,7 +3105,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if (useStaticSuper(invocation.getPrimary())) {
             Scope container = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration().getContainer();
-                result.add(new ExpressionAndType(receiver.qualifier(),
+                result.add(new ExpressionAndType(this_.this_(),
                         makeJavaType(((Interface)container).getType(), JT_RAW)));
         }
         Tree.Term primary = invocation.getPrimary();
@@ -4669,7 +4749,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
                 } else if (inheritedFrom instanceof Interface){
                     if (useMethod(superOfQualifiedExpr, (Interface)inheritedFrom)) {
-                        result = make().Apply(null, naming.makeQualIdent(receiver.qualifier(), naming.getCompanionAccessorName((Interface)inheritedFrom)), List.<JCExpression>nil());
+                        result = make().Apply(null, naming.makeQualIdent(this_.this_(), naming.getCompanionAccessorName((Interface)inheritedFrom)), List.<JCExpression>nil());
                     } else {
                         result = naming.makeCompanionFieldName((Interface)inheritedFrom);
                     }
@@ -4747,7 +4827,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
                     } else {
                         if (useMethod(superOfQualifiedExpr, iface)) {
-                            result = make().Apply(null, naming.makeQualIdent(receiver.qualifier(), naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
+                            result = make().Apply(null, naming.makeQualIdent(this_.this_(), naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
                         } else {
                             result = naming.makeCompanionFieldName((Interface)inheritedFrom);
                         }
@@ -5124,7 +5204,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     if (useGetter) {
                         List<JCExpression> args = List.<JCTree.JCExpression>nil();
                         if (useStaticSuper(expr)) {
-                            args = args.append(receiver.qualifier());
+                            args = args.append(this_.this_());
                         } 
                         result = make().Apply(List.<JCTree.JCExpression>nil(),
                                 result,
@@ -5154,7 +5234,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     abstract class Receiver {
         Receiver parent = receiver == null ? this : receiver;
-        public abstract JCExpression qualifier();
         public JCExpression qualify(Declaration decl) {
             return null;
         }
@@ -5162,20 +5241,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     class This extends Receiver {
         
-        @Override
-        public JCExpression qualifier() {
-            return naming.makeThis();
-        }
     }
     class DollarThis extends Receiver {
         private final Interface iface;
         public DollarThis(Interface iface) {
             this.iface = iface;
         }
-        @Override
-        public JCExpression qualifier() {
-            return naming.makeThis();
-        }
+        
         @Override
         public JCExpression qualify(Declaration decl) {
             if (iface.isMember(decl) || iface.isInherited(decl)) {
@@ -5188,10 +5260,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         private final Interface iface;
         public DollarThis2(Interface iface) {
             this.iface = iface;
-        }
-        @Override
-        public JCExpression qualifier() {
-            return naming.makeQuotedThis();
         }
         @Override
         public JCExpression qualify(Declaration decl) {
@@ -5967,7 +6035,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (result == null) {
             List<JCExpression> args = List.<JCExpression>nil();
             if (useStaticSuper(leftTerm)) {
-                args = args.append(receiver.qualifier());
+                args = args.append(this_.this_());
             }
             args = args.append(rhs);
             result = make().Apply(List.<JCTree.JCExpression>nil(),
