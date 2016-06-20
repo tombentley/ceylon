@@ -106,11 +106,11 @@ class NamedArgumentWithSequence implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence arg$5$0 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence arg$5$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.this;
                 .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence> arg$5$1 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.$TypeDescriptor$, new .java.lang.Object[]{
-                        this,
-                        this,
-                        this});
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.this,
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.this,
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithSequence.this});
                 m3$priv$(arg$5$0, arg$5$1);
             }
             returning null;

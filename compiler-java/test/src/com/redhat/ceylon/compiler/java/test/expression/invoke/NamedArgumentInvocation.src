@@ -53,7 +53,7 @@ class NamedArgumentInvocation implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation arg$2$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation arg$2$callable$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation.this;
                 .java.lang.String arg$2$1 = "bar";
                 long arg$2$0 = 2L;
                 arg$2$callable$.v$priv$(arg$2$0, arg$2$1);
@@ -63,7 +63,7 @@ class NamedArgumentInvocation implements .com.redhat.ceylon.compiler.java.runtim
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation arg$3$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation arg$3$callable$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocation.this;
                 .java.lang.String arg$3$1 = "bar";
                 long arg$3$0 = 2L;
             }

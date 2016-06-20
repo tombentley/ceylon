@@ -407,7 +407,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable arg$13$0 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable arg$13$0 = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.this;
                 .ceylon.language.Iterable arg$13$1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
                     
                     @.java.lang.Override

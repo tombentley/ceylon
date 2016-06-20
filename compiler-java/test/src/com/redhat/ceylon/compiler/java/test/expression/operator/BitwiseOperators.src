@@ -263,35 +263,35 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public .java.lang.Object unboxedQualifiedAttributes() {
-        this.setI1(~this.getN1());
-        this.setN1(this.getN1() & this.getN2());
-        this.setI1(this.getN1() | this.getN2());
-        this.setN1(this.getN1() ^ this.getN2());
-        this.setN1(this.getN1() << this.getN2());
-        this.setN1(this.getN1() >>> this.getN2());
-        this.setN1(this.getN1() >> this.getN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setI1(~.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() & .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setI1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() | .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() << .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() >> .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN2());
         return null;
     }
     
     public .java.lang.Object unboxedQualifiedGetterAttributes() {
-        this.setGetterI1(~this.getGetterN1());
-        this.setGetterN1(this.getGetterN1() & this.getGetterN2());
-        this.setGetterI1(this.getGetterN1() | this.getGetterN2());
-        this.setGetterN1(this.getGetterN1() ^ this.getGetterN2());
-        this.setGetterN1(this.getGetterN1() << this.getGetterN2());
-        this.setGetterN1(this.getGetterN1() >>> this.getGetterN2());
-        this.setGetterN1(this.getGetterN1() >> this.getGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterI1(~.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN1());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN1() & .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterI1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN1() | .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN1() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN1() << .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN1() >>> .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN2());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterN1(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN1() >> .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterN2());
         return null;
     }
     
     public .java.lang.Object boxedQualifiedAttributes() {
-        this.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().getNot());
-        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().and(this.getBoxedN2()));
-        this.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().or(this.getBoxedN2()));
-        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().xor(this.getBoxedN2()));
-        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().leftLogicalShift(1L));
-        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().rightLogicalShift(1L));
-        this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object)this.getBoxedN1().rightArithmeticShift(1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN1().getNot());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN1().and(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedI1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN1().or(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN1().xor(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN1().leftLogicalShift(1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN1().rightLogicalShift(1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedN1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyInteger)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedN1().rightArithmeticShift(1L));
         return null;
     }
     

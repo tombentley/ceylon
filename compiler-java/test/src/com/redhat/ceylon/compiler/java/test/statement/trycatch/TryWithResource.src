@@ -100,7 +100,7 @@ class TryWithResource implements .com.redhat.ceylon.compiler.java.runtime.model.
             r.obtain();
             .java.lang.Throwable $ceylontmp$ex$16 = null;
             try {
-                r.equals(this);
+                r.equals(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryWithResource.this);
             } catch (final .java.lang.Throwable $ceylontmp$ex$17) {
                 $ceylontmp$ex$16 = $ceylontmp$ex$17;
                 throw $ceylontmp$ex$17;

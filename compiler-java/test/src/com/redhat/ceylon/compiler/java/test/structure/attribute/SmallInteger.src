@@ -39,8 +39,8 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final void intAssignmentOps$priv$() {
         long $long = 1000L * 1000L * 1000L * 1000L;
         setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($long));
-        this.setInta$priv$(1);
-        this.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($long));
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this.setInta$priv$(1);
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($long));
         setIntgs(.com.redhat.ceylon.compiler.java.Util.toInt($long));
         $long = getInta$priv$();
         setInta$priv$(2147483647);
@@ -90,8 +90,8 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     public final int intCalc(final int intp) {
-        final int intl = this.getIntp();
-        setInta$priv$(intp * this.getInta$priv$() * intl);
+        final int intl = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this.getIntp();
+        setInta$priv$(intp * .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this.getInta$priv$() * intl);
         return getInta$priv$();
     }
     
@@ -145,7 +145,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$7 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$7 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 int $ceylontmp$opV$8 = $ceylontmp$opE$7.getInta$priv$() + getIntp();
                 $ceylontmp$opE$7.setInta$priv$($ceylontmp$opV$8);
             }
@@ -154,7 +154,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$9 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$9 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 int $ceylontmp$opV$10 = $ceylontmp$opE$9.getInta$priv$() - getIntp();
                 $ceylontmp$opE$9.setInta$priv$($ceylontmp$opV$10);
             }
@@ -163,7 +163,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$11 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$11 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 int $ceylontmp$opV$12 = $ceylontmp$opE$11.getInta$priv$() * getIntp();
                 $ceylontmp$opE$11.setInta$priv$($ceylontmp$opV$12);
             }
@@ -172,7 +172,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$13 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$13 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 int $ceylontmp$opV$14 = $ceylontmp$opE$13.getInta$priv$() / getIntp();
                 $ceylontmp$opE$13.setInta$priv$($ceylontmp$opV$14);
             }
@@ -181,7 +181,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$15 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$15 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 int $ceylontmp$opV$16 = $ceylontmp$opE$15.getInta$priv$() % getIntp();
                 $ceylontmp$opE$15.setInta$priv$($ceylontmp$opV$16);
             }
@@ -222,7 +222,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$21 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$21 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 int $ceylontmp$opV$22 = $ceylontmp$opE$21.getInta$priv$();
                 $ceylontmp$opE$21.setInta$priv$($ceylontmp$opV$22 + 1);
             }
@@ -231,7 +231,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$23 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$23 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 int $ceylontmp$opV$24 = $ceylontmp$opE$23.getInta$priv$();
                 $ceylontmp$opE$23.setInta$priv$($ceylontmp$opV$24 - 1);
             }
@@ -240,7 +240,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$25 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$25 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 int $ceylontmp$opV$26 = $ceylontmp$opE$25.getInta$priv$() + 1;
                 $ceylontmp$opE$25.setInta$priv$($ceylontmp$opV$26);
             }
@@ -249,7 +249,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$27 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$27 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 int $ceylontmp$opV$28 = $ceylontmp$opE$27.getInta$priv$() - 1;
                 $ceylontmp$opE$27.setInta$priv$($ceylontmp$opV$28);
             }
@@ -357,7 +357,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$40 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$40 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 long $ceylontmp$opV$41 = $ceylontmp$opE$40.getInta$priv$() + $long;
                 $ceylontmp$opE$40.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$41));
             }
@@ -366,7 +366,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$42 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$42 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 long $ceylontmp$opV$43 = $ceylontmp$opE$42.getInta$priv$() - $long;
                 $ceylontmp$opE$42.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$43));
             }
@@ -375,7 +375,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$44 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$44 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 long $ceylontmp$opV$45 = $ceylontmp$opE$44.getInta$priv$() * $long;
                 $ceylontmp$opE$44.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$45));
             }
@@ -384,7 +384,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$46 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$46 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 long $ceylontmp$opV$47 = $ceylontmp$opE$46.getInta$priv$() / $long;
                 $ceylontmp$opE$46.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$47));
             }
@@ -393,7 +393,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$48 = this;
+                .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger $ceylontmp$opE$48 = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallInteger.this;
                 long $ceylontmp$opV$49 = $ceylontmp$opE$48.getInta$priv$() % $long;
                 $ceylontmp$opE$48.setInta$priv$(.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$opV$49));
             }

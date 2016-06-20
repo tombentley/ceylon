@@ -49,7 +49,7 @@ class Bug270 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     private final void forceFieldGenerationByCapture$priv$() {
-        this.getBug270$priv$().equals(.ceylon.language.Integer.instance(1L));
+        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug270.this.getBug270$priv$().equals(.ceylon.language.Integer.instance(1L));
     }
     
     private final void method$priv$() {

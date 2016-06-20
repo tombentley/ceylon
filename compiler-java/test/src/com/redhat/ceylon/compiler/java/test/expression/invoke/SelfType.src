@@ -10,12 +10,12 @@ abstract class SelfType<T extends .com.redhat.ceylon.compiler.java.test.expressi
     public abstract long compareTo(final T other);
     
     public final long reverseCompareTo(final T other) {
-        return ((.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)other).compareTo((T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)this);
+        return ((.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType<T>)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)other).compareTo((T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType).com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType.this);
     }
     
     public final T self() {
-        final T x = (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)this;
-        return (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType)this;
+        final T x = (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType).com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType.this;
+        return (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType).com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType.this;
     }
     
     @.java.lang.Override
@@ -42,8 +42,8 @@ abstract class SelfType2<T> implements .com.redhat.ceylon.compiler.java.runtime.
     public abstract long compareTo(final T other);
     
     public final T self() {
-        final T x = (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2)this;
-        return (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2)this;
+        final T x = (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2).com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2.this;
+        return (T)(.com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2).com.redhat.ceylon.compiler.java.test.expression.invoke.SelfType2.this;
     }
     
     @.java.lang.Override

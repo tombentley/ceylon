@@ -21,13 +21,13 @@ class QualifiedParameterisedInstantiation<G> implements .com.redhat.ceylon.compi
     }
     
     private final void m$priv$() {
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> other = this;
-        this.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> other = .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.this;
+        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.this.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
         other.new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> arg$0$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation<G> arg$0$callable$ = .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedParameterisedInstantiation.this;
                 .java.lang.String arg$0$0 = "";
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
             }

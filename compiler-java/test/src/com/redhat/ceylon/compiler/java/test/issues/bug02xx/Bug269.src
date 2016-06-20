@@ -53,8 +53,8 @@ class Bug269_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     private final void test$priv$() {
-        .ceylon.language.print_.print(.ceylon.language.String.instance(this.toString()));
-        .ceylon.language.print_.print(.ceylon.language.Integer.instance(this.hashCode()));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.this.toString()));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug269_2.this.hashCode()));
     }
     
     @.java.lang.Override

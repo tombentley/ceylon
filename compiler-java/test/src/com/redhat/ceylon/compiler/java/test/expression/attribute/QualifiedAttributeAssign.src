@@ -32,8 +32,8 @@ class QualifiedAttributeAssign implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo f) {
-        this.setB$priv$(false);
-        this.setB2(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign.this.setB$priv$(false);
+        .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign.this.setB2(false);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB$priv$(true);
         new .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign().setB2(true);
         getQ$priv$().setB$priv$(getQ$priv$().getB2());

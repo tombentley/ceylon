@@ -35,7 +35,7 @@ class ExceptionAttributes implements .com.redhat.ceylon.compiler.java.runtime.mo
             }
             
             private final void m$priv$() {
-                final .ceylon.language.Sequential<? extends .java.lang.Throwable> x = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(this);
+                final .ceylon.language.Sequential<? extends .java.lang.Throwable> x = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable.MyInnerThrowable.this);
                 final .ceylon.language.Sequential<? extends .java.lang.Throwable> y = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(super);
                 final .ceylon.language.Sequential<? extends .java.lang.Throwable> y2 = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(super);
                 final .ceylon.language.Sequential<? extends .java.lang.Throwable> z = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable.this);

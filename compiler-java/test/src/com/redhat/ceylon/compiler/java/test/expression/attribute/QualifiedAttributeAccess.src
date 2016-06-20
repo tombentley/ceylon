@@ -28,11 +28,11 @@ class QualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runti
     }
     
     private final boolean m$priv$() {
-        return this.getB$priv$();
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess.this.getB$priv$();
     }
     
     private final boolean m2$priv$() {
-        return this.getB2$priv$();
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAccess.this.getB2$priv$();
     }
     
     private final boolean m3$priv$() {

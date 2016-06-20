@@ -734,7 +734,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     
     @.java.lang.Override
     public final .ceylon.language.Set<? extends .ceylon.language.String> $clone() {
-        return this;
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug979Set.this;
     }
     
     @.java.lang.Override

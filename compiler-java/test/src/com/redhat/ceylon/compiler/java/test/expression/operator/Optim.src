@@ -306,10 +306,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmp$op$8;
         ));
-        this.setFieldInteger$priv$((
+        .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.this.setFieldInteger$priv$((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmp$opE$9 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmp$opE$9 = .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.this;
                 long $ceylontmp$opV$10 = $ceylontmp$opE$9.getFieldInteger$priv$();
                 $ceylontmp$opE$9.setFieldInteger$priv$($ceylontmp$opV$10 + 1);
             }
@@ -347,10 +347,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmp$op$14;
         ));
-        this.setFieldInteger$priv$((
+        .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.this.setFieldInteger$priv$((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmp$opE$15 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmp$opE$15 = .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.this;
                 long $ceylontmp$opV$16 = $ceylontmp$opE$15.getFieldInteger$priv$() + 1;
                 $ceylontmp$opE$15.setFieldInteger$priv$($ceylontmp$opV$16);
             }
@@ -388,11 +388,11 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             }
             returning $ceylontmp$op$20;
         ));
-        this.setFieldInteger$priv$((
+        .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.this.setFieldInteger$priv$((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmp$opE$21 = this;
-                long $ceylontmp$opV$22 = $ceylontmp$opE$21.getFieldInteger$priv$() + this.getFieldInteger$priv$();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.Optim $ceylontmp$opE$21 = .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.this;
+                long $ceylontmp$opV$22 = $ceylontmp$opE$21.getFieldInteger$priv$() + .com.redhat.ceylon.compiler.java.test.expression.operator.Optim.this.getFieldInteger$priv$();
                 $ceylontmp$opE$21.setFieldInteger$priv$($ceylontmp$opV$22);
             }
             returning $ceylontmp$opV$22;

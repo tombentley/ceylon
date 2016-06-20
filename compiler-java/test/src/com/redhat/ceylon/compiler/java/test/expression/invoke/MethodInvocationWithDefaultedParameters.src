@@ -203,7 +203,7 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     public final long f7$n() {
-        return this.getProp();
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.Fookls.this.getProp();
     }
     
     private .java.lang.Object f7$canonical$(final long n) {

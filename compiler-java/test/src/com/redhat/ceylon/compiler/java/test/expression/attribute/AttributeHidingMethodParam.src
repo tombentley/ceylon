@@ -12,7 +12,7 @@ class AttributeHidingMethodParam implements .com.redhat.ceylon.compiler.java.run
     }
     
     private final boolean m$priv$(final boolean b) {
-        return this.getB$priv$();
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.AttributeHidingMethodParam.this.getB$priv$();
     }
     
     @.java.lang.Override

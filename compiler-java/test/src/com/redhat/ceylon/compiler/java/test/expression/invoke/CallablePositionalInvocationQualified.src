@@ -18,7 +18,7 @@ class CallablePositionalInvocationQualified implements .com.redhat.ceylon.compil
     
     private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallablePositionalInvocationQualified c) {
         c.f$priv$();
-        this.f$priv$();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.CallablePositionalInvocationQualified.this.f$priv$();
     }
     
     @.java.lang.Override

@@ -87,14 +87,14 @@ class InterfaceAliasedFormalMemberClass_sub implements .com.redhat.ceylon.compil
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub qual) {
         Member$new$();
         Member$new$();
-        this.Member$new$();
-        this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.this.Member$new$();
         qual.Member$new$();
         qual.Member$new$();
         Alias$new$();
         Alias$new$();
-        this.Alias$new$();
-        this.Alias$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.this.Alias$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass_sub.this.Alias$new$();
         qual.Alias$new$();
         qual.Alias$new$();
     }

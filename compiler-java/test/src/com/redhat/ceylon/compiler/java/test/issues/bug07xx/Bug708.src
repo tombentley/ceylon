@@ -699,7 +699,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<T>")
     public final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<T> $clone() {
-        return this;
+        return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map.this;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

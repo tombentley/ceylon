@@ -564,7 +564,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public final .ceylon.language.Sequence<? extends .ceylon.language.Integer> getReversed() {
-        return this;
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1430.this;
     }
     
     @.java.lang.Override
@@ -574,22 +574,22 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> measure(final .ceylon.language.Integer from, final long length) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(from.equals(.ceylon.language.Integer.instance(0L)) && length > 0L ? this : .ceylon.language.empty_.get_());
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(from.equals(.ceylon.language.Integer.instance(0L)) && length > 0L ? .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1430.this : .ceylon.language.empty_.get_());
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(from.equals(.ceylon.language.Integer.instance(0L)) ? this : .ceylon.language.empty_.get_());
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(from.equals(.ceylon.language.Integer.instance(0L)) ? .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1430.this : .ceylon.language.empty_.get_());
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spanFrom(final .ceylon.language.Integer from) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(from.equals(.ceylon.language.Integer.instance(0L)) ? this : .ceylon.language.empty_.get_());
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(from.equals(.ceylon.language.Integer.instance(0L)) ? .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1430.this : .ceylon.language.empty_.get_());
     }
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spanTo(final .ceylon.language.Integer to) {
-        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(to.equals(.ceylon.language.Integer.instance(0L)) ? .ceylon.language.empty_.get_() : this);
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(to.equals(.ceylon.language.Integer.instance(0L)) ? .ceylon.language.empty_.get_() : .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1430.this);
     }
     
     @.java.lang.Override

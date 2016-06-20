@@ -46,7 +46,7 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
     }
     
     private final .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced self$priv$() {
-        return this;
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.this;
     }
     
     private final void positional$priv$() {

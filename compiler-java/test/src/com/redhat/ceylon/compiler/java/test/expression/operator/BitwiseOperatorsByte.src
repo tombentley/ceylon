@@ -197,35 +197,35 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public .java.lang.Object unboxedQualifiedAttributes() {
-        this.setI1((byte)~this.getN1());
-        this.setN1((byte)(this.getN1() & this.getN2()));
-        this.setI1((byte)(this.getN1() | this.getN2()));
-        this.setN1((byte)(this.getN1() ^ this.getN2()));
-        this.setN1((byte)(this.getN1() << ((byte)1L & 7)));
-        this.setN1((byte)((this.getN1() & 255) >>> ((byte)1L & 7)));
-        this.setN1((byte)(this.getN1() >> ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setI1((byte)~.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() & .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setI1((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() | .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() << ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1((byte)((.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() & 255) >>> ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setN1((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getN1() >> ((byte)1L & 7)));
         return null;
     }
     
     public .java.lang.Object unboxedQualifiedGetterAttributes() {
-        this.setGetterByte3((byte)~this.getGetterByte1());
-        this.setGetterByte1((byte)(this.getGetterByte1() & this.getGetterByte2()));
-        this.setGetterByte3((byte)(this.getGetterByte1() | this.getGetterByte2()));
-        this.setGetterByte1((byte)(this.getGetterByte1() ^ this.getGetterByte2()));
-        this.setGetterByte1((byte)(this.getGetterByte1() << ((byte)1L & 7)));
-        this.setGetterByte1((byte)((this.getGetterByte1() & 255) >>> ((byte)1L & 7)));
-        this.setGetterByte1((byte)(this.getGetterByte1() >> ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterByte3((byte)~.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte1());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterByte1((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte1() & .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterByte3((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte1() | .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterByte1((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte1() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterByte1((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte1() << ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterByte1((byte)((.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte1() & 255) >>> ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setGetterByte1((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getGetterByte1() >> ((byte)1L & 7)));
         return null;
     }
     
     public .java.lang.Object boxedQualifiedAttributes() {
-        this.setBoxedByte3((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().getNot());
-        this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().and(this.getBoxedByte2()));
-        this.setBoxedByte3((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().or(this.getBoxedByte2()));
-        this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().xor(this.getBoxedByte2()));
-        this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().leftLogicalShift(1L));
-        this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().rightLogicalShift(1L));
-        this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object)this.getBoxedByte1().rightArithmeticShift(1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedByte3((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte1().getNot());
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte1().and(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedByte3((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte1().or(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte1().xor(.com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte2()));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte1().leftLogicalShift(1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte1().rightLogicalShift(1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.setBoxedByte1((.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)(.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.operator.BitwiseOperators.this.getBoxedByte1().rightArithmeticShift(1L));
         return null;
     }
     

@@ -591,7 +591,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public final .ceylon.language.Sequence $clone() {
-        return this;
+        return .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837.this;
     }
     
     @.java.lang.Override

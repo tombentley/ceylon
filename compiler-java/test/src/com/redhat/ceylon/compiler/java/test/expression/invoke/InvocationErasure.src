@@ -10,7 +10,7 @@ class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     private final long m2$priv$() {
-        return this.hashCode();
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.this.hashCode();
     }
     
     private final .java.lang.String m3$priv$() {
@@ -18,14 +18,14 @@ class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     private final .java.lang.String m4$priv$() {
-        return this.toString();
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.this.toString();
     }
     
     private final void m5$priv$() {
         hashCode$priv$();
-        this.hashCode$priv$();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.this.hashCode$priv$();
         toString$priv$();
-        this.toString$priv$();
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.MethodErasure.this.toString$priv$();
     }
     
     private final .java.lang.String hashCode$priv$() {

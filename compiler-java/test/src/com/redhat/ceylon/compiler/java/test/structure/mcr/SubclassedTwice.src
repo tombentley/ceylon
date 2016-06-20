@@ -111,8 +111,8 @@ class SubclassedTwiceSecond implements .com.redhat.ceylon.compiler.java.runtime.
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond qual) {
         Member$new$();
         Member$new$();
-        this.Member$new$();
-        this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.this.Member$new$();
         qual.Member$new$();
         qual.Member$new$();
     }
