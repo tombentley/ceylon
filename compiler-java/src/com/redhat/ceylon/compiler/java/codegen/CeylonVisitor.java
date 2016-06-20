@@ -31,7 +31,6 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.ClassTransformer.AttrTx;
-import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.DollarThis;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
@@ -592,11 +591,9 @@ public class CeylonVisitor extends Visitor {
                 } else {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));
                     ExpressionTransformer eg = gen.expressionGen();
-                    eg.receiver = eg.new DollarThis2(iface);
                     eg.new StaticThis(iface);
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.STATIC));
                     eg.this_.pop();
-                    eg.receiver = eg.receiver.parent;
                 }
             }
         } else if (Decl.isToplevel(decl)) {
@@ -639,11 +636,9 @@ public class CeylonVisitor extends Visitor {
                 } else {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));
                     ExpressionTransformer eg = gen.expressionGen();
-                    eg.receiver = eg.new DollarThis(iface);
                     eg.new StaticThis(iface);
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.STATIC));
                     eg.this_.pop();
-                    eg.receiver = eg.receiver.parent;
                 }
             }
         } else if (Decl.isToplevel(decl)) {

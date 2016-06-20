@@ -3843,11 +3843,9 @@ public class ClassTransformer extends AbstractTransformer {
                     } else {
                         classBuilder.attribute(makeGetter(decl, AttrTx.BRIDGE_TO_STATIC, lazy));
                         ExpressionTransformer eg = expressionGen();
-                        eg.receiver = eg.new DollarThis2(iface);
                         eg.new StaticThis(iface);
                         classBuilder.attribute(makeGetter(decl, AttrTx.STATIC, lazy));
                         eg.this_.pop();
-                        eg.receiver = eg.receiver.parent;
                     }
                 }
             }
@@ -4257,10 +4255,8 @@ public class ClassTransformer extends AbstractTransformer {
                 && !(def.getDeclarationModel().isFormal() || ! def.getDeclarationModel().isShared());
         if (q) {
             if (Decl.isObjectMember(def.getDeclarationModel())) {
-                expressionGen().receiver = expressionGen().new DollarThis2((Interface)def.getDeclarationModel().getContainer());
                 expressionGen().new StaticThis((Interface)def.getDeclarationModel().getContainer());
             } else {
-                expressionGen().receiver = expressionGen().new DollarThis((Interface)def.getDeclarationModel().getContainer());
                 expressionGen().new This2((Interface)def.getDeclarationModel().getContainer());
             }
         } 
@@ -4268,7 +4264,6 @@ public class ClassTransformer extends AbstractTransformer {
         List<JCStatement> body = transformMethodBody(def);
         if (q) {
             expressionGen().this_.pop();
-            expressionGen().receiver = expressionGen().receiver.parent;
         }
         expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         return transform(def, classBuilder, body);
@@ -4383,14 +4378,12 @@ public class ClassTransformer extends AbstractTransformer {
             // Transform the methods again, but at static methods with an explicit
             // $this parameter (and captured reified type parameters)
             ExpressionTransformer eg = expressionGen();
-            eg.receiver = eg.new DollarThis2(iface);
             eg.new StaticThis(iface);
             lb.addAll(transformMethod(model, 
                     def,
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                     DaoKind.STATIC));
             eg.this_.pop();
-            eg.receiver = eg.receiver.parent;
         
         }
         return lb;
