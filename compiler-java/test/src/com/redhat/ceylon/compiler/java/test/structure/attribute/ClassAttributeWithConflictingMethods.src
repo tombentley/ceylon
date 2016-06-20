@@ -65,10 +65,10 @@ final class InterfaceAttributeWithConflictingMethods$impl implements .java.io.Se
     
     private void m$priv$() {
         $this.setAttr($this.getAttr());
-        $this.setAttr($this.getAttr());
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods$impl.this.$this.setAttr(.com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods$impl.this.$this.getAttr());
         $this.$setAttr($this.$getAttr());
-        $this.$setAttr($this.$getAttr());
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods$impl.this.$this.$setAttr(.com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods$impl.this.$this.$getAttr());
         $this.$isAttr();
-        $this.$isAttr();
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods$impl.this.$this.$isAttr();
     }
 }

@@ -139,12 +139,12 @@ final class InterfaceMemberClassCtor$impl implements .java.io.Serializable {
         $this.SharedMember$new$(3L);
         $this.SharedMember$new$(4L);
         $this.SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 5L);
-        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(6L);
-        $this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(7L);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.this.$this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(6L);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.this.$this.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(7L);
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other, 8L);
-        $this.SharedMember$new$(9L);
-        $this.SharedMember$new$(10L);
-        $this.SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 11L);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.this.$this.SharedMember$new$(9L);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.this.$this.SharedMember$new$(10L);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.this.$this.SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 11L);
         other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(12L);
         other.$com$redhat$ceylon$compiler$java$test$structure$constructor$InterfaceMemberClassCtor$impl().new Member(13L);
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other, 14L);

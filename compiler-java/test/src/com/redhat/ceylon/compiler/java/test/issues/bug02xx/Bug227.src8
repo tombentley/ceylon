@@ -16,7 +16,7 @@ public class Bug227 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     public final long getNum() {
-        return this.get_num$priv$();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug227.this.get_num$priv$();
     }
     
     public final void setNum(final long num) {

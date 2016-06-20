@@ -26,7 +26,7 @@ final class ConcreteString$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void presentYourself() {
-        if ($this.equals($this)) {
+        if ($this.equals(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString$impl.this.$this)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
         }
@@ -138,7 +138,7 @@ final class ConcreteString2$impl implements .java.io.Serializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public void presentYourself() {
-        if ($this.equals($this)) {
+        if ($this.equals(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2$impl.this.$this)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
         }

@@ -41,13 +41,13 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         setAttrInteger$priv$(getAttrInteger$priv$() + 2L);
         test$priv$(localAttrInteger + 2L);
         test$priv$(getAttrInteger$priv$() + 2L);
-        test$priv$(this.getAttrInteger$priv$() + 2L);
+        test$priv$(.com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this.getAttrInteger$priv$() + 2L);
         localAttrInteger = .ceylon.language.Integer.plus(localAttrInteger, 2L);
         setAttrInteger$priv$(.ceylon.language.Integer.plus(getAttrInteger$priv$(), 2L));
-        this.setAttrInteger$priv$(.ceylon.language.Integer.plus(this.getAttrInteger$priv$(), 2L));
+        .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this.setAttrInteger$priv$(.ceylon.language.Integer.plus(.com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this.getAttrInteger$priv$(), 2L));
         test$priv$(.ceylon.language.Integer.plus(localAttrInteger, 2L));
         test$priv$(.ceylon.language.Integer.plus(getAttrInteger$priv$(), 2L));
-        test$priv$(.ceylon.language.Integer.plus(this.getAttrInteger$priv$(), 2L));
+        test$priv$(.ceylon.language.Integer.plus(.com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this.getAttrInteger$priv$(), 2L));
         localAttrInteger = localAttrInteger++;
         setAttrInteger$priv$((
             let
@@ -57,10 +57,10 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             }
             returning $ceylontmp$op$3;
         ));
-        this.setAttrInteger$priv$((
+        .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this.setAttrInteger$priv$((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmp$opE$4 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmp$opE$4 = .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this;
                 long $ceylontmp$opV$5 = $ceylontmp$opE$4.getAttrInteger$priv$();
                 $ceylontmp$opE$4.setAttrInteger$priv$($ceylontmp$opV$5 + 1);
             }
@@ -78,7 +78,7 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         test$priv$((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmp$opE$7 = this;
+                .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing $ceylontmp$opE$7 = .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this;
                 long $ceylontmp$opV$8 = $ceylontmp$opE$7.getAttrInteger$priv$();
                 $ceylontmp$opE$7.setAttrInteger$priv$($ceylontmp$opV$8 + 1);
             }
@@ -86,10 +86,10 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         ));
         localAttrInteger = .ceylon.language.Integer.getSuccessor(localAttrInteger);
         setAttrInteger$priv$(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv$()));
-        this.setAttrInteger$priv$(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv$()));
+        .com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this.setAttrInteger$priv$(.ceylon.language.Integer.getSuccessor(.com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this.getAttrInteger$priv$()));
         test$priv$(.ceylon.language.Integer.getSuccessor(localAttrInteger));
         test$priv$(.ceylon.language.Integer.getSuccessor(getAttrInteger$priv$()));
-        test$priv$(.ceylon.language.Integer.getSuccessor(this.getAttrInteger$priv$()));
+        test$priv$(.ceylon.language.Integer.getSuccessor(.com.redhat.ceylon.compiler.java.test.expression.boxing.IntegerBoxing.this.getAttrInteger$priv$()));
     }
     
     private final void test$priv$(final long i) {

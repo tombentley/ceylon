@@ -30,8 +30,8 @@ final class SubclassedTwiceTop$impl implements .java.io.Serializable {
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop qual) {
         $this.Member$new$();
         $this.Member$new$();
-        $this.Member$new$();
-        $this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl.this.$this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceTop$impl.this.$this.Member$new$();
         qual.Member$new$();
         qual.Member$new$();
     }
@@ -111,8 +111,8 @@ class SubclassedTwiceSecond implements .com.redhat.ceylon.compiler.java.runtime.
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond qual) {
         Member$new$();
         Member$new$();
-        this.Member$new$();
-        this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.SubclassedTwiceSecond.this.Member$new$();
         qual.Member$new$();
         qual.Member$new$();
     }

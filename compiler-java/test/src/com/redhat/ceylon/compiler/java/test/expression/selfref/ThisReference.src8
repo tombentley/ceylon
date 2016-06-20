@@ -6,11 +6,11 @@ class ThisReference implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     public final .com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference m() {
-        return this;
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference.this;
     }
     
     public final void test() {
-        this.test();
+        .com.redhat.ceylon.compiler.java.test.expression.selfref.ThisReference.this.test();
     }
     
     @.java.lang.Override

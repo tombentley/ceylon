@@ -28,11 +28,11 @@ abstract class ClassAttributeWithConflictingMethods implements .com.redhat.ceylo
     
     private final void m$priv$() {
         setAttr(getAttr());
-        this.setAttr(this.getAttr());
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.this.setAttr(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.this.getAttr());
         $setAttr($getAttr());
-        this.$setAttr(this.$getAttr());
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.this.$setAttr(.com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.this.$getAttr());
         $isAttr();
-        this.$isAttr();
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.ClassAttributeWithConflictingMethods.this.$isAttr();
     }
     
     @.java.lang.Override
@@ -55,11 +55,11 @@ interface InterfaceAttributeWithConflictingMethods extends .com.redhat.ceylon.co
     
     private default void m$priv$() {
         setAttr(getAttr());
-        this.setAttr(this.getAttr());
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods.this.setAttr(.com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods.this.getAttr());
         $setAttr($getAttr());
-        this.$setAttr(this.$getAttr());
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods.this.$setAttr(.com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods.this.$getAttr());
         $isAttr();
-        this.$isAttr();
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods.this.$isAttr();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.InterfaceAttributeWithConflictingMethods.class);
 }

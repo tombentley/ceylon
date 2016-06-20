@@ -93,8 +93,8 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
         setB1((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$2 = this;
-                boolean $ceylontmp$opV$3 = $ceylontmp$opE$2.getB1() || this.getB2();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$2 = .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.this;
+                boolean $ceylontmp$opV$3 = $ceylontmp$opE$2.getB1() || .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.this.getB2();
                 $ceylontmp$opE$2.setB1($ceylontmp$opV$3);
             }
             returning $ceylontmp$opV$3;
@@ -102,8 +102,8 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
         setB1((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$4 = this;
-                boolean $ceylontmp$opV$5 = $ceylontmp$opE$4.getB1() && this.getB2();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$4 = .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.this;
+                boolean $ceylontmp$opV$5 = $ceylontmp$opE$4.getB1() && .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.this.getB2();
                 $ceylontmp$opE$4.setB1($ceylontmp$opV$5);
             }
             returning $ceylontmp$opV$5;
@@ -134,8 +134,8 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
         setBoxedB1(.ceylon.language.Boolean.instance((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$8 = this;
-                boolean $ceylontmp$opV$9 = $ceylontmp$opE$8.getBoxedB1().booleanValue() || this.getBoxedB2().booleanValue();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$8 = .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.this;
+                boolean $ceylontmp$opV$9 = $ceylontmp$opE$8.getBoxedB1().booleanValue() || .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.this.getBoxedB2().booleanValue();
                 $ceylontmp$opE$8.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmp$opV$9));
             }
             returning $ceylontmp$opV$9;
@@ -143,8 +143,8 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
         setBoxedB1(.ceylon.language.Boolean.instance((
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$10 = this;
-                boolean $ceylontmp$opV$11 = $ceylontmp$opE$10.getBoxedB1().booleanValue() && this.getBoxedB2().booleanValue();
+                .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators $ceylontmp$opE$10 = .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.this;
+                boolean $ceylontmp$opV$11 = $ceylontmp$opE$10.getBoxedB1().booleanValue() && .com.redhat.ceylon.compiler.java.test.expression.operator.LogicalOperators.this.getBoxedB2().booleanValue();
                 $ceylontmp$opE$10.setBoxedB1(.ceylon.language.Boolean.instance($ceylontmp$opV$11));
             }
             returning $ceylontmp$opV$11;

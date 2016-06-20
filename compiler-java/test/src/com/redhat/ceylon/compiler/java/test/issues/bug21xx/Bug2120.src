@@ -16,7 +16,7 @@ final class Bug2120X$impl implements .java.io.Serializable {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X $this;
     
     public boolean equals(final .java.lang.Object that) {
-        return $this.equals(that);
+        return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X$impl.this.$this.equals(that);
     }
 }
 class Bug2120Z implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2120X, .java.io.Serializable {

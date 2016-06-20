@@ -112,7 +112,7 @@ final class NamedArgumentInvocationInterfaceMember$impl implements .java.io.Seri
         final .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInterfaceMember$impl.Inner i2 = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInterfaceMember$impl arg$3$callable$ = $this.$com$redhat$ceylon$compiler$java$test$expression$invoke$NamedArgumentInvocationInterfaceMember$impl();
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInterfaceMember$impl arg$3$callable$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationInterfaceMember$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$invoke$NamedArgumentInvocationInterfaceMember$impl();
                 .java.lang.String arg$3$0 = "foo";
                 long arg$3$1 = arg$3$callable$.$default$Inner$bar(arg$3$0);
             }

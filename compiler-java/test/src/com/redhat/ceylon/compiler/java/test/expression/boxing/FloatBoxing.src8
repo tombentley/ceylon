@@ -42,22 +42,22 @@ class FloatBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         localAttrObject = .ceylon.language.Float.instance(localAttrFloat + 4L);
         setAttrFloat$priv$(getAttrFloat$priv$() + 2.0);
         setAttrFloat$priv$(getAttrFloat$priv$() + 4L);
-        this.setAttrFloat$priv$(this.getAttrFloat$priv$() + 2.0);
-        this.setAttrFloat$priv$(this.getAttrFloat$priv$() + 4L);
+        .com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.this.setAttrFloat$priv$(.com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.this.getAttrFloat$priv$() + 2.0);
+        .com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.this.setAttrFloat$priv$(.com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.this.getAttrFloat$priv$() + 4L);
         test$priv$(localAttrFloat + 2.0);
         test$priv$(localAttrFloat + 4L);
         test$priv$(localAttrFloat + 2.0);
         test$priv$(localAttrFloat + 4L);
         test$priv$(getAttrFloat$priv$() + 2.0);
         test$priv$(getAttrFloat$priv$() + 4L);
-        test$priv$(this.getAttrFloat$priv$() + 2.0);
-        test$priv$(this.getAttrFloat$priv$() + 4L);
+        test$priv$(.com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.this.getAttrFloat$priv$() + 2.0);
+        test$priv$(.com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.this.getAttrFloat$priv$() + 4L);
         localAttrFloat = .ceylon.language.Float.plus(localAttrFloat, 3.0);
         setAttrFloat$priv$(.ceylon.language.Float.plus(getAttrFloat$priv$(), 3.0));
-        this.setAttrFloat$priv$(.ceylon.language.Float.plus(this.getAttrFloat$priv$(), 3.0));
+        .com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.this.setAttrFloat$priv$(.ceylon.language.Float.plus(.com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.this.getAttrFloat$priv$(), 3.0));
         test$priv$(.ceylon.language.Float.plus(localAttrFloat, 3.0));
         test$priv$(.ceylon.language.Float.plus(getAttrFloat$priv$(), 3.0));
-        test$priv$(.ceylon.language.Float.plus(this.getAttrFloat$priv$(), 3.0));
+        test$priv$(.ceylon.language.Float.plus(.com.redhat.ceylon.compiler.java.test.expression.boxing.FloatBoxing.this.getAttrFloat$priv$(), 3.0));
     }
     
     private final void test$priv$(final double f) {

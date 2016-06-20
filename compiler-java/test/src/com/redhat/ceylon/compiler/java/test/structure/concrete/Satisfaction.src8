@@ -62,7 +62,7 @@ interface I2 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     }
     
     private default long m2$canonical$(final long n) {
-        return n + this.i2();
+        return n + .com.redhat.ceylon.compiler.java.test.structure.concrete.I2.this.i2();
     }
     
     public default long m2(final long n) {

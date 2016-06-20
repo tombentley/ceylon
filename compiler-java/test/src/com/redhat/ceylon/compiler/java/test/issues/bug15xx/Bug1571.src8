@@ -6,7 +6,7 @@ class Bug1571 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     private final void test$priv$() {
-        final .ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571, ? extends .ceylon.language.Integer> e = new .ceylon.language.Entry<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571, .ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, this, .ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Entry<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571, ? extends .ceylon.language.Integer> e = new .ceylon.language.Entry<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571, .ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1571.this, .ceylon.language.Integer.instance(1L));
         e.getKey().test$priv$();
     }
     

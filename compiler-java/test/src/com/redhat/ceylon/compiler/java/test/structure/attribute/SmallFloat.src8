@@ -39,8 +39,8 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final void floatassignmentOps$priv$() {
         double $double = 1000.0 * 1000.0 * 1000.0 * 1000.0;
         setFloata$priv$((float)$double);
-        this.setFloata$priv$((float)1.0);
-        this.setFloata$priv$((float)$double);
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallFloat.this.setFloata$priv$((float)1.0);
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallFloat.this.setFloata$priv$((float)$double);
         setFloatgs((float)$double);
         $double = getFloata$priv$();
         setFloata$priv$((float)2.147483647E9);
@@ -90,8 +90,8 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     public final float floatCalc(final float floatp) {
-        final float intl = this.getFloatp();
-        setFloata$priv$((float)((float)(floatp * this.getFloata$priv$()) * intl));
+        final float intl = .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallFloat.this.getFloatp();
+        setFloata$priv$((float)((float)(floatp * .com.redhat.ceylon.compiler.java.test.structure.attribute.SmallFloat.this.getFloata$priv$()) * intl));
         return getFloata$priv$();
     }
     

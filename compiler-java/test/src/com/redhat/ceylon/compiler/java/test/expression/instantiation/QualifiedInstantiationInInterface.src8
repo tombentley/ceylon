@@ -35,13 +35,13 @@ final class QualifiedInstantiationInInterface$impl<G> implements .java.io.Serial
     }
     
     private void m$priv$() {
-        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> other = $this;
-        $this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
+        final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface<G> other = .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$this;
+        .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
         other.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl().new Inner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> arg$0$callable$ = $this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
+                .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl<G> arg$0$callable$ = .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$instantiation$QualifiedInstantiationInInterface$impl();
                 .java.lang.String arg$0$0 = "";
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
             }
@@ -87,12 +87,12 @@ final class QualifiedInstantiationInInterface$impl<G> implements .java.io.Serial
             }
             
             private void m3$priv$(final .com.redhat.ceylon.compiler.java.test.expression.instantiation.QualifiedInstantiationInInterface$m2$Local<G, .ceylon.language.String> l) {
-                (Local$impl<T>)$this.Local$impl().new LocalInner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
+                (Local$impl<T>)Local$impl.this.$this.Local$impl().new LocalInner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
                 (Local$impl<.ceylon.language.String>)l.Local$impl().new LocalInner<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, "");
                 (
                     let
                     {
-                        Local$impl<T> arg$2$callable$ = (Local$impl<T>)$this.Local$impl();
+                        Local$impl<T> arg$2$callable$ = (Local$impl<T>)Local$impl.this.$this.Local$impl();
                         .java.lang.String arg$2$0 = "";
                         .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
                     }

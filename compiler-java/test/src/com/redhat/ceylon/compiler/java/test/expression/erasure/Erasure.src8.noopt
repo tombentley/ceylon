@@ -449,8 +449,8 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     
     private final void testArithmeticOperators$priv$(final .java.lang.Object p1, final .java.lang.Object erasedTest) {
         final .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric unboxed = (.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1;
-        final .java.lang.Object boxed = this.getN$priv$();
-        .java.lang.Object n = this.getN$priv$();
+        final .java.lang.Object boxed = .com.redhat.ceylon.compiler.java.test.expression.erasure.Test.this.getN$priv$();
+        .java.lang.Object n = .com.redhat.ceylon.compiler.java.test.expression.erasure.Test.this.getN$priv$();
         .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric sync = null;
         sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).plus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
         sync = ((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).minus((.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);

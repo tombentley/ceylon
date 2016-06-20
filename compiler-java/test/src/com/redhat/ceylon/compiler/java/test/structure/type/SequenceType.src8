@@ -12,9 +12,9 @@ class SequenceType implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                 .ceylon.language.Integer.instance(3L)});
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> s2 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType> s3 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.structure.type.SequenceType.$TypeDescriptor$, new .java.lang.Object[]{
-                this,
-                this,
-                this});
+                .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType.this,
+                .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType.this,
+                .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType.this});
         final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType> s4 = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.structure.type.SequenceType>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
     }
     

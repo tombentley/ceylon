@@ -83,7 +83,7 @@ public class Bug2335 implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 }
             }.sequence();
         );
-        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335 opt = this;
+        final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335 opt = .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.this;
         final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D ds3 = (
             let
             {

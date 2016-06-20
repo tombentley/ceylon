@@ -50,11 +50,11 @@ final class This$impl implements .java.io.Serializable {
     }
     
     public final long m2$i2(final long i1) {
-        return $this.m1();
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl.this.$this.m1();
     }
     
     private long m2$canonical$(final long i1, final long i2) {
-        return $this.m1() + $this.m1() + i1 + i2;
+        return $this.m1() + .com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl.this.$this.m1() + i1 + i2;
     }
     
     public long m2(final long i1, final long i2) {

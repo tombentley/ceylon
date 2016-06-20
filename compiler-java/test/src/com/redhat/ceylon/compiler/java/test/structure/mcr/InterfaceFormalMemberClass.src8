@@ -30,8 +30,8 @@ final class InterfaceFormalMemberClass$impl implements .java.io.Serializable {
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass qual) {
         $this.Member$new$();
         $this.Member$new$();
-        $this.Member$new$();
-        $this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl.this.$this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass$impl.this.$this.Member$new$();
         qual.Member$new$();
         qual.Member$new$();
     }
@@ -73,8 +73,8 @@ class InterfaceFormalMemberClass_sub implements .com.redhat.ceylon.compiler.java
     public final void m2(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub qual) {
         Member$new$();
         Member$new$();
-        this.Member$new$();
-        this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClass_sub.this.Member$new$();
         qual.Member$new$();
         qual.Member$new$();
     }

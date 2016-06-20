@@ -32,7 +32,7 @@ class ClassDefaultMemberClassSpecifier implements .com.redhat.ceylon.compiler.ja
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s$priv$() {
-        return this.Member$new$();
+        return .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.this.Member$new$();
     }
     
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s2$priv$() {

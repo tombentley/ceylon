@@ -88,7 +88,7 @@ class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.X arg$3$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.X arg$3$callable$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.X.this;
                 boolean arg$3$1 = true;
                 .java.lang.String arg$3$0 = "a";
                 arg$3$callable$.foo$priv$(arg$3$0, arg$3$1);

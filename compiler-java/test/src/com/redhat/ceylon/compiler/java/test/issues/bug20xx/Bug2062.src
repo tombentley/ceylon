@@ -33,7 +33,7 @@ final class IBug2062$impl<Element> implements .java.io.Serializable {
                     final .ceylon.language.Sequence<? extends Other> others$3 = (.ceylon.language.Sequence<? extends Other>)(.ceylon.language.Sequence)others$2;
                     $ceylontmp$ifResult$0 = $this.<Other>child($reified$Other, others$3);
                 } else {
-                    $ceylontmp$ifResult$0 = $this;
+                    $ceylontmp$ifResult$0 = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062$impl.this.$this;
                 }
             }
             returning $ceylontmp$ifResult$0;
@@ -49,7 +49,7 @@ final class IBug2062$impl<Element> implements .java.io.Serializable {
                         $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)$this.<.java.lang.Object>child(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Other, $reified$Element), (.ceylon.language.Sequence<? extends .java.lang.Object>)otherElems$7);
                     } else {
                         final .ceylon.language.Sequence<? extends Other> otherElems$6 = (.ceylon.language.Sequence)sel$5;
-                        $ceylontmp$ifResult$4 = $this;
+                        $ceylontmp$ifResult$4 = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062$impl.this.$this;
                     }
                 }
             }

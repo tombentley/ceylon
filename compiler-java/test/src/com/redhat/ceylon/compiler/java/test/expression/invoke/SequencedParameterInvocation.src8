@@ -352,13 +352,13 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
             }
         }.sequence())));
         m2$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor$, new .java.lang.Object[]{
-                this,
-                this,
-                this}, .ceylon.language.empty_.get_()));
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.this,
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.this,
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.this}, .ceylon.language.empty_.get_()));
         m4$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor$, new .java.lang.Object[]{
-                this,
-                this,
-                this}, .ceylon.language.empty_.get_()));
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.this,
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.this,
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.this}, .ceylon.language.empty_.get_()));
     }
     
     @.java.lang.Override

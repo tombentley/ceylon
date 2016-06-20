@@ -268,7 +268,7 @@ final class Bug993BottomInterface$impl implements .java.io.Serializable {
     
     public void f() {
         final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e();
-        final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)$this).e();
+        final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e();
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {

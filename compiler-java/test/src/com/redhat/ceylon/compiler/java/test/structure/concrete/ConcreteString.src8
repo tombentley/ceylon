@@ -9,7 +9,7 @@ interface ConcreteString extends .com.redhat.ceylon.compiler.java.language.Objec
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public default void presentYourself() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString.this.equals(this)) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString.this.equals(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString.this)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
         }
@@ -75,7 +75,7 @@ interface ConcreteString2 extends .com.redhat.ceylon.compiler.java.language.Obje
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public default void presentYourself() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.this.equals(this)) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.this.equals(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.this)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
         }

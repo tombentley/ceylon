@@ -35,7 +35,7 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 return .ceylon.language.String.instance($instance$.getVal());
             }
         };
-        if (.ceylon.language.String.instance("val").equals(valRef.$call$((.java.lang.Object)this))) {
+        if (.ceylon.language.String.instance("val").equals(valRef.$call$((.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.this))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef(this)"));
         }
@@ -59,7 +59,7 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 return $instance$.getTypeParam();
             }
         };
-        if (getTypeParam().equals(typeParamRef.$call$((.java.lang.Object)this))) {
+        if (getTypeParam().equals(typeParamRef.$call$((.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.this))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "typeParam == typeParamRef(this)"));
         }
@@ -93,11 +93,11 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 };
             }
         };
-        if (objectEqualsRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object)this).booleanValue()) {
+        if (objectEqualsRef.$call$((.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.this).$call$((.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.this).booleanValue()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "objectEqualsRef(this)(this)"));
         }
-        if (!objectEqualsRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("")).booleanValue()) {
+        if (!objectEqualsRef.$call$((.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.this).$call$((.java.lang.Object).ceylon.language.String.instance("")).booleanValue()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!objectEqualsRef(this)(\"\")"));
         }
@@ -120,7 +120,7 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stringEqualsRef(\"\")(\"\")"));
         }
-        if (!stringEqualsRef.$call$((.java.lang.Object).ceylon.language.String.instance("")).$call$((.java.lang.Object)this).booleanValue()) {
+        if (!stringEqualsRef.$call$((.java.lang.Object).ceylon.language.String.instance("")).$call$((.java.lang.Object).com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.this).booleanValue()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!stringEqualsRef(\"\")(this)"));
         }

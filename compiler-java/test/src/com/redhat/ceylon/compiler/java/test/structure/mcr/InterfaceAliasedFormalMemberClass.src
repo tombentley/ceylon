@@ -30,8 +30,8 @@ final class InterfaceAliasedFormalMemberClass$impl implements .java.io.Serializa
     public void m1(final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass qual) {
         $this.Member$new$();
         $this.Member$new$();
-        $this.Member$new$();
-        $this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.this.$this.Member$new$();
+        .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceAliasedFormalMemberClass$impl.this.$this.Member$new$();
         qual.Member$new$();
         qual.Member$new$();
     }

@@ -26,7 +26,7 @@ class Bug441 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441 getClone() {
-        return this;
+        return .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug441.this;
     }
     
     @.java.lang.Override

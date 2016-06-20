@@ -125,7 +125,7 @@ final class I2$impl implements .java.io.Serializable {
     }
     
     private long m2$canonical$(final long n) {
-        return n + $this.i2();
+        return n + .com.redhat.ceylon.compiler.java.test.structure.concrete.I2$impl.this.$this.i2();
     }
     
     public long m2(final long n) {

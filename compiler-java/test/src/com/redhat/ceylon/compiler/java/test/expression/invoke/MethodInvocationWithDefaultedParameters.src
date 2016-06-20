@@ -648,7 +648,7 @@ final class Barface$impl implements .java.io.Serializable {
     }
     
     public final long f7$n() {
-        return $this.getProp();
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.Barface$impl.this.$this.getProp();
     }
     
     public final long f9$n() {

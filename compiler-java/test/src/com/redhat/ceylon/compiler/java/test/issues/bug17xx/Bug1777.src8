@@ -16,7 +16,7 @@ public interface Bug1777<Element> extends .ceylon.language.Iterable<Element, .ja
                 final .ceylon.language.Callable<? extends Result> accumulating = (.ceylon.language.Callable<? extends Result>)(.ceylon.language.Callable)$param$0;
                 Result partial = initial;
                 .java.lang.Object elem$1;
-                .ceylon.language.Iterator<? extends Element> elem$iterator$$2 = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777<Element>.this.iterator();
+                .ceylon.language.Iterator<? extends Element> elem$iterator$$2 = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777.this.iterator();
                 loop_0: while (!((elem$1 = elem$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
                     final Element elem = (Element)elem$1;
                     partial = accumulating.$call$((.java.lang.Object)partial, elem);
@@ -698,7 +698,7 @@ public abstract class Bug1777_2<Element> implements .com.redhat.ceylon.compiler.
                 final .ceylon.language.Callable<? extends Result> accumulating = (.ceylon.language.Callable<? extends Result>)(.ceylon.language.Callable)$param$0;
                 Result partial = initial;
                 .java.lang.Object elem$6;
-                .ceylon.language.Iterator<? extends Element> elem$iterator$$7 = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777_2<Element>.this.iterator();
+                .ceylon.language.Iterator<? extends Element> elem$iterator$$7 = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.Bug1777_2.this.iterator();
                 loop_1: while (!((elem$6 = elem$iterator$$7.next()) instanceof .ceylon.language.Finished)) {
                     final Element elem = (Element)elem$6;
                     partial = accumulating.$call$((.java.lang.Object)partial, elem);
