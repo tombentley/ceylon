@@ -1760,15 +1760,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    /** 
-     * How to transform {@cocde this} or generate a reference to the current
-     * or an outer class
-     */
     This2 this_ = null;
     
     /** {@code this} transformation within a class or default interface member */
     public class This2 {
-        protected final This2 parent;
+        private final This2 parent;
         protected final ClassOrInterface cls;
 
         public This2(ClassOrInterface cls) {
@@ -1777,9 +1773,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             ExpressionTransformer.this.this_ = this;
         }
         
-        /**
-         * Remove the current this transformation and revert to the previous one
-         */
         public final void pop() {
             ExpressionTransformer.this.this_ = this.parent;
         }
@@ -1836,11 +1829,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public JCTree transform(Tree.This expr) {
         at(expr);
-        boolean inConstructor = inConstructor(expr);
-        return this_.this_(inConstructor);
-    }
-
-    protected boolean inConstructor(Tree.Primary expr) {
         boolean inConstructor = false;
         Scope scope = expr.getScope();
         while (!(scope instanceof Package)) {
@@ -1857,7 +1845,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             scope = scope.getContainer();
         }
-        return inConstructor;
+        return this_.this_(inConstructor);
     }
 
     public JCTree transform(Tree.Super expr) {
@@ -5129,13 +5117,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             // should be merged since they all add a this qualifier in different
             // cases
             if(!mustUseParameter){
-                This2 t = this_;
-                while (qualExpr == null && t != null) {
-                    if (t.cls.isMember(decl)||t.cls.isInheritedFromSupertype(decl)) {
-                        qualExpr = t.this_(inConstructor(expr));
-                        break;
-                    }
-                    t = t.parent;
+                if (qualExpr == null) {
+                    qualExpr = receiver.qualify(decl);
                 }
                 
                 qualExpr = addQualifierForObjectMembersOfInterface(expr, decl, qualExpr);
@@ -5234,6 +5217,46 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return result;
     }
+    
+    abstract class Receiver {
+        Receiver parent = receiver == null ? this : receiver;
+        public JCExpression qualify(Declaration decl) {
+            return null;
+        }
+    }
+    
+    class This extends Receiver {
+        
+    }
+    class DollarThis extends Receiver {
+        private final Interface iface;
+        public DollarThis(Interface iface) {
+            this.iface = iface;
+        }
+        
+        @Override
+        public JCExpression qualify(Declaration decl) {
+            if (iface.isMember(decl) || iface.isInherited(decl)) {
+                return naming.makeQualifiedThis(makeJavaType(iface.getType(), JT_RAW));
+            }
+            return null;
+        }
+    }
+    class DollarThis2 extends Receiver {
+        private final Interface iface;
+        public DollarThis2(Interface iface) {
+            this.iface = iface;
+        }
+        @Override
+        public JCExpression qualify(Declaration decl) {
+            if (iface.isMember(decl) || iface.isInherited(decl)) {
+                return naming.makeQuotedThis();
+            }
+            return null;
+        }
+    }
+    Receiver receiver = new This();
+    
     
     /**
      * We may need to force a qualified {@code this} or {@code $this}
