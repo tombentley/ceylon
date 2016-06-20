@@ -593,7 +593,9 @@ public class CeylonVisitor extends Visitor {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));
                     ExpressionTransformer eg = gen.expressionGen();
                     eg.receiver = eg.new DollarThis2(iface);
+                    eg.new StaticThis(iface);
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.STATIC));
+                    eg.this_.pop();
                     eg.receiver = eg.receiver.parent;
                 }
             }
@@ -638,7 +640,7 @@ public class CeylonVisitor extends Visitor {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));
                     ExpressionTransformer eg = gen.expressionGen();
                     eg.receiver = eg.new DollarThis(iface);
-                    eg.new This2(iface);
+                    eg.new StaticThis(iface);
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.STATIC));
                     eg.this_.pop();
                     eg.receiver = eg.receiver.parent;

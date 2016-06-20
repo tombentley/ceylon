@@ -1765,7 +1765,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     /** {@code this} transformation within a class or default interface member */
     public class This2 {
         private final This2 parent;
-        private ClassOrInterface cls;
+        protected final ClassOrInterface cls;
 
         public This2(ClassOrInterface cls) {
             this.cls = cls;
@@ -1802,13 +1802,18 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     /** {@code this} transformation within a companion class */
     public class CompanionThis extends This2{
+        
         public CompanionThis(Interface iface) {
             super(iface);
             assert(!iface.isUseDefaultMethods());
         }
         @Override
         public JCExpression this_(boolean inConstructor) {
-            return naming.makeQuotedThis();
+            JCExpression qualifier = null;
+            if (!willEraseToObject(cls.getType())) {
+                qualifier = naming.makeQualifiedThis(makeJavaType(cls.getType(), JT_RAW|JT_COMPANION));
+            }
+            return naming.makeQualifiedDollarThis(qualifier);
         }
     }
     /** {@code this} transformation within a {@code static}-transformed interface member */
@@ -1841,14 +1846,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             scope = scope.getContainer();
         }
         return this_.this_(inConstructor);
-        /*if (needDollarThis(expr.getScope())) {
-            return naming.makeQuotedThis();
-        }
-        if (isWithinSyntheticClassBody()) {
-            return naming.makeQualifiedThis(makeJavaType(expr.getTypeModel()));
-        } 
-        return receiver.qualifier();
-        */
     }
 
     public JCTree transform(Tree.Super expr) {
@@ -1857,20 +1854,9 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCTree transform(Tree.Outer expr) {
         at(expr);
-        
-        Type outerClass = com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface(expr.getScope());
-        return makeOuterExpr(outerClass);
+        return this_.outer();
     }
-
-    JCExpression makeOuterExpr(Type outerClass) {
-        final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
-        if (outerDeclaration instanceof Interface
-                && !((Interface)outerDeclaration).isUseDefaultMethods()) {
-            return makeQualifiedDollarThis(outerClass);
-        }
-        return naming.makeQualifiedThis(makeJavaType(outerClass));
-    }
-
+    
     //
     // Unary and Binary operators that can be overridden
     

@@ -996,11 +996,15 @@ public class Naming extends NamingBase implements LocalId {
      * Makes an ident for @{code $this}.
      */
     JCExpression makeQuotedThis() {
-        return makeUnquotedIdent("$this");
+        return makeQualifiedDollarThis(null);
     }
 
     JCExpression makeQualifiedDollarThis(JCExpression qualifier) {
-        return maker.Select(qualifier, makeUnquotedName("$this"));
+        if (qualifier == null) {
+            return makeUnquotedIdent("$this");
+        } else {
+            return maker.Select(qualifier, makeUnquotedName("$this"));
+        }
     }
 
     /**

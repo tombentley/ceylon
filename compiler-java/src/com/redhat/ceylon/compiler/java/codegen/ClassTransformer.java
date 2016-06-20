@@ -48,6 +48,7 @@ import java.util.TreeSet;
 
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.StaticThis;
 import com.redhat.ceylon.compiler.java.codegen.MethodDefinitionBuilder.NonWideningParam;
 import com.redhat.ceylon.compiler.java.codegen.MethodDefinitionBuilder.WideningRules;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
@@ -2207,7 +2208,7 @@ public class ClassTransformer extends AbstractTransformer {
             stmts.add(make().If(make().TypeTest(reference.makeIdent(),
                     make().Type(syms().ceylonOuterType)),
                     
-                    make().Return(expressionGen().makeOuterExpr(((TypeDeclaration)model.getContainer()).getType())),
+                    make().Return(expressionGen().this_.outer()),
                     swtch));
             
         } else {
@@ -3843,7 +3844,9 @@ public class ClassTransformer extends AbstractTransformer {
                         classBuilder.attribute(makeGetter(decl, AttrTx.BRIDGE_TO_STATIC, lazy));
                         ExpressionTransformer eg = expressionGen();
                         eg.receiver = eg.new DollarThis2(iface);
+                        eg.new StaticThis(iface);
                         classBuilder.attribute(makeGetter(decl, AttrTx.STATIC, lazy));
+                        eg.this_.pop();
                         eg.receiver = eg.receiver.parent;
                     }
                 }
