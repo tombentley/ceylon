@@ -98,14 +98,15 @@ public abstract class CompilerTests {
     protected final static String destDirGeneral = "build/test-cars";
     protected final static String cacheDirGeneral = "build/test-cache";
     public static final String LANGUAGE_MODULE_CAR = "../language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car";
+    public static final String LANGUAGE_MODULE_JDK8_CAR = "../language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+"-jdk8.car";
     protected final String destDir;
     protected final String cacheDir;
     protected final String moduleName;
-    protected final List<String> defaultOptions;
+    private List<String> defaultOptions;
 
     private static final String jbmv = Versions.DEPENDENCY_JBOSS_MODULES_VERSION;
     
-    public static final String[] CLASS_PATH = new String[] {
+    public static final String[] CLASS_PATH_JDK7 = new String[] {
         "../spec/bin",
         "./build/classes",
         "./../model/build/classes",
@@ -116,16 +117,39 @@ public abstract class CompilerTests {
         "./../runtime/dist/repo/org/slf4j/api/1.6.1/org.slf4j.api-1.6.1.jar",
         LANGUAGE_MODULE_CAR,
     };
+    
+    public static final String[] CLASS_PATH_JDK8 = new String[] {
+            "../spec/bin",
+            "./build/classes",
+            "./../model/build/classes",
+            "./../cmr/build/classes",
+            "./../common/build/classes",
+            "./../runtime/build/classes",
+            "./../runtime/dist/repo/org/jboss/modules/" + jbmv + "/org.jboss.modules-" + jbmv + ".jar",
+            "./../runtime/dist/repo/org/slf4j/api/1.6.1/org.slf4j.api-1.6.1.jar",
+            LANGUAGE_MODULE_JDK8_CAR,
+        };
 
-    public static final String CLASS_PATH_AS_PATH;
+    public static final String CLASS_PATH_AS_PATH_JDK7;
     static{
         StringBuilder b = new StringBuilder();
-        for(int i=0;i<CLASS_PATH.length;i++){
+        for(int i=0;i<CLASS_PATH_JDK7.length;i++){
             if(i > 0)
                 b.append(File.pathSeparator);
-            b.append(CLASS_PATH[i]);
+            b.append(CLASS_PATH_JDK7[i]);
         }
-        CLASS_PATH_AS_PATH = b.toString();
+        CLASS_PATH_AS_PATH_JDK7 = b.toString();
+    }
+    
+    public static final String CLASS_PATH_AS_PATH_JDK8;
+    static{
+        StringBuilder b = new StringBuilder();
+        for(int i=0;i<CLASS_PATH_JDK8.length;i++){
+            if(i > 0)
+                b.append(File.pathSeparator);
+            b.append(CLASS_PATH_JDK8[i]);
+        }
+        CLASS_PATH_AS_PATH_JDK8 = b.toString();
     }
     
     /**
@@ -160,33 +184,43 @@ public abstract class CompilerTests {
         } else {
             cacheDir = cacheDirGeneral + File.separator + transformDestDir(moduleName.substring(lastDot+1));
         }
-        defaultOptions = new ArrayList<String>(Arrays.asList(
-                "-out", destDir,
-                "-cacherep", cacheDir,
-                "-g", 
-                "-cp", getClassPathAsPath(),
-                //"-target", "8",
-                "-suppress-warnings", "compilerAnnotation"));
     }
 
-    public static String getClassPathAsPath() {
-        return CLASS_PATH_AS_PATH;
+    public String getClassPathAsPath() {
+        return getClassPathAsPath(false);
     }
 
-    public static String[] getClassPath() {
-        return CLASS_PATH;
+    public String getClassPathAsPath(boolean jdk8) {
+        return jdk8 ? CLASS_PATH_AS_PATH_JDK8: CLASS_PATH_AS_PATH_JDK7;
+    }
+
+    public String[] getClassPath() {
+        return getClassPath(false);
     }
     
-    public static String getClassPathAsPathExcludingLanguageModule() {
-        StringBuilder b = new StringBuilder();
-        for(int i=0;i<CLASS_PATH.length;i++){
-            if(i > 0)
-                b.append(File.pathSeparator);
-            if (!CLASS_PATH[i].equals(LANGUAGE_MODULE_CAR)) {
-                b.append(CLASS_PATH[i]);
-            }
+    public String[] getClassPath(boolean jdk8) {
+        return jdk8 ? CLASS_PATH_JDK8: CLASS_PATH_JDK7;
+    }
+    
+    public String getLanguageModuleCar(boolean jdk8) {
+        return jdk8 ? LANGUAGE_MODULE_JDK8_CAR: LANGUAGE_MODULE_CAR;
+    }
+    
+    public String getLanguageModuleCar() {
+        return LANGUAGE_MODULE_CAR;
+    }
+
+    protected List<String> getDefaultOptions() {
+        if (defaultOptions == null) {
+            defaultOptions = new ArrayList<String>(Arrays.asList(
+                    "-out", destDir,
+                    "-cacherep", cacheDir,
+                    "-g", 
+                    "-cp", getClassPathAsPath(),
+                    //"-target", "8",
+                    "-suppress-warnings", "compilerAnnotation"));
         }
-        return b.toString();
+        return defaultOptions;
     }
 
     // for subclassers 
@@ -227,7 +261,7 @@ public abstract class CompilerTests {
     protected void compareWithJavaSourceNoOpt(String name) {
         List<String> options = new ArrayList<String>();
         options.add("-disableOptimization");
-        for (String option : defaultOptions) {
+        for (String option : getDefaultOptions()) {
             options.add(option);
         }
         compareWithJavaSource(options, getSrcName(name)+".noopt", getCeylonSourceName(name));
@@ -259,15 +293,15 @@ public abstract class CompilerTests {
     }
 
     protected void assertErrors(String ceylon, CompilerError... expectedErrors) {
-        assertErrors(ceylon, defaultOptions, null, false, expectedErrors);
+        assertErrors(ceylon, getDefaultOptions(), null, false, expectedErrors);
     }
     
     protected void assertErrors(String ceylon, boolean includeWarnings, CompilerError... expectedErrors) {
-        assertErrors(ceylon, defaultOptions, null, includeWarnings, expectedErrors);
+        assertErrors(ceylon, getDefaultOptions(), null, includeWarnings, expectedErrors);
     }
     
     protected void assertErrors(String ceylon, Throwable expectedException, CompilerError... expectedErrors) {
-        assertErrors(ceylon, defaultOptions, expectedException, false, expectedErrors);
+        assertErrors(ceylon, getDefaultOptions(), expectedException, false, expectedErrors);
     }
     
     protected void assertErrors(String ceylon, List<String> options, Throwable expectedException, boolean includeWarnings, CompilerError... expectedErrors) {
@@ -519,7 +553,7 @@ public abstract class CompilerTests {
     }
 
     protected void compareWithJavaSource(String java, String... ceylon) {
-        compareWithJavaSource(defaultOptions, java, ceylon);
+        compareWithJavaSource(getDefaultOptions(), java, ceylon);
     }
     
     protected void compareWithJavaSource(List<String> options, String java, String... ceylon) {
@@ -643,11 +677,11 @@ public abstract class CompilerTests {
     }
     
     protected void compile(String... ceylon) {
-        compile(defaultOptions, ceylon);
+        compile(getDefaultOptions(), ceylon);
     }
 
     protected void compilesWithoutWarnings(String... ceylon) {
-        compilesWithoutWarnings(defaultOptions, ceylon);
+        compilesWithoutWarnings(getDefaultOptions(), ceylon);
     }
 
     protected void compilesWithoutWarnings(List<String> options, String... ceylon) {
@@ -664,7 +698,7 @@ public abstract class CompilerTests {
     }
     
     protected Object compileAndRun(String main, String... ceylon) {
-        return compileAndRun(defaultOptions, main, ceylon);
+        return compileAndRun(getDefaultOptions(), main, ceylon);
     }
 
     protected Object run(String main) {
@@ -839,7 +873,7 @@ public abstract class CompilerTests {
         URLClassLoader loader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
         // set up the runtime module system
         Metamodel.resetModuleManager();
-        Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
+        Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(getLanguageModuleCar())), loader);
         for (ModuleWithArtifact module : modules) {
             Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
         }
@@ -868,11 +902,11 @@ public abstract class CompilerTests {
     }
 
     protected CeyloncTaskImpl getCompilerTask(String... sourcePaths){
-        return getCompilerTask(defaultOptions, null, sourcePaths);
+        return getCompilerTask(getDefaultOptions(), null, sourcePaths);
     }
     
     protected CeyloncTaskImpl getCompilerTask(DiagnosticListener<? super FileObject> diagnosticListener, String... sourcePaths){
-        return getCompilerTask(defaultOptions, diagnosticListener, sourcePaths);
+        return getCompilerTask(getDefaultOptions(), diagnosticListener, sourcePaths);
     }
 
     protected CeyloncTaskImpl getCompilerTask(List<String> options, String... sourcePaths){

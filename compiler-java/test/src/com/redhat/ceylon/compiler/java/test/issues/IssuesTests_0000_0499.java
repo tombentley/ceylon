@@ -53,7 +53,7 @@ public class IssuesTests_0000_0499 extends JdkVersionDependentTests {
     public void testBug41() throws IOException {
         compile("bug00xx/Bug41.ceylon");
         List<String> options = new ArrayList<String>();
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         options.add("-verbose");
         options.add("-cp");
         // If this test is failing, make sure you have done "ant publish"

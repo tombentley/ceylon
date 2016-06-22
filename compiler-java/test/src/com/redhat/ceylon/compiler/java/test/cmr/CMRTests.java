@@ -112,7 +112,7 @@ public class CMRTests extends CompilerTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath()+"/modules/byName");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
                 Arrays.asList("default", "mod"));
@@ -151,7 +151,7 @@ public class CMRTests extends CompilerTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(dir);
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
                 Arrays.asList("com.redhat.ceylon.compiler.java.test.cmr.modules.java"));
@@ -204,7 +204,7 @@ public class CMRTests extends CompilerTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath()+"/modules/def");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
                 Collections.<String>emptyList(),
@@ -303,7 +303,7 @@ public class CMRTests extends CompilerTests {
             options.add("-out");
             options.add(outFolder);
         }else{
-            options.addAll(defaultOptions);
+            options.addAll(getDefaultOptions());
         }
         for(String repo : repos){
             options.add("-rep");
@@ -1092,7 +1092,7 @@ public class CMRTests extends CompilerTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath()+"/modules/jdk/defaultUsesJavaWithoutImportingIt");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         
         assertErrors("modules/jdk/defaultUsesJavaWithoutImportingIt/Foo",
                 new CompilerError(20, "package not found in imported modules: 'java.lang' (define a module and add module import to its module descriptor)"),
@@ -1219,7 +1219,7 @@ public class CMRTests extends CompilerTests {
                     "modules/defaultImportsInexistantPackage/isModule/package.ceylon",
                     "modules/defaultImportsInexistantPackage/isModule/foo.ceylon",
                 },
-                defaultOptions,
+                getDefaultOptions(),
                 null,
                 new CompilerError( 1, "package not found in imported modules: 'doesnotExist' (define a module and add module import to its module descriptor)"),
                 new CompilerError( 2, "package not found in imported modules: 'com.redhat.ceylon.compiler.java.test.cmr.modules.defaultImportsInexistantPackage.isModule' (define a module and add module import to its module descriptor)")
@@ -1267,8 +1267,8 @@ public class CMRTests extends CompilerTests {
     @Test
     public void testMdlOsgiManifestDisabled() throws IOException {
         ErrorCollector c = new ErrorCollector();
-        List<String> options = new ArrayList<String>(defaultOptions.size()+1);
-        options.addAll(defaultOptions);
+        List<String> options = new ArrayList<String>(getDefaultOptions().size()+1);
+        options.addAll(getDefaultOptions());
         options.add("-noosgi");
         assertCompilesOk(c, getCompilerTask(options, c, "modules/osgi/a/module.ceylon",
                 "modules/osgi/a/package.ceylon",
@@ -1360,7 +1360,7 @@ public class CMRTests extends CompilerTests {
                 "modules/osgi/a/package.ceylon",
                 "modules/osgi/a/A.ceylon");
 
-        ArrayList<String> options = new ArrayList<>(defaultOptions);
+        ArrayList<String> options = new ArrayList<>(getDefaultOptions());
         options.addAll(Arrays.asList(
                     "-osgi-provided-bundles", 
                     "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a , ceylon.language"));
@@ -1390,7 +1390,7 @@ public class CMRTests extends CompilerTests {
                 "modules/osgi/a/package.ceylon",
                 "modules/osgi/a/A.ceylon");
 
-        ArrayList<String> options = new ArrayList<>(defaultOptions);
+        ArrayList<String> options = new ArrayList<>(getDefaultOptions());
         options.addAll(Arrays.asList(
                     "-osgi-provided-bundles", 
                     "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a"));

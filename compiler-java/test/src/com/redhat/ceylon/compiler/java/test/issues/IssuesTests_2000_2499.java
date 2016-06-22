@@ -122,7 +122,7 @@ public class IssuesTests_2000_2499 extends JdkVersionDependentTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath()+"/bug20xx");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
                 Arrays.asList("bug2024c"));

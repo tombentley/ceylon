@@ -128,7 +128,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
 
     private ErrorCollector compileIgnoringCeylonErrors(String... ceylon) {
         ErrorCollector c = new ErrorCollector();
-        getCompilerTask(defaultOptions, c, ceylon).call2();
+        getCompilerTask(getDefaultOptions(), c, ceylon).call2();
         Assert.assertTrue("Expected only ceylon errors: " + c.getAssertionFailureMessage(), 0 == c.getNumBackendErrors());
         return c;
     }
@@ -782,7 +782,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
         DiagnosticCollector<JavaFileObject> errorCollector = new DiagnosticCollector<JavaFileObject>();
         // Stef: can't seem to be able to get this cast right no matter what I try
         @SuppressWarnings({ "unchecked", "rawtypes" })
-        Boolean success = getCompilerTask(defaultOptions, (DiagnosticListener)errorCollector , ceylon).call();
+        Boolean success = getCompilerTask(getDefaultOptions(), (DiagnosticListener)errorCollector , ceylon).call();
         Assert.assertEquals(expectedErrors, getErrorCount(errorCollector));
         Assert.assertFalse(success);
     }
@@ -812,7 +812,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(srcPath);
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         options.add("-continue");
         ErrorCollector c = new ErrorCollector();
         CeyloncTaskImpl task = getCompilerTask(options, 
@@ -856,7 +856,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(srcPath);
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         options.add("-continue");
         ErrorCollector c = new ErrorCollector();
         CeyloncTaskImpl task = getCompilerTask(options, 
@@ -891,7 +891,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(srcPath);
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         options.add("-continue");
         ErrorCollector c = new ErrorCollector();
         CeyloncTaskImpl task = getCompilerTask(options, 
@@ -932,7 +932,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(srcPath);
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         options.add("-continue");
         ErrorCollector c = new ErrorCollector();
         CeyloncTaskImpl task = getCompilerTask(options, 
@@ -1060,7 +1060,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(srcPath);
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         options.add("-continue");
         ErrorCollector c = new ErrorCollector();
         CeyloncTaskImpl task = getCompilerTask(options, 
@@ -1093,7 +1093,7 @@ public class RecoveryTests extends JdkVersionDependentTests {
     @Test
     public void bug6290() {
         String[] src = new String[]{"bug6290/Bug6290.java", "bug6290/module.ceylon"};
-        ExitState result = getCompilerTask(defaultOptions, null, src).call2();
+        ExitState result = getCompilerTask(getDefaultOptions(), null, src).call2();
         Assert.assertEquals(Main.Result.ABNORMAL, result.javacExitCode);
         Assert.assertEquals(CeylonState.ERROR, result.ceylonState);
     }

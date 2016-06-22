@@ -13,8 +13,8 @@ public class ReportingTests extends JdkVersionDependentTests {
     
     public ReportingTests(String target, String source) {
         super(target, source);
-        defaultOptions.clear();
-        defaultOptions.addAll(Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", 
+        getDefaultOptions().clear();
+        getDefaultOptions().addAll(Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", 
                 "-cp", getClassPathAsPath()));
     }
     
@@ -36,7 +36,7 @@ public class ReportingTests extends JdkVersionDependentTests {
     @Test
     public void testAnnoSuppressesNothing() {
         assertErrors(new String[]{"SuppressesNothing.ceylon"},
-                defaultOptions,
+                getDefaultOptions(),
                 null,
                 new CompilerError(Kind.WARNING, "", 1, "suppresses no warnings"));
     }
@@ -45,7 +45,7 @@ public class ReportingTests extends JdkVersionDependentTests {
     public void testAnnoAlreadySuppressed() {
         // We warn about warnings which are suppressed by an annotation on an outer declaration
         assertErrors(new String[]{"AlreadySuppressed.ceylon"},
-                defaultOptions,
+                getDefaultOptions(),
                 null,
                 new CompilerError(Kind.WARNING, "", 3, "warnings already suppressed by annotation"));
     }
@@ -53,10 +53,10 @@ public class ReportingTests extends JdkVersionDependentTests {
     @Test
     public void testAnnoAlreadySuppressed2() {
         // 
-        defaultOptions.add("-suppress-warnings");
-        defaultOptions.add("unusedDeclaration");
+        getDefaultOptions().add("-suppress-warnings");
+        getDefaultOptions().add("unusedDeclaration");
         assertErrors(new String[]{"AlreadySuppressed.ceylon"},
-                defaultOptions,
+                getDefaultOptions(),
                 null,
                 new CompilerError(Kind.WARNING, "", 3, "warnings already suppressed by annotation"));
     }
@@ -64,7 +64,7 @@ public class ReportingTests extends JdkVersionDependentTests {
     @Test
     public void testUnknownWarningInAnno() {
         assertErrors(new String[]{"UnknownWarningInAnno.ceylon"},
-                defaultOptions,
+                getDefaultOptions(),
                 null,
                 new CompilerError(Kind.WARNING, "", 1, "unknown warning: blahblah"));
     }

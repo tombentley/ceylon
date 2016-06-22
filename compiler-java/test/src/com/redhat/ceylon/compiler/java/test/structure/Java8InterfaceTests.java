@@ -44,7 +44,7 @@ public class Java8InterfaceTests extends JdkVersionDependentTests {
     }
 
     List<String> optsForJava8Interfaces() {
-        ArrayList<String> opts = new ArrayList<String>(defaultOptions);
+        ArrayList<String> opts = new ArrayList<String>(getDefaultOptions());
         opts.add("-target");
         opts.add("8");
         opts.add("-source");

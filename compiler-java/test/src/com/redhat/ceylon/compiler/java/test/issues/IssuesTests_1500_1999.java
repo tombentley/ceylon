@@ -261,7 +261,7 @@ public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
     public void testBug1580() {
         assertErrors(
                 new String[] { "bug15xx/bug1580/Bug1580.ceylon", "bug15xx/bug1580/module.ceylon" },
-                defaultOptions,
+                getDefaultOptions(),
                 null,
                 new CompilerError(22, "Error while loading the org.jboss.xnio.nio/3.1.0.CR7 module:\n   Declaration 'org.xnio.XnioProvider' could not be found in module 'org.jboss.xnio.nio' or its imported modules"),
                 new CompilerError(24, "could not determine type of method or attribute reference: 'instance' of 'NioXnioProvider': Error while loading the org.jboss.xnio.nio/3.1.0.CR7 module:\n   Declaration 'org.xnio.Xnio' could not be found in module 'org.jboss.xnio.nio' or its imported modules"));
@@ -271,7 +271,7 @@ public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
     public void testBug1581() {
         assertErrors(
                 new String[] { "bug15xx/bug1581/Bug1581Java.java", "bug15xx/bug1581/Bug1581.ceylon", "bug15xx/bug1581/module.ceylon" },
-                defaultOptions,
+                getDefaultOptions(),
                 null,
                 new CompilerError(20, "Error while loading the com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581/1 module:\n"+
                         "   Error while resolving type of parameter 'props' of method '<init>' for com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1581::Bug1581Java:\n"+
@@ -690,7 +690,7 @@ public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
     public void testBug1773() {
         ErrorCollector collector = new ErrorCollector();
         
-        CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug17xx/Bug1773.ceylon");
+        CeyloncTaskImpl task = getCompilerTask(getDefaultOptions(), collector, "bug17xx/Bug1773.ceylon");
 
         // now compile it all the way
         ExitState exitState = task.call2();
@@ -802,7 +802,7 @@ public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
     @Test
     public void testBug1830() {
         ErrorCollector collector = new ErrorCollector();
-        CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug18xx/Bug1830.ceylon");
+        CeyloncTaskImpl task = getCompilerTask(getDefaultOptions(), collector, "bug18xx/Bug1830.ceylon");
         ExitState call2 = task.call2();
         Assert.assertEquals(CeylonState.ERROR, call2.ceylonState);
         Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode.exitCode);
@@ -821,7 +821,7 @@ public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
     @Test
     public void testBug1836() {
         ErrorCollector collector = new ErrorCollector();
-        CeyloncTaskImpl task = getCompilerTask(defaultOptions, collector, "bug18xx/Bug1836.ceylon");
+        CeyloncTaskImpl task = getCompilerTask(getDefaultOptions(), collector, "bug18xx/Bug1836.ceylon");
         ExitState call2 = task.call2();
         Assert.assertEquals(CeylonState.ERROR, call2.ceylonState);
         Assert.assertEquals(Main.EXIT_ERROR, call2.javacExitCode.exitCode);
@@ -1070,7 +1070,7 @@ public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
         new File(destDir).mkdirs();
 
         List<String> options = new LinkedList<String>();
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         if(!options.contains("-src"))
             options.addAll(Arrays.asList("-src", getSourcePath()));
         if(!options.contains("-cacherep"))

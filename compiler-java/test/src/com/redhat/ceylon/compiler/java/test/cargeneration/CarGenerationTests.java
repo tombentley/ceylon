@@ -59,7 +59,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
         options.add(getPackagePath() + "resmodules/simple/source");
         options.add("-res");
         options.add(getPackagePath() + "resmodules/simple/resource");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
                 Arrays.asList("test.simple"));
@@ -95,7 +95,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
         options.add(getPackagePath() + "resmodules/files/source");
         options.add("-res");
         options.add(getPackagePath() + "resmodules/files/resource");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task;
         if (alternative) {
             task = getCompilerTask(options, 
@@ -151,7 +151,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
             options.add("-res");
             options.add(getPackagePath() + "resmodules/multiple/resource2");
         }
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
                 Arrays.asList("test.multiple"));
@@ -185,7 +185,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
         options.add(getPackagePath() + "resmodules/default/source");
         options.add("-res");
         options.add(getPackagePath() + "resmodules/default/resource");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 "resmodules/default/resource/README.txt",
                 "resmodules/default/resource/subdir/SUBDIR.txt");
@@ -213,7 +213,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
         options.add(getPackagePath() + "resmodules/rootdir/source");
         options.add("-res");
         options.add(getPackagePath() + "resmodules/rootdir/resource");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
                 Arrays.asList("test.rootdir"));
@@ -249,7 +249,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
         options.add(getPackagePath() + "resmodules/altrootdir/resource");
         options.add("-resroot");
         options.add("ALTROOT");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 null,
                 Arrays.asList("test.altrootdir"));
@@ -285,7 +285,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
         List<String> options = new LinkedList<String>();
         options.add("-src");
         options.add(getPackagePath() + "meta/generatedmanifest/source");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 ec,
                 Arrays.asList("test.generatedmanifest"));
@@ -344,7 +344,7 @@ public class CarGenerationTests extends JdkVersionDependentTests {
         options.add(getPackagePath() + "meta/mergedmanifest/source");
         options.add("-res");
         options.add(getPackagePath() + "meta/mergedmanifest/resource");
-        options.addAll(defaultOptions);
+        options.addAll(getDefaultOptions());
         CeyloncTaskImpl task = getCompilerTask(options, 
                 ec,
                 Arrays.asList("test.mergedmanifest"));

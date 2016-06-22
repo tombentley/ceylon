@@ -28,19 +28,19 @@ public class JdkVersionDependentTests extends CompilerTests {
         this.target = target;
         this.source = source;
         if (target != null) {
-            defaultOptions.add("-target");
-            defaultOptions.add(target);
+            getDefaultOptions().add("-target");
+            getDefaultOptions().add(target);
         }
         if (source != null) {
-            defaultOptions.add("-source");
-            defaultOptions.add(source);
+            getDefaultOptions().add("-source");
+            getDefaultOptions().add(source);
         }
         if ("8".equals(target)) {
-            defaultOptions.add("-interfaces");
-            defaultOptions.add("default");
+            getDefaultOptions().add("-interfaces");
+            getDefaultOptions().add("default");
         } else {
-            defaultOptions.add("-interfaces");
-            defaultOptions.add("companion");
+            getDefaultOptions().add("-interfaces");
+            getDefaultOptions().add("companion");
         }
     }
     @Override
@@ -62,5 +62,15 @@ public class JdkVersionDependentTests extends CompilerTests {
             return super.getCarSuffix();
         }
         
+    }
+    
+    @Override
+    public String getClassPathAsPath() {
+        return getClassPathAsPath("8".equals(target));
+    }
+
+    @Override
+    public String[] getClassPath() {
+        return getClassPath("8".equals(target));
     }
 }

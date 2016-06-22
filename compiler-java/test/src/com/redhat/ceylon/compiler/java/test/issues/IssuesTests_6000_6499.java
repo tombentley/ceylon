@@ -163,7 +163,7 @@ public class IssuesTests_6000_6499 extends JdkVersionDependentTests {
         
         compile("bug62xx/bug6231/static/run.ceylon");
         
-        ArrayList<String> options = new ArrayList<String>(defaultOptions);
+        ArrayList<String> options = new ArrayList<String>(getDefaultOptions());
         options.add("-res");
         options.add("test/src");
         

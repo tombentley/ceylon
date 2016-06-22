@@ -704,7 +704,7 @@ public class InteropTests extends JdkVersionDependentTests {
     
     @Test
     public void testIopJavaIterableWithoutJavaBase() {
-        ArrayList<String> opts = new ArrayList<String>(defaultOptions);
+        ArrayList<String> opts = new ArrayList<String>(getDefaultOptions());
         opts.add("-rep");
         opts.add("test/modules");
         compareWithJavaSource(opts, "bug4389/b/b.src", "bug4389/b/b.ceylon");

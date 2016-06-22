@@ -275,7 +275,7 @@ public class ModelLoaderTests extends JdkVersionDependentTests {
     }
 
     protected void verifyCompilerClassLoading(String ceylon, final RunnableTest test){
-        verifyCompilerClassLoading(ceylon, test, defaultOptions);
+        verifyCompilerClassLoading(ceylon, test, getDefaultOptions());
     }
     
     protected void verifyCompilerClassLoading(String ceylon, final RunnableTest test, List<String> options){
@@ -1749,7 +1749,7 @@ public class ModelLoaderTests extends JdkVersionDependentTests {
                 }
             }
         };
-        verifyCompilerClassLoading("Any.ceylon", tester, defaultOptions);
+        verifyCompilerClassLoading("Any.ceylon", tester, getDefaultOptions());
         verifyRuntimeClassLoading(tester);
     }
 }

@@ -350,7 +350,7 @@ public class AnnotationsTests extends JdkVersionDependentTests {
     @Test
     public void testRepeatable8(){
         Assume.assumeTrue(JDKUtils.jdk == JDKUtils.JDK.JDK8 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
-        ArrayList<String> options = new ArrayList<String>(defaultOptions);
+        ArrayList<String> options = new ArrayList<String>(getDefaultOptions());
         options.add("-target");
         options.add("8");
         compareWithJavaSource(options, "Repeatable8.src", "Repeatable.ceylon");
@@ -358,7 +358,7 @@ public class AnnotationsTests extends JdkVersionDependentTests {
     }
     @Test
     public void testRepeatable7(){
-        ArrayList<String> options = new ArrayList<String>(defaultOptions);
+        ArrayList<String> options = new ArrayList<String>(getDefaultOptions());
         options.add("-target");
         options.add("7");
         options.add("-source");

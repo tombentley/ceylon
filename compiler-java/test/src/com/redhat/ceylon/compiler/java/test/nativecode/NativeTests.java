@@ -101,11 +101,11 @@ public class NativeTests extends JdkVersionDependentTests {
     }
     
     private void testNativeModuleErrors(String dir, CompilerError... expectedErrors) {
-        assertErrors(new String[] {dir + "/test.ceylon", dir + "/module.ceylon"}, defaultOptions, null, expectedErrors);
+        assertErrors(new String[] {dir + "/test.ceylon", dir + "/module.ceylon"}, getDefaultOptions(), null, expectedErrors);
     }
     
     private void testNativeModuleErrors(String dir, String extraFile, CompilerError... expectedErrors) {
-        assertErrors(new String[] {dir + "/test.ceylon", dir + "/module.ceylon", dir + "/" + extraFile}, defaultOptions, null, expectedErrors);
+        assertErrors(new String[] {dir + "/test.ceylon", dir + "/module.ceylon", dir + "/" + extraFile}, getDefaultOptions(), null, expectedErrors);
     }
     
     // Methods
@@ -533,7 +533,7 @@ public class NativeTests extends JdkVersionDependentTests {
     
     @Test
     public void testNativeRefWrong() {
-        assertErrors(new String[] {"nativerefwrong/test.ceylon", "nativerefwrong/module.ceylon", "modsample/test.ceylon", "modsample/package.ceylon", "modsample/module.ceylon", "modok/test.ceylon", "modok/package.ceylon", "modok/module.ceylon"}, defaultOptions, null,
+        assertErrors(new String[] {"nativerefwrong/test.ceylon", "nativerefwrong/module.ceylon", "modsample/test.ceylon", "modsample/package.ceylon", "modsample/module.ceylon", "modok/test.ceylon", "modok/package.ceylon", "modok/module.ceylon"}, getDefaultOptions(), null,
                 new CompilerError(30, "illegal reference to native declaration 'nativeMethodJvm': declaration 'x' is not native (mark it or the module native)"),
                 new CompilerError(32, "illegal reference to native declaration 'nativeMethodJvm': declaration 'x' is not native (mark it or the module native)"),
                 new CompilerError(37, "illegal reference to native declaration 'nativeMethodJs': declaration 'x' is not native (mark it or the module native)"),

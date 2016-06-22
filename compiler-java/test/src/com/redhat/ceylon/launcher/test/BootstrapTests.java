@@ -232,7 +232,6 @@ public class BootstrapTests {
      * a read timeout from the client side after 0 bytes served */
     @Test
     public void testBootstrapDownloadReadTimeoutInitial() throws Throwable {
-        Assume.assumeTrue("7".equals(target));
         Assert.assertTrue(distZip.exists());
         BootstrapHttpHandler reliableHandler = new BootstrapHttpHandler() {
             @Override

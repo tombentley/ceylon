@@ -1555,7 +1555,7 @@ public class CeylonDocToolTests {
     
     private void compile(String pathname, String destDir, String moduleName) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
-        List<String> options = Arrays.asList("-src", pathname, "-out", destDir, "-sysrep", "../dist/dist/repo", "-cp", CompilerTests.getClassPathAsPath());
+        List<String> options = Arrays.asList("-src", pathname, "-out", destDir, "-sysrep", "../dist/dist/repo", "-cp", CompilerTests.CLASS_PATH_AS_PATH_JDK7);
         JavacTask task = compiler.getTask(null, null, null, options, Arrays.asList(moduleName), null);
         Boolean ret = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, ret);
@@ -1563,7 +1563,7 @@ public class CeylonDocToolTests {
 
     private void compileJavaModule(String pathname, String... fileNames) throws Exception {
         CeyloncTool compiler = new CeyloncTool();
-        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars", "-sysrep", "../dist/dist/repo", "-cp", CompilerTests.getClassPathAsPath());
+        List<String> options = Arrays.asList("-src", pathname, "-out", "build/ceylon-cars", "-sysrep", "../dist/dist/repo", "-cp", CompilerTests.CLASS_PATH_AS_PATH_JDK7);
         JavacFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){

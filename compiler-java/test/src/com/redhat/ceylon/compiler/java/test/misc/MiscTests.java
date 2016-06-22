@@ -210,7 +210,7 @@ public class MiscTests extends CompilerTests {
         String compilerSourcePath = ceylonSourcePath + File.pathSeparator + javaSourcePath;
         ArrayList<String> compilerOptions = new ArrayList<String>(Arrays.asList("-sourcepath", compilerSourcePath, 
                 "-d", "build/classes-runtime", "-Xbootstrapceylon",
-                "-cp", getClassPathAsPathExcludingLanguageModule(),
+                "-cp", getClassPathAsPathExcludingLanguageModule(javaSourcePath.endsWith("-jdk8")),
                 "-suppress-warnings", "ceylonNamespace"
                 /*, "-verbose"*/));
         compilerOptions.addAll(Arrays.asList(options));
@@ -219,6 +219,18 @@ public class MiscTests extends CompilerTests {
                 null, compilationUnits1);
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
+    }
+    
+    public String getClassPathAsPathExcludingLanguageModule(boolean jdk8) {
+        StringBuilder b = new StringBuilder();
+        for(int i=0;i< getClassPath(jdk8).length;i++){
+            if(i > 0)
+                b.append(File.pathSeparator);
+            if (!getClassPath(jdk8)[i].equals(getLanguageModuleCar(jdk8))) {
+                b.append(getClassPath(jdk8)[i]);
+            }
+        }
+        return b.toString();
     }
 
     private void addJavaSourceFile(String baseName, List<File> sourceFiles, File javaPkgDir, boolean required) {
