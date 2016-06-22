@@ -14,7 +14,7 @@ class Bug1621 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             
             void x() {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621 f = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this;
-                .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this.g$priv$(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this);
+                g$priv$(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this);
                 .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this.g$priv$(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1621.this);
             }
         }
