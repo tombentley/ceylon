@@ -1385,7 +1385,6 @@ public class ClassTransformer extends AbstractTransformer {
         final ListBuffer<JCTree> prevDefs = visitor.defs;
         final boolean prevInInitializer = visitor.inInitializer;
         final ClassDefinitionBuilder prevClassBuilder = visitor.classBuilder;
-        final boolean prevInSynthetic = gen().expressionGen().withinSyntheticClassBody(false);
         try {
             visitor.defs = new ListBuffer<JCTree>();
             visitor.inInitializer = true;
@@ -1396,7 +1395,6 @@ public class ClassTransformer extends AbstractTransformer {
             visitor.classBuilder = prevClassBuilder;
             visitor.inInitializer = prevInInitializer;
             visitor.defs = prevDefs;
-            gen().expressionGen().withinSyntheticClassBody(prevInSynthetic);
             naming.closeScopedSubstitutions(def.getScope());
         }
     }
@@ -4256,7 +4254,10 @@ public class ClassTransformer extends AbstractTransformer {
         boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(Decl.isMpl(def.getDeclarationModel())
                 || Decl.isLocalNotInitializer(def)
                 || expressionGen().isWithinSyntheticClassBody());
-        boolean q = def.getDeclarationModel().isInterfaceMember()
+        boolean q = def.
+                
+                
+                getDeclarationModel().isInterfaceMember()
                 && ((Interface)def.getDeclarationModel().getContainer()).isUseDefaultMethods()
                 && !(def.getDeclarationModel().isFormal() || ! def.getDeclarationModel().isShared());
         if (q) {

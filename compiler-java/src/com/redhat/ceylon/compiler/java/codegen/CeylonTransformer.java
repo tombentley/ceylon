@@ -552,16 +552,12 @@ public class CeylonTransformer extends AbstractTransformer {
                 // For local and toplevel getters
                 boolean prevSyntheticClassBody;
                 if (Decl.isLocal(declarationModel)) {
-                    prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
                     expressionGen().new SyntheticClass("local");
-                } else {
-                    prevSyntheticClassBody = expressionGen().isWithinSyntheticClassBody();
                 }
                 JCBlock getterBlock = makeGetterBlock(declarationModel, block, expression);
                 if (Decl.isLocal(declarationModel)) {
                     expressionGen().targetScope.popScope();
                 }
-                prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
                 builder.getterBlock(getterBlock);
                 
                 if (Decl.isLocal(declarationModel)) {

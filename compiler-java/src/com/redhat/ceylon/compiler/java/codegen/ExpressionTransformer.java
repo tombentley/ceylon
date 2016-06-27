@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -54,11 +55,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCLiteral;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodDecl;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodInvocation;
@@ -366,7 +369,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         Function model = functionArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
-        boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
         expressionGen().new SyntheticClass("function argument");
         try {
             statementGen().noExpressionlessReturn = isAnything(model.getType());
@@ -387,7 +389,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } finally {
             expressionGen().targetScope.popScope();
-            expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
             statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
 
@@ -1792,11 +1793,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         /* of SyntheticClass|CeylonScope */ {
         /** The parent (outer) scope of this scope. */
         protected final TargetClassScope parent;
+        
+        public final ClassDefinitionBuilder cdb = gen().current();
+        
         /** 
          * Initialize a TargetClassScope, pushing it on top of the
          * {@link ExpressionTransformer#targetScope} stack.
          */
         protected TargetClassScope() {
+            
             this.parent = ExpressionTransformer.this.targetScope;
             ExpressionTransformer.this.targetScope = this;
         }
@@ -1825,22 +1830,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    public class WrapperClass extends TargetClassScope {
-        protected final String name;
-        public WrapperClass(String name) {
-            super();
-            this.name = name;
-        }
-        @Override
-        public String n() {
-            return name;
-        }
-        @Override
-        public boolean synthetic() {
-            return true;
-        }
-    }
-    
     public class SyntheticClass extends TargetClassScope {
         protected final String name;
         public SyntheticClass(String name) {
@@ -1857,10 +1846,62 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
+    public class WrapperClass extends SyntheticClass {
+        public WrapperClass(String name) {
+            super(name);
+        }
+    }
+    
+    /**
+     * This class is a disgusting hack. When we transform a 
+     * {@code super}-qualified expression that happens to be within a 
+     * synthetic class we sometimes need to use a bridge method
+     * 
+     * interface X {
+     *     default void x();
+     * }
+     * class Outer satisfies X {
+     *     // bridge method
+     *     void $super$X$x() {
+     *         X.super.x();
+     *     }
+     *     void m() {
+     *         new Object() {
+     *             // some anonymous class:
+     *             // java offers no syntax to invoke super.X.x() here!
+     *             // so we have to call $super$X$x() 
+     *         
+     *         }
+     *     }
+     * }
+     * 
+     * Fine. But within the code generator we've long made the assumption that
+     * a {@code super} qualifier results in a JCExpression of some kind which 
+     * can act as a qualifer to the {@code .member} 
+     * ({@code .x()} in the example above). This assumption breaks down 
+     * with the use of a bridge.
+     * 
+     * So {@code Special} has the property that 
+     * {@link Naming#makeQualIdent()} and 
+     * {@link Naming#makeQuotedQualIdent(JCExpression, String...) 
+     * will return a Special first argument as-is, ignoring the members 
+     * being qualified. This is enough to make the {@code $super$...()} 
+     * bridges work.
+     * 
+     * See, I told you it was a disgusting hack :-p
+     */
+    class Special extends JCIdent {
+        protected Special(Name name, Symbol sym) {
+            super(name, sym);
+        }
+        
+    }
+    
     /** {@code this} transformation within a class or default interface member */
     public class CeylonScope extends TargetClassScope {
         
         protected final ClassOrInterface cls;
+        private HashSet<Declaration> bridges;
 
         public CeylonScope(ClassOrInterface cls) {
             super();
@@ -1897,6 +1938,40 @@ public class ExpressionTransformer extends AbstractTransformer {
         @Override
         public boolean synthetic() {
             return false;
+        }
+        
+        public JCExpression bridge(TypeDeclaration direct, Reference member) {
+            Declaration decl = member.getDeclaration();
+            String name = naming.getSuperBridgeName(decl);
+            if (bridges == null || !bridges.contains(decl)) {
+                MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(ExpressionTransformer.this, name);
+                if (cls instanceof Interface) {
+                    mdb.modifiers(Flags.DEFAULT);
+                }
+                mdb.resultType(makeJavaType(member.getType()), null);
+                ListBuffer<JCExpression> args = new ListBuffer<JCExpression>();
+                if (decl instanceof Functional) {
+                    for (Parameter p : ((Functional)decl).getFirstParameterList().getParameters()) {
+                        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(ExpressionTransformer.this, p);
+                        pdb.type(makeJavaType(member.getTypedParameter(p).getType()), null);
+                        mdb.parameter(pdb);
+                        args.add(naming.makeUnquotedIdent(p.getName()));
+                    }
+                }
+                
+                mdb.body(make().Return(make().Apply(null, 
+                        naming.makeQualIdent(
+                                naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW)),
+                                naming.selector((TypedDeclaration)decl)), args.toList())));
+                cdb.method(mdb);
+                if (bridges == null) {
+                    bridges = new HashSet<Declaration>();
+                }
+                bridges.add(decl);
+            }
+            
+            return new Special(naming.makeUnquotedName(name), null);
+            
         }
     }
 
@@ -4279,7 +4354,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         Declaration member = expr.getDeclaration();
         Type qualifyingType = primary.getTypeModel();
         Tree.TypeArguments typeArguments = expr.getTypeArguments();
-        boolean prevSyntheticClassBody = withinSyntheticClassBody(true);
         new SyntheticClass("member reference");
         try {
             if (member.isStaticallyImportable()) {
@@ -4386,7 +4460,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } finally {
             targetScope.popScope();
-            withinSyntheticClassBody(prevSyntheticClassBody);
         }
     }
     
@@ -4449,6 +4522,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             Type srcElementType = expr.getTarget().getQualifyingType();
             JCExpression srcIterableTypeExpr = makeJavaType(typeFact().getIterableType(srcElementType), JT_NO_PRIMITIVES);
             JCExpression srcIterableExpr;
+            
+            JCNewClass iterableClass;
+            new SyntheticClass("spread");
+            
             boolean isSuperOrSuperOf = false;
             if (spreadMethodReferenceInner) {
                 srcIterableExpr = srcIterableName.makeIdent();
@@ -4460,9 +4537,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // so we just refer to it later
                     if(isSuper){
                         Declaration member = expr.getPrimary().getTypeModel().getDeclaration().getMember("iterator", null, false);
-                        srcIterableExpr = transformSuper(expr, (TypeDeclaration) member.getContainer());
+                        srcIterableExpr = transformSuper(expr, (TypeDeclaration) member.getContainer(), expr.getPrimary().getTypeModel().getTypedReference(member, null));
                     }else
-                        srcIterableExpr = transformSuperOf(expr, expr.getPrimary(), "iterator");
+                        srcIterableExpr = transformSuperOf(expr, expr.getPrimary(), expr.getTarget());
                 }else{
                     srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, typeFact().getIterableType(srcElementType));
                 }
@@ -4503,9 +4580,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         CallBuilder.CB_ALIAS_ARGS, varBaseName);
             }
             
-            JCNewClass iterableClass;
-            boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
-            new SyntheticClass("spread");
+            
             try {
                 JCExpression transformedElement = applyErasureAndBoxing(iteratorResultName.makeIdent(), typeFact().getAnythingType(), CodegenUtil.hasTypeErased(expr.getPrimary()),
                         true, BoxingStrategy.BOXED, 
@@ -4573,7 +4648,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                         make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(iteratorMdb.build())));
             } finally {
                 expressionGen().targetScope.popScope();
-                expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
             }
             
             if (aliasArguments) {
@@ -4650,7 +4724,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (isSuper(primary)) {
                 result = transformSuper(expr);
             } else if (isSuperOf(primary)) {
-                result = transformSuperOf(expr, expr.getPrimary(), expr.getDeclaration().getName());
+                result = transformSuperOf(expr, expr.getPrimary(), expr.getTarget());
             } else if (isThis(primary)
                     && !expr.getDeclaration().isCaptured() 
                     && !expr.getDeclaration().isShared()
@@ -4780,7 +4854,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return isSuper(primary) || isSuperOf(primary);
     }
     
-    private JCExpression transformSuperOf(Tree.Term node, Tree.Primary superPrimary, String forMemberName) {
+    private JCExpression transformSuperOf(Tree.Term node, Tree.Primary superPrimary, Reference member) {
         Tree.Term superOf = eliminateParens(superPrimary);
         if (!(superOf instanceof Tree.OfOp)) {
             throw new BugException();
@@ -4792,9 +4866,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         TypeDeclaration inheritedFrom = superType.getTypeModel().getDeclaration();
         if (inheritedFrom instanceof Interface
                 && !((Interface)inheritedFrom).isUseDefaultMethods()) {
-            inheritedFrom = (TypeDeclaration)inheritedFrom.getMember(forMemberName, null, false).getContainer();
+            inheritedFrom = (TypeDeclaration)inheritedFrom.getMember(member.getDeclaration().getName(), null, false).getContainer();
         }
-        return widenSuper(node, inheritedFrom);
+        return widenSuper(node, inheritedFrom, member);
     }
 
     /**
@@ -4810,14 +4884,110 @@ public class ExpressionTransformer extends AbstractTransformer {
      */
     private JCExpression widenSuper(
             Tree.Term superOfQualifiedExpr,
-            TypeDeclaration inheritedFrom) {
+            TypeDeclaration inheritedFrom,
+            Reference member) {
+        at(superOfQualifiedExpr);
         JCExpression result = null;
         final TypeDeclaration direct = findDirectSuper(superOfQualifiedExpr, inheritedFrom);
+        TargetClassScope useSite = targetScope;
+        
+        if (direct instanceof Class) {
+            if (useSite.synthetic()) {
+                // An inner class can access an outer classes super member using Outer.super
+                return naming.makeQualifiedSuper(makeJavaType(enclosing(targetScope).cls.getType(), JT_RAW));
+            } else if (((CeylonScope)useSite).cls instanceof Interface) {
+                if (!direct.getType().isObject()) {
+                    // The only class that is a supertype of an interface is Object
+                    throw new BugException(superOfQualifiedExpr, "assertion failed");
+                }
+                if (((Interface)((CeylonScope)useSite).cls).isUseDefaultMethods()) {
+                    return naming.makeQualifiedSuper(makeObjectProxyType());
+                } else {
+                    // TODO companion class case: How do we invoke Object.super 
+                    // from a companion class?
+                    throw new RuntimeException("How do we invoke Object.super from a companion class?");
+                }
+            } else if (((CeylonScope)useSite).cls instanceof Class) {
+                return naming.makeSuper();//makeQualifiedSuper(makeJavaType(((CeylonScope)useSite).cls.getType(), JT_RAW));
+            } else {
+                throw BugException.unhandledCase(useSite);
+            }
+        } else if (((Interface)direct).isUseDefaultMethods()
+                || direct instanceof LazyInterface
+                        && !((LazyInterface)direct).isCeylon()) {
+            if (useSite.synthetic()) {
+                // use an access method
+                // TODO we're actually generating the invocation of the bridge
+                // which won't work for references (will it)?
+                return enclosing(useSite).bridge(direct, member);
+            } else if (((CeylonScope)useSite).cls instanceof Interface) {
+                if (((Interface)((CeylonScope)useSite).cls).isUseDefaultMethods()) {
+                    if (member.getDeclaration() instanceof TypedDeclaration
+                            && Decl.isObjectMember((TypedDeclaration)member.getDeclaration())) {
+                        return naming.makeSuper();//makeJavaType(direct.getType(), JT_RAW);
+                    } else {
+                        return naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
+                    }
+                } else {
+                    // TODO companion class
+                }
+            } else if (((CeylonScope)useSite).cls instanceof Class) {
+                // XXX Working here
+                return naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
+            } else {
+                throw BugException.unhandledCase(useSite);
+            }
+        } else {// direct is companion class
+            
+            if (useSite.synthetic()) {
+                // TODO need an access method?
+                if (enclosing(useSite).cls instanceof Interface) {
+                    result = naming.makeCompanionAccessorCall(naming.makeQuotedThis(), (Interface)inheritedFrom);
+                    //result = make().Apply(null, naming.makeQualIdent(this_(), naming.getCompanionAccessorName((Interface)inheritedFrom)), List.<JCExpression>nil());
+                } else {
+                    result = naming.makeCompanionFieldName((Interface)inheritedFrom);
+                }
+            } else if (((CeylonScope)useSite).cls instanceof Interface) {
+                if (((Interface)((CeylonScope)useSite).cls).isUseDefaultMethods()) {
+                    return naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
+                } else {
+                    if (inheritedFrom instanceof Interface) {
+                        result = naming.makeCompanionAccessorCall(naming.makeQuotedThis(), (Interface)inheritedFrom);
+                    } else {
+                        result = naming.makeSuper();
+                    }
+                }
+            } else if (((CeylonScope)useSite).cls instanceof Class) {
+                // XXX Working here2
+                if (inheritedFrom instanceof Interface) {
+                    result = naming.makeCompanionFieldName((Interface)inheritedFrom);
+                } else {
+                    result = naming.makeSuper();
+                }
+            } else {
+                throw BugException.unhandledCase(useSite);
+            }
+            
+            if (Decl.isAncestorLocal(inheritedFrom)) {
+                result = make().TypeCast(makeJavaType(inheritedFrom.getType(), JT_COMPANION), result);
+            }
+            if (result != null) {
+                return result;
+            }
+        }
+        ///////////////////////// Old code
+        if (1 == 1) {
+            throw new BugException(superOfQualifiedExpr, "old code");
+        }
+        
+        
         if (direct instanceof Interface
                 && !((Interface)direct).isUseDefaultMethods()) {
+            // this shit for companion interfaces
             JCExpression qualifier = null;
             if (direct instanceof LazyInterface
                     && !((LazyInterface)direct).isCeylon()) {
+                // java super interface: Foo.super.foo()
                 result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
             } else if (needDollarThis(superOfQualifiedExpr.getScope())) {
                 qualifier = naming.makeQuotedThis();
@@ -4826,6 +4996,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else if (inheritedFrom instanceof Interface){
                     result = naming.makeCompanionAccessorCall(qualifier, (Interface)inheritedFrom);
                 } else {
+                    // inherited from super class
                     result = naming.makeSuper();
                 }
             } else {
@@ -4853,6 +5024,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = make().TypeCast(makeJavaType(inheritedFrom.getType(), JT_COMPANION), result);
             }
         } else if (inheritedFrom instanceof ClassOrInterface) {
+            // inherited from a class or default interface
             // must either be a class or an interface using default methods
             Scope scope = superOfQualifiedExpr.getScope();
             while (!(scope instanceof Package)) {
@@ -4986,11 +5158,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transformSuper(Tree.QualifiedMemberOrTypeExpression expression) {
         TypeDeclaration inheritedFrom = (TypeDeclaration)expression.getDeclaration().getContainer();
         TypeDeclaration x = findDirectSuper(expression, inheritedFrom);
-        return transformSuper(expression, inheritedFrom);
+        return transformSuper(expression, inheritedFrom, expression.getTarget());
     }
     
-    public JCExpression transformSuper(Tree.Term node, TypeDeclaration superDeclaration) {
-        return widenSuper(node, superDeclaration);
+    public JCExpression transformSuper(Tree.Term node, TypeDeclaration superDeclaration, Reference member) {
+        return widenSuper(node, superDeclaration, member);
     }
     
     // Base members
@@ -5625,12 +5797,14 @@ public class ExpressionTransformer extends AbstractTransformer {
         protected JCExpression transformPrimary(Tree.IndexExpression indexExpr) {
             final JCExpression lhs;
             final String getter = getGetterName();
+            TypedReference typedMember = primaryType.getTypedMember(
+                    (TypedDeclaration)typeFact().getCorrespondenceDeclaration().getMember("get", null, false), null);
             if(isSuper(indexExpr.getPrimary())) {
                 Declaration member = primaryType.getDeclaration().getMember(getter, null, false);
                 TypeDeclaration leftDeclaration = (TypeDeclaration) member.getContainer();
-                lhs = transformSuper(indexExpr, leftDeclaration);
+                lhs = transformSuper(indexExpr, leftDeclaration, typedMember);
             } else if (isSuperOf(indexExpr.getPrimary())) {
-                lhs = transformSuperOf(indexExpr, indexExpr.getPrimary(), getter);
+                lhs = transformSuperOf(indexExpr, indexExpr.getPrimary(), typedMember);
             } else{
                 Type leftTypeForGetCall = leftTypeForGetCall();
                 lhs = transformExpression(indexExpr.getPrimary(), BoxingStrategy.BOXED, leftTypeForGetCall);
@@ -5917,9 +6091,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Declaration member = primaryType.getDeclaration().getMember(method, null, false);
                 TypeDeclaration leftDeclaration = (TypeDeclaration) member.getContainer();
                 if(isSuper)
-                    lhs = transformSuper(indexedExpr, leftDeclaration);
+                    lhs = transformSuper(indexedExpr, leftDeclaration, primaryType.getTypedReference(member, null));
                 else
-                    lhs = transformSuperOf(indexedExpr, indexedExpr.getPrimary(), method);
+                    lhs = transformSuperOf(indexedExpr, indexedExpr.getPrimary(), primaryType.getTypedReference(member, null));
             }else{
                 lhs = transformExpression(indexedExpr.getPrimary(), BoxingStrategy.BOXED, leftType);
             }
@@ -6033,7 +6207,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else if (isSuper(qualified.getPrimary())) {
                 expr = transformSuper(qualified);
             } else if (isSuperOf(qualified.getPrimary())) {
-                expr = transformSuperOf(qualified, qualified.getPrimary(), qualified.getDeclaration().getName());
+                expr = transformSuperOf(qualified, qualified.getPrimary(), qualified.getTarget());
             } else if (isThis(qualified.getPrimary())
                     && !qualified.getDeclaration().isCaptured() 
                     && !qualified.getDeclaration().isShared() ) {
@@ -6424,7 +6598,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         public JCExpression transformComprehension() {
             at(comp);
             // make sure "this" will be qualified since we're introducing a new surrounding class
-            boolean oldWithinSyntheticClassBody = withinSyntheticClassBody(true);
             new SyntheticClass("comprehension");
             try{
                 Tree.ComprehensionClause clause = comp.getInitialComprehensionClause();
@@ -6471,7 +6644,6 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return iterable;
             }finally{
                 targetScope.popScope();
-                withinSyntheticClassBody(oldWithinSyntheticClassBody);
             }
         }
         
@@ -6911,11 +7083,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     boolean isWithinSyntheticClassBody() {
-        return targetScope instanceof SyntheticClass;
+        return targetScope instanceof SyntheticClass && !(targetScope instanceof WrapperClass);
     }
 
     boolean withinSyntheticClassBody(boolean withinSyntheticClassBody) {
-        return targetScope != null && targetScope.parent instanceof SyntheticClass;
+        return targetScope != null && targetScope.parent instanceof SyntheticClass && !(targetScope instanceof WrapperClass);
     }
 
     boolean isWithinSuperInvocation() {

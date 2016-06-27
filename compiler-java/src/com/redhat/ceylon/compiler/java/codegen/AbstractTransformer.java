@@ -3903,7 +3903,6 @@ public abstract class AbstractTransformer implements Transformation {
         int i = 0;
         ListBuffer<JCStatement> returns = new ListBuffer<JCStatement>();
         boolean spread = false;
-        boolean old = expressionGen().withinSyntheticClassBody(true);
         expressionGen().new SyntheticClass("LazyIterable");
         try{
             for (Tree.PositionalArgument arg : list) {
@@ -4012,7 +4011,6 @@ public abstract class AbstractTransformer implements Transformation {
             }
         } finally {
             expressionGen().targetScope.popScope();
-            expressionGen().withinSyntheticClassBody(old);
         }
     }
 

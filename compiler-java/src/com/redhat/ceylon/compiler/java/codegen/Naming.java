@@ -861,6 +861,9 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     JCExpression makeQuotedQualIdent(JCExpression expr, String... names) {
+        if (expr instanceof ExpressionTransformer.Special) {
+            return expr;
+        }
         if (names != null) {
             for (String component : names) {
                 if (component != null) {
@@ -1168,6 +1171,9 @@ public class Naming extends NamingBase implements LocalId {
      * @see #makeQualIdent(JCExpression, String...)
      */
     JCExpression makeQualIdent(JCExpression expr, String name) {
+        if (expr instanceof ExpressionTransformer.Special) {
+            return expr;
+        }
         if (expr == null && name == null) {
             throw new BugException();
         }
@@ -2185,6 +2191,10 @@ public class Naming extends NamingBase implements LocalId {
         } else {
             return synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName());
         }
+    }
+    
+    public static String getSuperBridgeName(Declaration declaration) {
+        return "$super$" + declaration.getQualifiedNameString().replace(".", "$").replace("::", "$");
     }
 }
 
