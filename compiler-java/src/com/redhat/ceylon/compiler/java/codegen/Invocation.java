@@ -1512,6 +1512,9 @@ class NamedArgumentInvocation extends Invocation {
         Function model = methodArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
+        if (Decl.isMpl(model)) {
+            gen.expressionGen().new SyntheticClass(model.getName());
+        }
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(Decl.isMpl(model) || gen.expressionGen().isWithinSyntheticClassBody()); 
         try {
             gen.statementGen().noExpressionlessReturn = gen.isAnything(model.getType());
@@ -1533,6 +1536,9 @@ class NamedArgumentInvocation extends Invocation {
                 body = List.<JCStatement>of(returnStat);
             }
         } finally {
+            if (Decl.isMpl(model)) {
+                gen.expressionGen().targetScope.popScope();
+            }
             gen.expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
             gen.statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }

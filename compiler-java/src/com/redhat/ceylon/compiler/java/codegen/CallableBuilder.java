@@ -195,6 +195,7 @@ public class CallableBuilder {
             } else {
                 Tree.QualifiedMemberOrTypeExpression qmte = (Tree.QualifiedMemberOrTypeExpression)forwardCallTo;
                 boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
+                gen.expressionGen().new SyntheticClass("method reference");
                 try {
                     instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
                     int varTypeFlags = Decl.isPrivateAccessRequiringCompanion(qmte) ? JT_COMPANION : 0;
@@ -227,6 +228,7 @@ public class CallableBuilder {
                         cb.instanceSubstitution = gen.naming.addVariableSubst((TypedDeclaration)((Tree.MemberOrTypeExpression)qmte.getPrimary()).getDeclaration(), instanceFieldName.getName());
                     }
                 } finally {
+                    gen.expressionGen().targetScope.popScope();
                     gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
                 }
             }
@@ -537,7 +539,9 @@ public class CallableBuilder {
             java.util.List<Tree.ParameterList> parameterListTree, 
             Type callableTypeModel, boolean delegateDefaultedCalls) {
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(true);
+        gen.expressionGen().new SyntheticClass(model.getName());
         JCExpression transformedExpr = gen.expressionGen().transformExpression(expr, BoxingStrategy.BOXED, gen.getReturnTypeOfCallable(callableTypeModel));
+        gen.expressionGen().targetScope.popScope();
         gen.expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         final List<JCStatement> stmts = List.<JCStatement>of(gen.make().Return(transformedExpr));
         
@@ -926,10 +930,12 @@ public class CallableBuilder {
                     arity <= CALLABLE_MAX_FIZED_ARITY ? arity : paramLists.getParameters().size(), 
                     isCallMethod);
             boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
+            gen.expressionGen().new SyntheticClass(this.appliedReference().asString());
             JCExpression invocation;
             try {
                 invocation = gen.expressionGen().transformInvocation(invocationBuilder);
             } finally {
+                gen.expressionGen().targetScope.popScope();
                 gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
             }
             return invocation;

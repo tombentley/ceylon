@@ -48,7 +48,7 @@ import java.util.TreeSet;
 
 import org.antlr.runtime.Token;
 
-import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.StaticThis;
+import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.StaticScope;
 import com.redhat.ceylon.compiler.java.codegen.MethodDefinitionBuilder.NonWideningParam;
 import com.redhat.ceylon.compiler.java.codegen.MethodDefinitionBuilder.WideningRules;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
@@ -237,7 +237,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         
-        expressionGen().new This2(model);
+        expressionGen().new CeylonScope(model);
         
         // Transform the class/interface members
         List<JCStatement> childDefs = visitClassOrInterfaceDefinition(def, classBuilder);
@@ -260,7 +260,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         List<JCTree> result = classBuilder.build();
         
-        expressionGen().this_.pop();
+        expressionGen().targetScope.popScope();
         return result;
     }
     private Set<Interface> multiplyInheritedInterfaces(TypeDeclaration model) {
@@ -444,9 +444,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (model instanceof Interface && !((Interface)model).isUseDefaultMethods()) {
-            expressionGen().new CompanionThis((Interface)model);
+            expressionGen().new CompanionClassScope((Interface)model);
         } else {
-            expressionGen().new This2(model);
+            expressionGen().new CeylonScope(model);
         }
         
         if (def instanceof Tree.AnyClass) {
@@ -575,7 +575,7 @@ public class ClassTransformer extends AbstractTransformer {
             result = classBuilder.build();
         }
         
-        expressionGen().this_.pop();
+        expressionGen().targetScope.popScope();
         return result;
     }
 
@@ -2208,7 +2208,7 @@ public class ClassTransformer extends AbstractTransformer {
             stmts.add(make().If(make().TypeTest(reference.makeIdent(),
                     make().Type(syms().ceylonOuterType)),
                     
-                    make().Return(expressionGen().this_.outer()),
+                    make().Return(expressionGen().outer()),
                     swtch));
             
         } else {
@@ -3844,9 +3844,9 @@ public class ClassTransformer extends AbstractTransformer {
                         classBuilder.attribute(makeGetter(decl, AttrTx.BRIDGE_TO_STATIC, lazy));
                         ExpressionTransformer eg = expressionGen();
                         eg.receiver = eg.new DollarThis2(iface);
-                        eg.new StaticThis(iface);
+                        eg.new StaticScope(iface);
                         classBuilder.attribute(makeGetter(decl, AttrTx.STATIC, lazy));
-                        eg.this_.pop();
+                        eg.targetScope.popScope();
                         eg.receiver = eg.receiver.parent;
                     }
                 }
@@ -4156,6 +4156,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
+        expressionGen().new WrapperClass(name);
         
         if (Decl.isAnnotationConstructor(def)) {
             AnnotationInvocation ai = ((AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor());
@@ -4181,7 +4182,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         builder.at(def);
         List<JCTree> result = builder.build();
-        
+        expressionGen().targetScope.popScope();
         if (Decl.isLocal(def)) {
             // Inner method
             JCVariableDecl call = at(def).VarDef(
@@ -4249,6 +4250,9 @@ public class ClassTransformer extends AbstractTransformer {
             return List.<MethodDefinitionBuilder>nil();
         }
         // Transform the method body of the 'inner-most method'
+        if (Decl.isMpl(def.getDeclarationModel())) {
+            expressionGen().new SyntheticClass("mpl");
+        }
         boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(Decl.isMpl(def.getDeclarationModel())
                 || Decl.isLocalNotInitializer(def)
                 || expressionGen().isWithinSyntheticClassBody());
@@ -4258,17 +4262,20 @@ public class ClassTransformer extends AbstractTransformer {
         if (q) {
             if (Decl.isObjectMember(def.getDeclarationModel())) {
                 expressionGen().receiver = expressionGen().new DollarThis2((Interface)def.getDeclarationModel().getContainer());
-                expressionGen().new StaticThis((Interface)def.getDeclarationModel().getContainer());
+                expressionGen().new StaticScope((Interface)def.getDeclarationModel().getContainer());
             } else {
                 expressionGen().receiver = expressionGen().new DollarThis((Interface)def.getDeclarationModel().getContainer());
-                expressionGen().new This2((Interface)def.getDeclarationModel().getContainer());
+                expressionGen().new CeylonScope((Interface)def.getDeclarationModel().getContainer());
             }
         } 
             
         List<JCStatement> body = transformMethodBody(def);
         if (q) {
-            expressionGen().this_.pop();
+            expressionGen().targetScope.popScope();
             expressionGen().receiver = expressionGen().receiver.parent;
+        }
+        if (Decl.isMpl(def.getDeclarationModel())) {
+            expressionGen().targetScope.popScope();
         }
         expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         return transform(def, classBuilder, body);
@@ -4384,12 +4391,12 @@ public class ClassTransformer extends AbstractTransformer {
             // $this parameter (and captured reified type parameters)
             ExpressionTransformer eg = expressionGen();
             eg.receiver = eg.new DollarThis2(iface);
-            eg.new StaticThis(iface);
+            eg.new StaticScope(iface);
             lb.addAll(transformMethod(model, 
                     def,
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                     DaoKind.STATIC));
-            eg.this_.pop();
+            eg.targetScope.popScope();
             eg.receiver = eg.receiver.parent;
         
         }
@@ -5890,7 +5897,7 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder objectClassBuilder = ClassDefinitionBuilder.object(
                 this, javaClassName, name, Decl.isLocal(klass)).forDefinition(klass);
         
-        expressionGen().new This2(klass);
+        expressionGen().new CeylonScope(klass);
         
         if (Strategy.introduceJavaIoSerializable(klass, typeFact().getJavaIoSerializable())) {
             objectClassBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
@@ -5971,7 +5978,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         List<JCTree> result = objectClassBuilder.build();
         
-        expressionGen().this_.pop();
+        expressionGen().targetScope.popScope();
         
         if (makeLocalInstance) {
             if(model.isSelfCaptured()){

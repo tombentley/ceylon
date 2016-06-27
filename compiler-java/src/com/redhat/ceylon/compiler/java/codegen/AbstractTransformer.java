@@ -47,6 +47,7 @@ import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.SyntheticClass;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
@@ -3903,6 +3904,7 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCStatement> returns = new ListBuffer<JCStatement>();
         boolean spread = false;
         boolean old = expressionGen().withinSyntheticClassBody(true);
+        expressionGen().new SyntheticClass("LazyIterable");
         try{
             for (Tree.PositionalArgument arg : list) {
                 at(arg);
@@ -4009,6 +4011,7 @@ public abstract class AbstractTransformer implements Transformation {
                                                 methods.toList()));
             }
         } finally {
+            expressionGen().targetScope.popScope();
             expressionGen().withinSyntheticClassBody(old);
         }
     }

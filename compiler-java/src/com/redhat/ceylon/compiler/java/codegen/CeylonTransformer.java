@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.SyntheticClass;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
@@ -552,10 +553,14 @@ public class CeylonTransformer extends AbstractTransformer {
                 boolean prevSyntheticClassBody;
                 if (Decl.isLocal(declarationModel)) {
                     prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
+                    expressionGen().new SyntheticClass("local");
                 } else {
                     prevSyntheticClassBody = expressionGen().isWithinSyntheticClassBody();
                 }
                 JCBlock getterBlock = makeGetterBlock(declarationModel, block, expression);
+                if (Decl.isLocal(declarationModel)) {
+                    expressionGen().targetScope.popScope();
+                }
                 prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
                 builder.getterBlock(getterBlock);
                 

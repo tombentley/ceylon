@@ -34,6 +34,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.SyntheticClass;
 import com.redhat.ceylon.compiler.java.codegen.Invocation.TransformedInvocationPrimary;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
@@ -180,7 +181,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     private boolean inStatement = false;
     private boolean withinInvocation = false;
-    private boolean withinSyntheticClassBody = false;
+    
     /** The transformation for spread method references involves nested invocations of 
      * {@link #transformSpreadOperator(com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression, TermTransformer)}
      * and what we generate depends on the invocation. This field will be odd on 
@@ -366,6 +367,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
         boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
+        expressionGen().new SyntheticClass("function argument");
         try {
             statementGen().noExpressionlessReturn = isAnything(model.getType());
             if (functionArg.getBlock() != null) {
@@ -384,6 +386,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 body = List.<JCStatement>of(returnStat);
             }
         } finally {
+            expressionGen().targetScope.popScope();
             expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
             statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
@@ -1760,21 +1763,108 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    This2 this_ = null;
+    /** The current class scope */
+    TargetClassScope targetScope = null;
     
-    /** {@code this} transformation within a class or default interface member */
-    public class This2 {
-        private final This2 parent;
-        protected final ClassOrInterface cls;
-
-        public This2(ClassOrInterface cls) {
-            this.cls = cls;
-            this.parent = ExpressionTransformer.this.this_;
-            ExpressionTransformer.this.this_ = this;
+    /**
+     * The first CeylonScope enclosing the given scope that isn't a SyntheticClass
+     * i.e. the inner-most Ceylon class we're in.
+     */
+    public static CeylonScope enclosing(TargetClassScope scope) {
+        TargetClassScope outer = scope;
+        while (outer.synthetic()) {
+            outer = outer.parent;
+        }
+        return ((CeylonScope)outer);
+    }
+    public JCExpression this_() {
+        return enclosing(targetScope).this_();
+    }
+    public JCExpression outer() {
+        return enclosing(targetScope).outer();
+    }
+    
+    /**
+     * Tracks nested <em>Java</em> class declarations, including 
+     * those of synthetic classes.
+     */
+    abstract class TargetClassScope 
+        /* of SyntheticClass|CeylonScope */ {
+        /** The parent (outer) scope of this scope. */
+        protected final TargetClassScope parent;
+        /** 
+         * Initialize a TargetClassScope, pushing it on top of the
+         * {@link ExpressionTransformer#targetScope} stack.
+         */
+        protected TargetClassScope() {
+            this.parent = ExpressionTransformer.this.targetScope;
+            ExpressionTransformer.this.targetScope = this;
+        }
+        /** 
+         * Remove a TargetClassScope from the
+         * {@link ExpressionTransformer#targetScope} stack
+         * (having build a JCClassDecl) 
+         */
+        public final void popScope() {
+            ExpressionTransformer.this.targetScope = this.parent;
         }
         
-        public final void pop() {
-            ExpressionTransformer.this.this_ = this.parent;
+        public abstract boolean synthetic();
+        
+        public abstract String n();
+        
+        @Override
+        public String toString() {
+            String s;
+            if (parent != null) {
+                s = parent.toString() + ", ";
+            } else {
+                s = "";
+            }
+            return s + n();
+        }
+    }
+    
+    public class WrapperClass extends TargetClassScope {
+        protected final String name;
+        public WrapperClass(String name) {
+            super();
+            this.name = name;
+        }
+        @Override
+        public String n() {
+            return name;
+        }
+        @Override
+        public boolean synthetic() {
+            return true;
+        }
+    }
+    
+    public class SyntheticClass extends TargetClassScope {
+        protected final String name;
+        public SyntheticClass(String name) {
+            super();
+            this.name = name;
+        }
+        @Override
+        public String n() {
+            return name;
+        }
+        @Override
+        public boolean synthetic() {
+            return true;
+        }
+    }
+    
+    /** {@code this} transformation within a class or default interface member */
+    public class CeylonScope extends TargetClassScope {
+        
+        protected final ClassOrInterface cls;
+
+        public CeylonScope(ClassOrInterface cls) {
+            super();
+            this.cls = cls;
         }
         
         public JCExpression this_() {
@@ -1796,14 +1886,24 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         public JCExpression outer() {
-            return parent.this_(false);
+            return enclosing(parent).this_(false);
+        }
+
+        @Override
+        public String n() {
+            return cls.getName();
+        }
+
+        @Override
+        public boolean synthetic() {
+            return false;
         }
     }
 
     /** {@code this} transformation within a companion class */
-    public class CompanionThis extends This2{
+    public class CompanionClassScope extends CeylonScope{
         
-        public CompanionThis(Interface iface) {
+        public CompanionClassScope(Interface iface) {
             super(iface);
             assert(!iface.isUseDefaultMethods());
         }
@@ -1817,8 +1917,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     /** {@code this} transformation within a {@code static}-transformed interface member */
-    public class StaticThis extends This2{
-        public StaticThis(Interface iface) {
+    public class StaticScope extends CeylonScope{
+        public StaticScope(Interface iface) {
             super(iface);
         }
         @Override
@@ -1845,7 +1945,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             scope = scope.getContainer();
         }
-        return this_.this_(inConstructor);
+        return enclosing(targetScope).this_(inConstructor);
     }
 
     public JCTree transform(Tree.Super expr) {
@@ -1854,7 +1954,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCTree transform(Tree.Outer expr) {
         at(expr);
-        return this_.outer();
+        return enclosing(targetScope).outer();
     }
     
     //
@@ -3091,7 +3191,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         
         if (useStaticSuper(invocation.getPrimary())) {
             Scope container = ((Tree.MemberOrTypeExpression)invocation.getPrimary()).getDeclaration().getContainer();
-                result.add(new ExpressionAndType(this_.this_(),
+                result.add(new ExpressionAndType(this_(),
                         makeJavaType(((Interface)container).getType(), JT_RAW)));
         }
         Tree.Term primary = invocation.getPrimary();
@@ -4180,6 +4280,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Type qualifyingType = primary.getTypeModel();
         Tree.TypeArguments typeArguments = expr.getTypeArguments();
         boolean prevSyntheticClassBody = withinSyntheticClassBody(true);
+        new SyntheticClass("member reference");
         try {
             if (member.isStaticallyImportable()) {
                 if (member instanceof Function) {
@@ -4284,6 +4385,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 return makeErroneous(expr, "compiler bug: member reference of " + expr + " not supported yet");
             }
         } finally {
+            targetScope.popScope();
             withinSyntheticClassBody(prevSyntheticClassBody);
         }
     }
@@ -4403,6 +4505,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             JCNewClass iterableClass;
             boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
+            new SyntheticClass("spread");
             try {
                 JCExpression transformedElement = applyErasureAndBoxing(iteratorResultName.makeIdent(), typeFact().getAnythingType(), CodegenUtil.hasTypeErased(expr.getPrimary()),
                         true, BoxingStrategy.BOXED, 
@@ -4469,6 +4572,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         List.of(makeReifiedTypeArgument(resultElementType), makeReifiedTypeArgument(resultAbsentType)), 
                         make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(iteratorMdb.build())));
             } finally {
+                expressionGen().targetScope.popScope();
                 expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
             }
             
@@ -4735,11 +4839,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
                 } else if (inheritedFrom instanceof Interface){
                     if (useMethod(superOfQualifiedExpr, (Interface)inheritedFrom)) {
-                        result = make().Apply(null, naming.makeQualIdent(this_.this_(), naming.getCompanionAccessorName((Interface)inheritedFrom)), List.<JCExpression>nil());
+                        result = make().Apply(null, naming.makeQualIdent(this_(), naming.getCompanionAccessorName((Interface)inheritedFrom)), List.<JCExpression>nil());
                     } else {
                         result = naming.makeCompanionFieldName((Interface)inheritedFrom);
                     }
                 } else {
+                    // inherited from super class
                     result = naming.makeSuper();
                 }
             }
@@ -4813,7 +4918,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                         result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
                     } else {
                         if (useMethod(superOfQualifiedExpr, iface)) {
-                            result = make().Apply(null, naming.makeQualIdent(this_.this_(), naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
+                            result = make().Apply(null, naming.makeQualIdent(this_(), naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
                         } else {
                             result = naming.makeCompanionFieldName((Interface)inheritedFrom);
                         }
@@ -5190,7 +5295,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     if (useGetter) {
                         List<JCExpression> args = List.<JCTree.JCExpression>nil();
                         if (useStaticSuper(expr)) {
-                            args = args.append(this_.this_());
+                            args = args.append(this_());
                         } 
                         result = make().Apply(List.<JCTree.JCExpression>nil(),
                                 result,
@@ -6021,7 +6126,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (result == null) {
             List<JCExpression> args = List.<JCExpression>nil();
             if (useStaticSuper(leftTerm)) {
-                args = args.append(this_.this_());
+                args = args.append(this_());
             }
             args = args.append(rhs);
             result = make().Apply(List.<JCTree.JCExpression>nil(),
@@ -6320,6 +6425,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             at(comp);
             // make sure "this" will be qualified since we're introducing a new surrounding class
             boolean oldWithinSyntheticClassBody = withinSyntheticClassBody(true);
+            new SyntheticClass("comprehension");
             try{
                 Tree.ComprehensionClause clause = comp.getInitialComprehensionClause();
                 while (clause != null) {
@@ -6364,6 +6470,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 return iterable;
             }finally{
+                targetScope.popScope();
                 withinSyntheticClassBody(oldWithinSyntheticClassBody);
             }
         }
@@ -6804,13 +6911,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     boolean isWithinSyntheticClassBody() {
-        return withinSyntheticClassBody;
+        return targetScope instanceof SyntheticClass;
     }
 
     boolean withinSyntheticClassBody(boolean withinSyntheticClassBody) {
-        boolean result = this.withinSyntheticClassBody;
-        this.withinSyntheticClassBody = withinSyntheticClassBody;
-        return result;
+        return targetScope != null && targetScope.parent instanceof SyntheticClass;
     }
 
     boolean isWithinSuperInvocation() {
