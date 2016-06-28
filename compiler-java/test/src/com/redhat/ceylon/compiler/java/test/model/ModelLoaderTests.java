@@ -237,11 +237,20 @@ public class ModelLoaderTests extends JdkVersionDependentTests {
                 throw new RuntimeException(e);
             }
             try{
-                RuntimeModuleManager moduleManager = Metamodel.getModuleManager();
-                RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
-                Modules modules = moduleManager.getModules();
+                java.lang.Class<?> c = java.lang.Class.forName("com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel", false, classLoader);
+                java.lang.reflect.Method m = c.getMethod("getModuleManager");
+                Object moduleManager = m.invoke(null);
+                m = moduleManager.getClass().getMethod("getModelLoader");
+                Object modelLoader = m.invoke(moduleManager);
+                m = moduleManager.getClass().getMethod("getModules");
+                Object modules = m.invoke(moduleManager);
+                //RuntimeModuleManager moduleManager = Metamodel.getModuleManager();
+                //RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
+                //Modules modules = moduleManager.getModules();
                 // now see if we can find our declarations
-                compareDeclarations(modelCompare, decls, modelLoader, modules);
+                compareDeclarations(modelCompare, decls, (AbstractModelLoader)modelLoader, (Modules)modules);
+            }catch (ReflectiveOperationException e) {
+               throw new RuntimeException(e);
             }finally{
                 try {
                     classLoader.close();
