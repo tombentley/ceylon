@@ -100,7 +100,7 @@ interface NamedArgumentInvocationSub extends .com.redhat.ceylon.compiler.java.te
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$3$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$3$callable$ = .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub.this;
                 .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$3$argthis$ = arg$3$callable$;
                 long arg$3$0 = arg$3$argthis$.g$i();
             }

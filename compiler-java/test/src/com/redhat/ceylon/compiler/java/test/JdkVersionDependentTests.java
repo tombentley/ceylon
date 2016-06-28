@@ -73,4 +73,9 @@ public class JdkVersionDependentTests extends CompilerTests {
     public String[] getClassPath() {
         return getClassPath("8".equals(target));
     }
+    
+    @Override
+    public String getLanguageModuleCar() {
+        return getLanguageModuleCar("8".equals(target));
+    }
 }

@@ -94,7 +94,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
                     || JDKUtils.isOracleJDKModule(module.getNameAsString())){
                 // the JDK does not have class loaders so load it from the root class loader
                 try {
-                    return ClassLoader.getSystemClassLoader().loadClass(name);
+                    return Class.forName(name, false, ClassLoader.getSystemClassLoader());
                 } catch (ClassNotFoundException e) {
                     return null;
                 }
@@ -102,7 +102,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             return null;
         }
         try{
-            return classLoader.loadClass(name);
+            return Class.forName(name, false, classLoader);//.loadClass(name);
         }catch(ClassNotFoundException|NoClassDefFoundError x){
             return null;
         }

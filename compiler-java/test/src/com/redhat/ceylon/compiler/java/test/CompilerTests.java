@@ -63,7 +63,7 @@ import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+//import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
@@ -870,12 +870,45 @@ public abstract class CompilerTests {
             ModuleWithArtifact... modules) throws MalformedURLException {
         List<URL> urls = getClassPathAsUrls(modules);
         System.err.println("Running " + main +" with classpath" + urls);
-        URLClassLoader loader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
+        URLClassLoader loader = new URLClassLoader(urls.toArray(new URL[urls.size()])){
+            public Class<?> loadClass(String name) throws ClassNotFoundException {
+                // First check whether it's already been loaded, if so use it
+                Class loadedClass = findLoadedClass(name);
+                
+                // Not loaded, try to load it 
+                if (loadedClass == null) {
+                    try {
+                        // Ignore parent delegation and just try to load locally
+                        loadedClass = findClass(name);
+                    } catch (ClassNotFoundException e) {
+                        // Swallow exception - does not exist locally
+                    }
+                    
+                    // If not found locally, use normal parent delegation in URLClassloader
+                    if (loadedClass == null) {
+                        // throws ClassNotFoundException if not found in delegation hierarchy at all
+                        loadedClass = super.loadClass(name);
+                    }
+                } 
+                // will never return null (ClassNotFoundException will be thrown)
+                return loadedClass;
+            }
+        };
         // set up the runtime module system
-        Metamodel.resetModuleManager();
-        Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(getLanguageModuleCar())), loader);
-        for (ModuleWithArtifact module : modules) {
-            Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
+      //Metamodel.resetModuleManager();
+        try {
+            Class<?> c = Class.forName("com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel", false, loader);
+            Method m = c.getMethod("resetModuleManager");
+            m.invoke(null);
+            m = c.getMethod("loadModule", String.class, String.class, ArtifactResult.class, ClassLoader.class);
+            //Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(getLanguageModuleCar())), loader);
+            m.invoke(null, AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(getLanguageModuleCar())), loader);
+            for (ModuleWithArtifact module : modules) {
+                m.invoke(null, module.module, module.version, makeArtifactResult(module.file), loader);
+                //Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
+            }
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException();
         }
         return loader;
     }
@@ -885,6 +918,7 @@ public abstract class CompilerTests {
             throws MalformedURLException {
         List<File> files = getClassPathAsFiles(modules);
         List<URL> urls = new ArrayList<URL>(files.size());
+        urls.add(new File(getLanguageModuleCar()).toURI().toURL());
         for (File file : files) {
             urls.add(file.toURL());
         }

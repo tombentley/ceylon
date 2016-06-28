@@ -1,0 +1,123 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+interface SuperWithinSyntheticClass extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default long getA() {
+        return 0L;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public default long m() {
+        return 0L;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperWithinSyntheticClass.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::SuperWithinSyntheticClass"})
+interface SuperWithinSyntheticClass2 extends .com.redhat.ceylon.compiler.java.test.structure.iface.SuperWithinSyntheticClass {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    default long $super$com$redhat$ceylon$compiler$java$test$structure$iface$SuperWithinSyntheticClass$a() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperWithinSyntheticClass.super.getA();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    default long $super$com$redhat$ceylon$compiler$java$test$structure$iface$SuperWithinSyntheticClass$m() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperWithinSyntheticClass.super.m();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private default void f$priv$() {
+        final long a1 = .com.redhat.ceylon.compiler.java.test.structure.iface.SuperWithinSyntheticClass.super.getA();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.SuperWithinSyntheticClass.super.m();
+        .com.redhat.ceylon.compiler.java.test.structure.iface.SuperWithinSyntheticClass.super.m();
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class local_ {
+            
+            private local_() {
+            }
+            
+            void local() {
+                final long a1 = $super$com$redhat$ceylon$compiler$java$test$structure$iface$SuperWithinSyntheticClass$a();
+                $super$com$redhat$ceylon$compiler$java$test$structure$iface$SuperWithinSyntheticClass$m();
+                $super$com$redhat$ceylon$compiler$java$test$structure$iface$SuperWithinSyntheticClass$m();
+            }
+        }
+        final local_ local = new local_();
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance($super$com$redhat$ceylon$compiler$java$test$structure$iface$SuperWithinSyntheticClass$m());
+            }
+        };
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance($super$com$redhat$ceylon$compiler$java$test$structure$iface$SuperWithinSyntheticClass$m());
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> com = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance($super$com$redhat$ceylon$compiler$java$test$structure$iface$SuperWithinSyntheticClass$m())})).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer x;
+                    private boolean x$exhausted$;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmp$item$2 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$2 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
+                            return false;
+                        } else {
+                            x = (.ceylon.language.Integer)$ceylontmp$item$2;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.x()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return x;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        };
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperWithinSyntheticClass2.class);
+}

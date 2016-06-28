@@ -30,7 +30,6 @@ import org.junit.runners.Parameterized.Parameters;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-@Ignore("Not ready yet!")
 public class Java8InterfaceTests extends JdkVersionDependentTests {
     
     public Java8InterfaceTests(String target, String source) {
