@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
@@ -35,11 +36,13 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -475,6 +478,31 @@ class Strategy {
     public static boolean useSerializationProxy(Class model) {
         return model.hasEnumerated()
                 && (model.isToplevel() || model.isMember());
+    }
+    
+    public List<TypeParameter> getEffectiveTypeParameters(Declaration decl) {
+        if (decl instanceof Function) {
+            return ((Function)decl).getTypeParameters();
+        } else if (decl instanceof Class) {
+            if (((Class) decl).isStatic()
+                    && ((Class)decl).isMember()) {// TODO and isCeylon
+                ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters((Declaration)((Class) decl).getContainer()));
+                copyDown.addAll(((Class)decl).getTypeParameters());
+                return copyDown;
+            } else {
+                return ((Class)decl).getTypeParameters();
+            }
+        } else if (decl instanceof Interface) {
+            if (((Interface) decl).isMember()) {
+                ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters((Declaration)((Class) decl).getContainer()));
+                copyDown.addAll(((Interface)decl).getTypeParameters());
+                return copyDown;
+            } else {
+                return ((Interface)decl).getTypeParameters();
+            }
+        } else {
+            throw BugException.unhandledDeclarationCase((Declaration)decl);
+        }
     }
     
 }
